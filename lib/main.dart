@@ -8,8 +8,10 @@ import 'package:flame/flame.dart';
 import 'package:flame/text_config.dart';
 import 'package:flame/position.dart';
 
-void main() {
-  final game = BounceBoxGame();
+void main() async {
+  final size = await Flame.util.initialDimensions();
+
+  final game = BounceBoxGame(size);
   runApp(game.widget);
 
   Flame.util.addGestureRecognizer(TapGestureRecognizer()
@@ -38,21 +40,12 @@ class BounceBoxGame extends Game {
   List<Rect> _enemies = [];
 
   int _score = 0;
-  Size _screenSize;
-  bool _loaded = false;
-
+  Size screenSize;
 
   double _timer = 0;
 
-  BounceBoxGame() {
-    _start();
-  }
-
-  void _start() async {
-    _screenSize = await Flame.util.initialDimensions();
-    _loaded = true;
-
-    _player = Rect.fromLTWH(_screenSize.width / 2 - 25, _screenSize.height - 200, 50, 50);
+  BounceBoxGame(this.screenSize) {
+    _player = Rect.fromLTWH(screenSize.width / 2 - 25, screenSize.height - 200, 50, 50);
   }
 
   void tapDown() {
@@ -65,16 +58,12 @@ class BounceBoxGame extends Game {
 
   @override
   void update(double dt) {
-    if (!_loaded) {
-      return;
-    }
-
     _timer += dt;
 
     if (_timer >= 2.5) {
       _timer = 0;
 
-      _enemies.add(Rect.fromLTWH(random.nextInt(_screenSize.width.toInt() - 50).toDouble(), -25, 50, 50));
+      _enemies.add(Rect.fromLTWH(random.nextInt(screenSize.width.toInt() - 50).toDouble(), -25, 50, 50));
     }
 
     if (_playerMoving) {
@@ -85,8 +74,8 @@ class BounceBoxGame extends Game {
         _playerDirection = 1;
       }
 
-      if (_player.right >= _screenSize.width) {
-        _player = Rect.fromLTWH(_screenSize.width - _player.width, _player.top, _player.width, _player.height);
+      if (_player.right >= screenSize.width) {
+        _player = Rect.fromLTWH(screenSize.width - _player.width, _player.top, _player.width, _player.height);
         _playerDirection = -1;
       }
     }
@@ -101,7 +90,7 @@ class BounceBoxGame extends Game {
         _score = 0;
       }
 
-      if (_enemies[i].top >= _screenSize.height) {
+      if (_enemies[i].top >= screenSize.height) {
         _enemies.removeAt(i);
         _score++;
       }
@@ -110,12 +99,8 @@ class BounceBoxGame extends Game {
 
   @override
   void render(Canvas canvas) {
-    if (!_loaded) {
-      return;
-    }
-
     // Renders a white background
-    canvas.drawRect(Rect.fromLTWH(0, 0, _screenSize.width, _screenSize.height), white);
+    canvas.drawRect(Rect.fromLTWH(0, 0, screenSize.width, screenSize.height), white);
 
     scoreTextConfig.render(canvas, "Score: $_score", Position(10, 50));
 
