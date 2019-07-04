@@ -19,27 +19,36 @@ class GameController extends PositionComponent {
 
   Rect _background;
   Position _scorePosition = Position(10, 50);
+
   Timer enemyCreator;
+  Timer enemySpeedIncreaser;
+
   int _score = 0;
 
   GameController(this.gameRef) {
     _background = Rect.fromLTWH(0, 0, gameRef.size.width, gameRef.size.height);
 
     enemyCreator = Timer(2.5, repeat: true, callback: () {
-      print("asd");
       final enemy = Enemy(gameRef);
       enemy.setByPosition(Position(random.nextInt(gameRef.size.width.toInt() - enemy.width.toInt()).toDouble(), enemy.height * -1));
       gameRef.add(enemy);
     });
     enemyCreator.start();
+
+    enemySpeedIncreaser = Timer(5, repeat: true, callback: () {
+      gameRef.currentEnemySpeed = min(gameRef.currentEnemySpeed + Game.ENEMY_SPEED_STEP, Game.MAX_ENEMY_SPEED);
+    });
+    enemySpeedIncreaser.start();
   }
 
   @override
   void update(double dt) {
     enemyCreator.update(dt);
+    enemySpeedIncreaser.update(dt);
   }
 
   void resetScore() {
+    gameRef.currentEnemySpeed = Game.INITIAL_ENEMY_SPEED;
     _score = 0;
   }
 

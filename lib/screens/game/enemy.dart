@@ -6,8 +6,6 @@ import './game.dart';
 class Enemy extends PositionComponent {
   static final Paint black = Paint()..color = Color(0xFF000000);
 
-  static final ENEMY_SPEED = 100;
-
   final Game gameRef;
 
   Enemy(this.gameRef) {
@@ -16,7 +14,7 @@ class Enemy extends PositionComponent {
 
   @override
   void update(double dt) {
-    y += ENEMY_SPEED * dt;
+    y += gameRef.currentEnemySpeed * dt;
 
     if (toRect().overlaps(gameRef.player.toRect())) {
       gameRef.player.hurt();
