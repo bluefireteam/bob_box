@@ -1,8 +1,12 @@
+import 'package:flutter/animation.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame/time.dart';
 import 'dart:ui';
+import 'dart:math';
+
+
 
 import './game.dart';
 
@@ -42,6 +46,10 @@ class Player extends PositionComponent {
   static const PLAYER_SPEED = 200;
   static const NEAR_MARGIN = 80;
 
+  static double HOLDING_LIMIT = 3;
+
+  static final Random random = Random();
+
   bool _playerMoving = true;
   int _playerDirection = 1;
 
@@ -71,7 +79,7 @@ class Player extends PositionComponent {
     });
 
     // TODO add visual indicator about the holding
-    _holdingTimer = Timer(2, callback: () {
+    _holdingTimer = Timer(HOLDING_LIMIT, callback: () {
       _playerMoving = true;
     });
   }
@@ -145,9 +153,20 @@ class Player extends PositionComponent {
     _resetStateTimer.start();
   }
 
+  double randomModifier() => random.nextBool() ? 4.0 : -4.0;
+
   @override
   void render(Canvas canvas) {
-    final rect = toRect();
+    var rect = toRect();
+
+    if (!_playerMoving) {
+      final curve = Curves.easeIn.transformInternal(_holdingTimer.current / HOLDING_LIMIT);
+
+      rect = rect.translate(
+          randomModifier() * curve,
+          randomModifier() * curve,
+      );
+    }
 
     if (_state == BobState.IDLE) {
       idle.renderRect(canvas, rect);
