@@ -119,6 +119,12 @@ class Player extends PositionComponent {
   }
 
   void changeState(BobState state) {
+    // When it is hit it can override the other states
+    if (state == BobState.HIT) {
+      _state = state;
+      return;
+    }
+
     // Not started or is finished
     if (_resetStateTimer.current <= 0 || _resetStateTimer.isFinished()) {
       _state = state;
