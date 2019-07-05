@@ -49,6 +49,7 @@ class Player extends PositionComponent {
 
   SpriteSheet _spriteSheet;
   Timer _resetStateTimer;
+  Timer _holdingTimer;
 
   BobState _state = BobState.IDLE;
 
@@ -68,14 +69,21 @@ class Player extends PositionComponent {
     _resetStateTimer = Timer(0.4, callback: () {
       _state = BobState.IDLE;
     });
+
+    // TODO add visual indicator about the holding
+    _holdingTimer = Timer(2, callback: () {
+      _playerMoving = true;
+    });
   }
 
   void stop() {
     _playerMoving = false;
+    _holdingTimer.start();
   }
 
   void resume() {
     _playerMoving = true;
+    _holdingTimer.stop();
   }
 
   void hurt() {
@@ -92,6 +100,8 @@ class Player extends PositionComponent {
   @override
   void update(double dt) {
     _resetStateTimer.update(dt);
+    _holdingTimer.update(dt);
+
     if (_playerMoving) {
       x += PLAYER_SPEED * dt * _playerDirection;
 
