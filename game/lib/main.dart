@@ -6,6 +6,7 @@ import 'package:flame/flame.dart';
 import 'screens/game/game.dart';
 
 void main() async {
+  await Flame.util.fullScreen();
   final size = await Flame.util.initialDimensions();
 
   final game = Game(size);

@@ -58,9 +58,6 @@ class GameController extends PositionComponent {
 
   @override
   void render(Canvas canvas) {
-    // Renders a white background
-    canvas.drawRect(_background, white);
-
     scoreTextConfig.render(canvas, "Score: $_score", _scorePosition);
   }
 }

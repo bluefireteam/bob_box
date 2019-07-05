@@ -1,4 +1,0 @@
-#Tue Jun 25 21:27:06 BRT 2019
-base.0=/Users/erick/projects/gamedev/bounce_box/build/app/intermediates/transforms/dexMerger/debug/0
-path.0=classes.dex
-renamed.0=classes.dex

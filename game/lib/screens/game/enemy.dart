@@ -6,6 +6,7 @@ import './game.dart';
 class Enemy extends PositionComponent {
   static final Paint black = Paint()..color = Color(0xFF000000);
 
+  bool _hittedPlayer = false;
   final Game gameRef;
 
   Enemy(this.gameRef) {
@@ -19,6 +20,8 @@ class Enemy extends PositionComponent {
     if (toRect().overlaps(gameRef.player.toRect())) {
       gameRef.player.hurt();
       gameRef.controller.resetScore();
+
+      _hittedPlayer = true;
     }
 
     if (destroy()) {
@@ -33,6 +36,6 @@ class Enemy extends PositionComponent {
 
   @override
   bool destroy() {
-    return y >= gameRef.size.height;
+    return _hittedPlayer || y >= gameRef.size.height;
   }
 }
