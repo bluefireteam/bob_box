@@ -1,6 +1,7 @@
 import 'package:flame/game.dart';
 import 'dart:ui';
 
+import 'background.dart';
 import 'player.dart';
 import 'controller.dart';
 
@@ -20,6 +21,7 @@ class Game extends BaseGame {
     player = Player(this);
     controller = GameController(this);
 
+    add(BackgroundComponent(this));
     add(controller);
     add(player);
   }

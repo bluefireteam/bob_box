@@ -17,5 +17,6 @@ dev_dependencies:
 
 
 flutter:
-
-  uses-material-design: true
+  assets:
+    - assets/images/bob.png
+    - assets/images/background-texture.png
