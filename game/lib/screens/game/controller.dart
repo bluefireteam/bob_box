@@ -1,6 +1,7 @@
 import 'package:flame/components/component.dart';
 import 'package:flame/text_config.dart';
 import 'package:flame/position.dart';
+import 'package:flame/sprite.dart';
 import 'package:flame/time.dart';
 import 'dart:ui';
 import 'dart:math';
@@ -9,29 +10,61 @@ import 'enemy.dart';
 import 'coin.dart';
 import 'game.dart';
 
-class GameController extends PositionComponent {
-  static final Paint white = Paint()..color = Color(0xFFFFFFFF);
-  static final Paint black = Paint()..color = Color(0xFF000000);
+class Hud {
+  double _screenWidth = 0.0;
+  Sprite _leftCorner;
+  Sprite _rightCorner;
+  Sprite _middle;
 
-  final TextConfig scoreTextConfig = TextConfig(color: const Color(0xFF000000));
+  Rect _leftRect;
+  Rect _rightRect;
+  Rect _middleRect;
+
+  Hud(this._screenWidth) {
+    _leftCorner = Sprite("hud.png", x: 0, y: 0, width: 16, height: 16);
+    _middle = Sprite("hud.png", x: 16, y: 0, width: 16, height: 16);
+    _rightCorner = Sprite("hud.png", x: 32, y: 0, width: 16, height: 16);
+
+    _leftRect = Rect.fromLTWH(0, 0, 50, 50);
+    _rightRect = Rect.fromLTWH(_screenWidth - 50, 0, 50, 50);
+
+    _middleRect = Rect.fromLTWH(
+        _leftRect.right,
+        0,
+        _rightRect.left - _leftRect.right,
+        50
+    );
+  }
+
+  void render(Canvas canvas) {
+    _leftCorner.renderRect(canvas, _leftRect);
+    _middle.renderRect(canvas, _middleRect);
+    _rightCorner.renderRect(canvas, _rightRect);
+  }
+}
+
+class GameController extends PositionComponent {
+  final TextConfig textConfig = TextConfig(color: const Color(0xFF8bd0ba), fontFamily: "PixelIntv");
 
   static final Random random = Random();
   final Game gameRef;
 
-  Rect _background;
-  Position _scorePosition = Position(10, 10);
-  Position _coinsPosition = Position(10, 30);
+  Position _scorePosition;
+  Position _coinsPosition;
 
   Timer enemyCreator;
   Timer enemySpeedIncreaser;
 
   Timer coinCreator;
 
+  Hud _hud;
+
   int _score = 0;
   int _coins = 0;
 
   GameController(this.gameRef) {
-    _background = Rect.fromLTWH(0, 0, gameRef.size.width, gameRef.size.height);
+    _scorePosition = Position(20, 10);
+    _coinsPosition = Position(gameRef.size.width - 150, 10);
 
     enemyCreator = Timer(2.5, repeat: true, callback: () {
       final enemy = Enemy(gameRef);
@@ -54,6 +87,8 @@ class GameController extends PositionComponent {
       }
     });
     coinCreator.start();
+
+    _hud = Hud(gameRef.size.width);
   }
 
   @override
@@ -79,7 +114,12 @@ class GameController extends PositionComponent {
 
   @override
   void render(Canvas canvas) {
-    scoreTextConfig.render(canvas, "Score: $_score", _scorePosition);
-    scoreTextConfig.render(canvas, "Coins: $_coins", _coinsPosition);
+    _hud.render(canvas);
+
+    textConfig.render(canvas, "Score: $_score", _scorePosition);
+    textConfig.render(canvas, "Coins: $_coins", _coinsPosition);
   }
+
+  @override
+  int priority() => 1;
 }

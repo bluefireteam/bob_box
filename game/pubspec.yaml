@@ -17,8 +17,14 @@ dev_dependencies:
 
 
 flutter:
+
+  fonts:
+    - family: PixelIntv
+      fonts:
+        - asset: assets/PixelIntv.otf
   assets:
     - assets/images/bob.png
     - assets/images/background-texture.png
     - assets/images/enemies.png
     - assets/images/coin.png
+    - assets/images/hud.png
