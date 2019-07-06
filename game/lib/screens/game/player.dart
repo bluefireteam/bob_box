@@ -40,6 +40,7 @@ enum BobState {
   BOUNCED,
   IDLE,
   HIT,
+  BEEN_HOLD,
 }
 
 class Player extends PositionComponent {
@@ -70,28 +71,32 @@ class Player extends PositionComponent {
       imageName: "bob.png",
       textureWidth: 16,
       textureHeight: 16,
-      columns: 5,
+      columns: 6,
       rows: 1,
     );
 
     _resetStateTimer = Timer(0.4, callback: () {
-      _state = BobState.IDLE;
+      if (_state != BobState.BEEN_HOLD) {
+        changeState(BobState.IDLE);
+      }
     });
 
     // TODO add visual indicator about the holding
     _holdingTimer = Timer(HOLDING_LIMIT, callback: () {
-      _playerMoving = true;
+      resume();
     });
   }
 
   void stop() {
     _playerMoving = false;
     _holdingTimer.start();
+    changeState(BobState.BEEN_HOLD);
   }
 
   void resume() {
     _playerMoving = true;
     _holdingTimer.stop();
+    changeState(BobState.IDLE);
   }
 
   void hurt() {
@@ -104,6 +109,7 @@ class Player extends PositionComponent {
   Sprite get nearRight => _spriteSheet.getSprite(0, 2);
   Sprite get bounced => _spriteSheet.getSprite(0, 3);
   Sprite get hit => _spriteSheet.getSprite(0, 4);
+  Sprite get beenHold => _spriteSheet.getSprite(0, 5);
 
   @override
   void update(double dt) {
@@ -137,8 +143,8 @@ class Player extends PositionComponent {
   }
 
   void changeState(BobState state) {
-    // When it is hit it can override the other states
-    if (state == BobState.HIT) {
+    // When it is hit or been hold it can override the other states
+    if (state == BobState.HIT || state == BobState.BEEN_HOLD) {
       _state = state;
       return;
     }
@@ -178,6 +184,8 @@ class Player extends PositionComponent {
       bounced.renderRect(canvas, rect);
     } else if (_state == BobState.HIT) {
       hit.renderRect(canvas, rect);
+    } else if (_state == BobState.BEEN_HOLD) {
+      beenHold.renderRect(canvas, rect);
     }
   }
 }
