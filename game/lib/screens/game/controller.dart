@@ -101,7 +101,6 @@ class GameController extends PositionComponent {
   void resetScore() {
     gameRef.currentEnemySpeed = Game.INITIAL_ENEMY_SPEED;
     _score = 0;
-    _coins = 0;
   }
 
   void increaseScore() {
