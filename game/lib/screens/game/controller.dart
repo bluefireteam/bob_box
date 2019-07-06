@@ -6,6 +6,8 @@ import 'package:flame/time.dart';
 import 'dart:ui';
 import 'dart:math';
 
+import '../../game_data.dart';
+
 import 'enemy.dart';
 import 'coin.dart';
 import 'game.dart';
@@ -62,7 +64,7 @@ class GameController extends PositionComponent {
   int _score = 0;
   int _coins = 0;
 
-  GameController(this.gameRef) {
+  GameController(this.gameRef, this._coins) {
     _scorePosition = Position(20, 10);
     _coinsPosition = Position(gameRef.size.width - 150, 10);
 
@@ -100,6 +102,10 @@ class GameController extends PositionComponent {
 
   void resetScore() {
     gameRef.currentEnemySpeed = Game.INITIAL_ENEMY_SPEED;
+
+    GameData.updateCoins(_coins);
+    GameData.updateScore(_score);
+
     _score = 0;
   }
 

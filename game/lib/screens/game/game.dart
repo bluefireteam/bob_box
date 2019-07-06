@@ -20,7 +20,7 @@ class Game extends BaseGame {
 
   int currentEnemySpeed = INITIAL_ENEMY_SPEED;
 
-  Game(Size screenSize) {
+  Game(Size screenSize, int currentCoins) {
     enemiesSpritesheet = SpriteSheet(
       imageName: "enemies.png",
       textureWidth: 16,
@@ -32,7 +32,7 @@ class Game extends BaseGame {
     size = screenSize;
 
     player = Player(this);
-    controller = GameController(this);
+    controller = GameController(this, currentCoins);
 
     add(BackgroundComponent(this));
     add(controller);
