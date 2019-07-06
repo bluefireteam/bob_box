@@ -1,16 +1,21 @@
 import 'package:flame/components/component.dart';
+import 'package:flame/sprite.dart';
 import 'dart:ui';
+import 'dart:math';
 
-import './game.dart';
+import 'game.dart';
 
 class Enemy extends PositionComponent {
-  static final Paint black = Paint()..color = Color(0xFF000000);
-
   bool _hittedPlayer = false;
   final Game gameRef;
 
+  Sprite _sprite;
+  static final Random random = Random();
+
   Enemy(this.gameRef) {
     width = height = 50;
+
+    _sprite = gameRef.enemiesSpritesheet.getSprite(0, random.nextInt(4));
   }
 
   @override
@@ -31,7 +36,7 @@ class Enemy extends PositionComponent {
 
   @override
   void render(Canvas canvas) {
-    canvas.drawRect(toRect(), black);
+    _sprite.renderRect(canvas, toRect());
   }
 
   @override
