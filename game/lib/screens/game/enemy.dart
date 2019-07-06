@@ -29,7 +29,8 @@ class Enemy extends PositionComponent {
       _hittedPlayer = true;
     }
 
-    if (destroy()) {
+    // We only add score when the enemy has died by reaching the bottom of the screen
+    if (!_hittedPlayer && destroy()) {
       gameRef.controller.increaseScore();
     }
   }
