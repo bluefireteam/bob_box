@@ -19,6 +19,15 @@ enum BobState {
   BEEN_HOLD,
 }
 
+class ResumeableTimer extends Timer {
+  ResumeableTimer(double limit, { bool repeat = false, void Function() callback }) : super(limit, repeat: repeat, callback: callback);
+
+  void startOn(double current) {
+    super.start();
+    super.update(current);
+  }
+}
+
 class Player extends PositionComponent {
   static const PLAYER_SPEED = 200;
   static const NEAR_MARGIN = 80;
@@ -34,7 +43,9 @@ class Player extends PositionComponent {
 
   SpriteSheet _spriteSheet;
   Timer _resetStateTimer;
-  Timer _holdingTimer;
+  ResumeableTimer _holdingTimer;
+
+  double _holdingCooldown = 0.0;
 
   BobState _state = BobState.IDLE;
 
@@ -57,21 +68,23 @@ class Player extends PositionComponent {
       }
     });
 
-    // TODO add visual indicator about the holding
-    _holdingTimer = Timer(HOLDING_LIMIT, callback: () {
+    _holdingTimer = ResumeableTimer(HOLDING_LIMIT, callback: () {
       resume();
     });
   }
 
   void stop() {
     _playerMoving = false;
-    _holdingTimer.start();
+    _holdingTimer.startOn(_holdingCooldown);
     changeState(BobState.BEEN_HOLD);
   }
 
   void resume() {
     _playerMoving = true;
+
+    _holdingCooldown = _holdingTimer.current;
     _holdingTimer.stop();
+
     changeState(BobState.IDLE);
   }
 
@@ -91,6 +104,10 @@ class Player extends PositionComponent {
   void update(double dt) {
     _resetStateTimer.update(dt);
     _holdingTimer.update(dt);
+
+    if (_holdingCooldown > 0) {
+      _holdingCooldown = max(0, _holdingCooldown - dt);
+    }
 
     if (_playerMoving) {
       x += PLAYER_SPEED * dt * _playerDirection;
