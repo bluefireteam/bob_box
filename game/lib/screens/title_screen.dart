@@ -24,7 +24,7 @@ class _TitleScreenState extends State<TitleScreen> {
   int _bestScore;
   int _coins;
 
-  int get bestScore => _bestScore ??  widget.initialBestScore;
+  int get bestScore => _bestScore ??  widget.initialBestScore ?? 0;
   int get totalCoins => _coins ??  widget.initialCoins;
 
   void onBack() async {
