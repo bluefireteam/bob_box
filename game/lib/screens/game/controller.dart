@@ -1,8 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/text_config.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame/time.dart';
+import 'package:flame/anchor.dart';
 import 'dart:ui';
 import 'dart:math';
 
@@ -46,13 +48,23 @@ class Hud {
 }
 
 class GameController extends PositionComponent {
-  final TextConfig textConfig = TextConfig(color: const Color(0xFF8bd0ba), fontFamily: "PixelIntv");
+  final TextConfig textConfig = TextConfig(color: const Color(0xFF8bd0ba), fontFamily: "PixelIntv", fontSize: 16);
+  final TextConfig pausedTextConfig = TextConfig(color: const Color(0xFF2a2a3a), fontFamily: "PixelIntv", fontSize: 64);
 
   static final Random random = Random();
   final Game gameRef;
+  void Function() _onBack;
 
   Position _scorePosition;
   Position _coinsPosition;
+
+  Position _pauseButtonPosition;
+  Position _backButtonPosition;
+
+  Rect _pauseButtonRect;
+  Rect _backButtonRect;
+
+  Position _pauseTextPosition;
 
   Timer enemyCreator;
   Timer enemySpeedIncreaser;
@@ -64,9 +76,18 @@ class GameController extends PositionComponent {
   int _score = 0;
   int _coins = 0;
 
-  GameController(this.gameRef, this._coins) {
+  GameController(this.gameRef, this._coins, this._onBack) {
     _scorePosition = Position(20, 10);
-    _coinsPosition = Position(gameRef.size.width - 150, 10);
+    _coinsPosition = Position(gameRef.size.width - 240, 10);
+
+    _backButtonRect = Rect.fromLTWH(gameRef.size.width - 20, 10, 20, 20);
+    _pauseButtonRect = Rect.fromLTWH(gameRef.size.width - 60, 10, 20, 20);
+
+    _backButtonPosition = Position(_backButtonRect.left, _backButtonRect.top);
+    _pauseButtonPosition = Position(_pauseButtonRect.left, _pauseButtonRect.top);
+
+    final o = Offset(gameRef.size.width / 2, gameRef.size.height / 2);
+    _pauseTextPosition = Position(o.dx, o.dy);
 
     enemyCreator = Timer(2.5, repeat: true, callback: () {
       final enemy = Enemy(gameRef);
@@ -91,6 +112,20 @@ class GameController extends PositionComponent {
     coinCreator.start();
 
     _hud = Hud(gameRef.size.width);
+  }
+
+  void onTapUp(TapUpDetails evt) {
+    final x = evt.globalPosition.dx;
+    final y = evt.globalPosition.dy;
+
+    final touchedArea = Rect.fromLTWH(x, y, 20, 20);
+
+    if (touchedArea.overlaps(_backButtonRect)) {
+      _onBack();
+    } else if (touchedArea.overlaps(_pauseButtonRect)) {
+      gameRef.paused = !gameRef.paused;
+    }
+
   }
 
   @override
@@ -123,6 +158,15 @@ class GameController extends PositionComponent {
 
     textConfig.render(canvas, "Score: $_score", _scorePosition);
     textConfig.render(canvas, "Coins: $_coins", _coinsPosition);
+
+    textConfig.render(canvas, "<", _backButtonPosition);
+    if (gameRef.paused) {
+      textConfig.render(canvas, ">", _pauseButtonPosition);
+
+      pausedTextConfig.render(canvas, "Paused", _pauseTextPosition, anchor: Anchor.center);
+    } else {
+      textConfig.render(canvas, "||", _pauseButtonPosition);
+    }
   }
 
   @override

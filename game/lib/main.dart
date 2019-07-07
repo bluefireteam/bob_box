@@ -20,7 +20,7 @@ void main() async {
     home: new Scaffold(body: TitleScreen()),
     routes: {
     },
-  )); 
+  ));
 
   //final size = await Flame.util.initialDimensions();
   //final initialCoins = await GameData.getCoins();
@@ -37,6 +37,7 @@ void main() async {
     ..onTapUp = (TapUpDetails evt) {
       if (Main.game != null) {
         Main.game.player.resume();
+        Main.game.controller.onTapUp(evt);
       }
     }
   );

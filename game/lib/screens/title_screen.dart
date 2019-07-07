@@ -48,7 +48,10 @@ class _TitleScreenState extends State<TitleScreen> {
     final size = await Flame.util.initialDimensions();
     final initialCoins = await GameData.getCoins();
 
-    Main.game = Game(size, initialCoins);
+    Main.game = Game(size, initialCoins, () {
+      Main.game = null;
+      setState(() {});
+    });
     setState(() {});
   }
 }

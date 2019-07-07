@@ -7,7 +7,23 @@ import 'controller.dart';
 
 import 'spritesheet.dart';
 
-class Game extends BaseGame {
+class PauseableGame extends BaseGame {
+
+  bool paused = false;
+
+  @override
+  void update(double dt) {
+    if (paused) {
+      return;
+    }
+
+    super.update(dt);
+  }
+}
+
+class Game extends PauseableGame {
+  void Function() _onBack;
+
   Player player;
   GameController controller;
   // Lets cache an instance of the SpriteSheet here so we don't need to
@@ -20,7 +36,7 @@ class Game extends BaseGame {
 
   int currentEnemySpeed = INITIAL_ENEMY_SPEED;
 
-  Game(Size screenSize, int currentCoins) {
+  Game(Size screenSize, int currentCoins, this._onBack) {
     enemiesSpritesheet = SpriteSheet(
       imageName: "enemies.png",
       textureWidth: 16,
@@ -32,12 +48,18 @@ class Game extends BaseGame {
     size = screenSize;
 
     player = Player(this);
-    controller = GameController(this, currentCoins);
+    controller = GameController(this, currentCoins, _onBack);
 
     add(BackgroundComponent(this));
     add(controller);
     add(player);
   }
-}
 
+  @override
+  void lifecycleStateChange(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      paused = true;
+    }
+  }
+}
 
