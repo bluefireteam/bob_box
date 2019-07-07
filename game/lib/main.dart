@@ -15,18 +15,14 @@ class Main {
 
 void main() async {
   await Flame.init(fullScreen: true, orientation: DeviceOrientation.portraitUp);
+  final initialBestScore = await GameData.getScore();
+  final initialCoins = await GameData.getCoins();
 
   runApp(new MaterialApp(
-    home: new Scaffold(body: TitleScreen()),
+    home: new Scaffold(body: TitleScreen(initialBestScore: initialBestScore, initialCoins: initialCoins)),
     routes: {
     },
   ));
-
-  //final size = await Flame.util.initialDimensions();
-  //final initialCoins = await GameData.getCoins();
-
-  //final game = Game(size, initialCoins);
-  //runApp(game.widget);
 
   Flame.util.addGestureRecognizer(TapGestureRecognizer()
     ..onTapDown = (TapDownDetails evt) {

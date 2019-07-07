@@ -10,6 +10,11 @@ class GameData {
     }
   }
 
+  static Future<int> getScore() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt("score");
+  }
+
   static void updateCoins(int coins) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt("coins", coins);
