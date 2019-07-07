@@ -13,7 +13,16 @@ class TitleScreen extends StatefulWidget {
 class _TitleScreenState extends State<TitleScreen> {
   Widget build(BuildContext context) {
     if (Main.game != null) {
-      return Main.game.widget;
+      return WillPopScope(
+        onWillPop: () async {
+          if (Main.game != null) {
+            Main.game = null;
+            setState(() {});
+            return false;
+          }
+        },
+        child: Main.game.widget,
+      );
     }
 
     return Center(
