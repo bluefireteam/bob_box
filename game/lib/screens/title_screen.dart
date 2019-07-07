@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:flame/flame.dart";
 
 import "game/game.dart";
@@ -68,6 +69,7 @@ class _TitleScreenState extends State<TitleScreen> {
             }),
             SizedBox(height: 20),
             SecondaryButton(label: "Exit", onPress: () {
+              SystemNavigator.pop();
             }),
           ],
         ),
