@@ -8,7 +8,7 @@ import 'dart:math';
 
 import 'spritesheet.dart';
 import 'game.dart';
-
+import 'hats.dart';
 
 enum BobState {
   NEAR_RIGHT,
@@ -41,6 +41,8 @@ class Player extends PositionComponent {
 
   final Game gameRef;
 
+  HatSprite _hatSprite;
+
   SpriteSheet _spriteSheet;
   Timer _resetStateTimer;
   ResumeableTimer _holdingTimer;
@@ -49,7 +51,13 @@ class Player extends PositionComponent {
 
   BobState _state = BobState.IDLE;
 
-  Player(this.gameRef) {
+  //Player(this.gameRef, { Hat hat = null }) {
+  Player(this.gameRef, { Hat hat = Hat.SOMBRERO }) {
+
+    if (hat != null) {
+      _hatSprite = HatSprite(hat);
+    }
+
     setByPosition(Position(gameRef.size.width / 2 - 25, gameRef.size.height - 200));
     width = 50;
     height = 50;
@@ -179,6 +187,10 @@ class Player extends PositionComponent {
       hit.renderRect(canvas, rect);
     } else if (_state == BobState.BEEN_HOLD) {
       beenHold.renderRect(canvas, rect);
+    }
+
+    if (_hatSprite != null) {
+      _hatSprite.render(canvas, rect.left, rect.top);
     }
   }
 }
