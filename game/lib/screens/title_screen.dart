@@ -67,9 +67,7 @@ class _TitleScreenState extends State<TitleScreen> {
             }),
             SecondaryButton(label: "Support the game", onPress: () {
             }),
-            SizedBox(height: 20),
-            SecondaryButton(label: "Exit", onPress: () {
-              SystemNavigator.pop();
+            SecondaryButton(label: "Credits", onPress: () {
             }),
           ],
         ),

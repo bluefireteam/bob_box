@@ -13,7 +13,7 @@ class Button extends StatelessWidget {
   Button({ this.label, this.onPress, this.backgroundColor, this.fontColor });
 
   Widget build(BuildContext context) {
-    return RaisedButton(
+    return ButtonTheme(minWidth: 250, child: RaisedButton(
       onPressed: () {
         onPress();
       },
@@ -26,7 +26,7 @@ class Button extends StatelessWidget {
           color: fontColor
         )
       ),
-    );
+    ));
   }
 }
 
