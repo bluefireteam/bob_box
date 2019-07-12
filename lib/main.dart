@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/text_config.dart';
 import 'package:flame/position.dart';
+import 'package:flame/time.dart';
 
 void main() async {
   final size = await Flame.util.initialDimensions();
@@ -42,10 +43,14 @@ class BounceBoxGame extends Game {
   int _score = 0;
   Size screenSize;
 
-  double _timer = 0;
+  Timer _timer;
 
   BounceBoxGame(this.screenSize) {
     _player = Rect.fromLTWH(screenSize.width / 2 - 25, screenSize.height - 200, 50, 50);
+
+    _timer = Timer(2.5, repeat: true, callback: () {
+      _enemies.add(Rect.fromLTWH(random.nextInt(screenSize.width.toInt() - 50).toDouble(), -25, 50, 50));
+    })..start();
   }
 
   void tapDown() {
@@ -58,13 +63,7 @@ class BounceBoxGame extends Game {
 
   @override
   void update(double dt) {
-    _timer += dt;
-
-    if (_timer >= 2.5) {
-      _timer = 0;
-
-      _enemies.add(Rect.fromLTWH(random.nextInt(screenSize.width.toInt() - 50).toDouble(), -25, 50, 50));
-    }
+    _timer.update(dt);
 
     if (_playerMoving) {
       _player = _player.translate(PLAYER_SPEED * dt * _playerDirection, 0);
