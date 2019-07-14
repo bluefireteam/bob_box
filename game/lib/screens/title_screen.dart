@@ -114,7 +114,7 @@ class _TitleScreenState extends State<TitleScreen> with WidgetsBindingObserver  
       _audioPlayer.stop();
     }
 
-    _audioPlayer = await Flame.audio.loopLongAudio("bob_box.ogg");
+    _audioPlayer = await Flame.audio.loopLongAudio("bob_box.mp3");
     final size = await Flame.util.initialDimensions();
     final initialCoins = await GameData.getCoins();
 
