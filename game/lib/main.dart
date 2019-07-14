@@ -6,6 +6,7 @@ import 'package:flame/flame.dart';
 
 import 'screens/game/game.dart';
 import 'screens/title_screen.dart';
+import 'screens/hats_screen.dart';
 
 import 'game_data.dart';
 
@@ -22,6 +23,7 @@ void main() async {
   runApp(new MaterialApp(
     home: new Scaffold(body: TitleScreen(initialBestScore: initialBestScore, initialCoins: initialCoins)),
     routes: {
+      '/hats': (context) => HatsScreen(),
     },
   ));
 

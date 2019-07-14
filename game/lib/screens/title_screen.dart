@@ -97,7 +97,8 @@ class _TitleScreenState extends State<TitleScreen> with WidgetsBindingObserver  
             PrimaryButton(label: "Play", onPress: () {
               startGame();
             }),
-            SecondaryButton(label: "Store", onPress: () {
+            SecondaryButton(label: "Hat Store", onPress: () {
+              Navigator.pushNamed(context, '/hats');
             }),
             SecondaryButton(label: "Support the game", onPress: () {
             }),
