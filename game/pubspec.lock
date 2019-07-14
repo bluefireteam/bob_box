@@ -74,9 +74,9 @@ packages:
   flame:
     dependency: "direct main"
     description:
-      name: flame
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../../flame"
+      relative: true
+    source: path
     version: "0.14.1"
   flare_dart:
     dependency: transitive

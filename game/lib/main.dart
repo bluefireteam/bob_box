@@ -14,6 +14,7 @@ class Main {
 }
 
 void main() async {
+  await Flame.audio.load("bob_box.ogg");
   await Flame.init(fullScreen: true, orientation: DeviceOrientation.portraitUp);
   final initialBestScore = await GameData.getScore();
   final initialCoins = await GameData.getCoins();

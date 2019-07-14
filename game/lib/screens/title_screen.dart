@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flame/flame.dart";
+import "package:audioplayers/audioplayers.dart";
 
 import "game/game.dart";
 
@@ -20,15 +21,48 @@ class TitleScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _TitleScreenState();
 }
 
-class _TitleScreenState extends State<TitleScreen> {
+class _TitleScreenState extends State<TitleScreen> with WidgetsBindingObserver  {
   int _bestScore;
   int _coins;
 
   int get bestScore => _bestScore ??  widget.initialBestScore ?? 0;
   int get totalCoins => _coins ??  widget.initialCoins;
 
+  AudioPlayer _audioPlayer;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      if (_audioPlayer != null) {
+        _audioPlayer.pause();
+      }
+    }
+
+    if (state == AppLifecycleState.resumed) {
+      if (_audioPlayer != null) {
+        _audioPlayer.resume();
+      }
+    }
+  }
+
   void onBack() async {
     Main.game = null;
+
+    if (_audioPlayer != null) {
+      _audioPlayer.stop();
+    }
 
     final score = await GameData.getScore();
     final coins = await GameData.getCoins();
@@ -76,6 +110,11 @@ class _TitleScreenState extends State<TitleScreen> {
   }
 
   startGame() async {
+    if (_audioPlayer != null) {
+      _audioPlayer.stop();
+    }
+
+    _audioPlayer = await Flame.audio.loopLongAudio("bob_box.ogg");
     final size = await Flame.util.initialDimensions();
     final initialCoins = await GameData.getCoins();
 

@@ -9,7 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flame: ^0.14.1
+  flame:
+    path: ../../flame
   shared_preferences: ^0.5.3+1
 
 dev_dependencies:
@@ -35,3 +36,5 @@ flutter:
     - assets/images/coin.png
     - assets/images/hud.png
     - assets/images/hats.png
+
+    - assets/audio/bob_box.ogg
