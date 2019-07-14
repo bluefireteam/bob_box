@@ -38,4 +38,11 @@ void main() async {
       }
     }
   );
+
+  Flame.util.addGestureRecognizer(ImmediateMultiDragGestureRecognizer()
+      ..onStart = (Offset) {
+        Main.game.player.resume();
+        return null;
+      }
+  );
 }
