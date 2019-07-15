@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'background.dart';
 import 'player.dart';
 import 'controller.dart';
+import 'hats.dart';
 
 import 'spritesheet.dart';
 
@@ -36,7 +37,7 @@ class Game extends PauseableGame {
 
   int currentEnemySpeed = INITIAL_ENEMY_SPEED;
 
-  Game(Size screenSize, int currentCoins, this._onBack) {
+  Game(Size screenSize, int currentCoins, Hat currentHat, this._onBack) {
     enemiesSpritesheet = SpriteSheet(
       imageName: "enemies.png",
       textureWidth: 16,
@@ -47,7 +48,7 @@ class Game extends PauseableGame {
 
     size = screenSize;
 
-    player = Player(this);
+    player = Player(this, hat: currentHat);
     controller = GameController(this, currentCoins, _onBack);
 
     add(BackgroundComponent(this));

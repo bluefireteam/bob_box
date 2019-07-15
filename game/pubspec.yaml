@@ -36,5 +36,6 @@ flutter:
     - assets/images/coin.png
     - assets/images/hud.png
     - assets/images/hats.png
+    - assets/images/hats-background.png
 
     - assets/audio/bob_box.mp3

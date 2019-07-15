@@ -3,11 +3,11 @@ import 'package:flame/components/component.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame/time.dart';
+import 'package:flame/game.dart';
 import 'dart:ui';
 import 'dart:math';
 
 import 'spritesheet.dart';
-import 'game.dart';
 import 'hats.dart';
 
 enum BobState {
@@ -39,7 +39,7 @@ class Player extends PositionComponent {
   bool _playerMoving = true;
   int _playerDirection = 1;
 
-  final Game gameRef;
+  final BaseGame gameRef;
 
   HatSprite _hatSprite;
 
@@ -51,8 +51,7 @@ class Player extends PositionComponent {
 
   BobState _state = BobState.IDLE;
 
-  //Player(this.gameRef, { Hat hat = null }) {
-  Player(this.gameRef, { Hat hat = Hat.SOMBRERO }) {
+  Player(this.gameRef, { Hat hat = null }) {
 
     if (hat != null) {
       _hatSprite = HatSprite(hat);

@@ -5,8 +5,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flame/flame.dart';
 
 import 'screens/game/game.dart';
+import 'screens/game/hats.dart';
 import 'screens/title_screen.dart';
 import 'screens/hats_screen.dart';
+
+import 'ui/background.dart';
 
 import 'game_data.dart';
 
@@ -23,7 +26,27 @@ void main() async {
   runApp(new MaterialApp(
     home: new Scaffold(body: TitleScreen(initialBestScore: initialBestScore, initialCoins: initialCoins)),
     routes: {
-      '/hats': (context) => HatsScreen(),
+      '/hats': (context) {
+        return FutureBuilder(
+            future: Future.wait([
+              GameData.getCurrentHat(),
+              GameData.getOwnedHats(),
+              GameData.getCoins()
+            ]),
+            builder:(BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                Hat currentHat = snapshot.data[0];
+                List<Hat> ownedHats = snapshot.data[1];
+                int currentCoins = snapshot.data[2];
+
+                return HatsScreen(current: currentHat, owned: ownedHats, currentCoins: currentCoins);
+              }
+
+              return Background();
+            }
+
+        );
+      },
     },
   ));
 

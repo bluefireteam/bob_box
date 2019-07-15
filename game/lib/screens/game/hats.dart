@@ -32,9 +32,9 @@ class HatSprite {
 
   Hat _hat;
 
-  HatSprite(this._hat) {
+  HatSprite(this._hat, { String imageName = 'hats.png'}) {
     _spriteSheet = SpriteSheet(
-        imageName: 'hats.png',
+        imageName: imageName,
         textureWidth: 48,
         textureHeight: 32,
         rows: 7,
