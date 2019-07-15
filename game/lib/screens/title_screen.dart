@@ -7,6 +7,7 @@ import "game/game.dart";
 
 import "../ui/button.dart";
 import "../ui/label.dart";
+import "../ui/background.dart";
 
 import "../game_data.dart";
 import "../main.dart";
@@ -85,8 +86,7 @@ class _TitleScreenState extends State<TitleScreen> with WidgetsBindingObserver  
       );
     }
 
-    return Container(
-      decoration: BoxDecoration(color: Color(0xFFfff8c0)),
+    return Background(
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -97,7 +97,7 @@ class _TitleScreenState extends State<TitleScreen> with WidgetsBindingObserver  
             PrimaryButton(label: "Play", onPress: () {
               startGame();
             }),
-            SecondaryButton(label: "Hat Store", onPress: () {
+            SecondaryButton(label: "Hats", onPress: () {
               Navigator.pushNamed(context, '/hats');
             }),
             SecondaryButton(label: "Support the game", onPress: () {

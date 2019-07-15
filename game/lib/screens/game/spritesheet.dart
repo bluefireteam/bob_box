@@ -1,3 +1,4 @@
+import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 
 class SpriteSheet {
@@ -22,4 +23,8 @@ class SpriteSheet {
   }
 
   Sprite getSprite(int row, int column) => _sprites[row][column];
+
+  Future<void> load() async {
+    await Flame.images.load(imageName);
+  }
 }

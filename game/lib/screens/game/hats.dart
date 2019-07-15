@@ -46,6 +46,10 @@ class HatSprite {
     hatSprite.renderRect(canvas, Rect.fromLTWH(x - 50, y - 50, 150, 100));
   }
 
+  Future<void> load() async {
+    return await _spriteSheet.load();
+  }
+
   Sprite get rider => _spriteSheet.getSprite(0, 0);
   Sprite get wizard => _spriteSheet.getSprite(1, 0);
   Sprite get gentleman => _spriteSheet.getSprite(2, 0);
@@ -69,6 +73,74 @@ class HatSprite {
   Sprite get graduate => _spriteSheet.getSprite(4, 2);
   Sprite get chef => _spriteSheet.getSprite(5, 2);
   Sprite get pirateCaptain => _spriteSheet.getSprite(6, 2);
+
+  String get label {
+    switch(_hat) {
+      case Hat.RIDER: {
+        return "Rider";
+      }
+      case Hat.WIZARD: {
+        return "Wizard";
+      }
+      case Hat.GENTLEMAN: {
+        return "Gentleman";
+      }
+      case Hat.COP: {
+        return "Cop";
+      }
+      case Hat.KING: {
+        return "King";
+      }
+      case Hat.COWBOY: {
+        return "Cowboy";
+      }
+      case Hat.BASEBALL_CAP: {
+        return "Baseball Cap";
+      }
+      case Hat.SOMBRERO: {
+        return "Sombrero";
+      }
+      case Hat.ASTRONAUT: {
+        return "Astronaut";
+      }
+      case Hat.KNIGHT: {
+        return "Knight";
+      }
+      case Hat.SPARTAN: {
+        return "Spartan";
+      }
+      case Hat.SANTA: {
+        return "Santa";
+      }
+      case Hat.JESTER: {
+        return "Jester";
+      }
+      case Hat.WANDERER: {
+        return "Wanderer";
+      }
+      case Hat.COMPOSER: {
+        return "Composer";
+      }
+      case Hat.DIVER: {
+        return "Diver";
+      }
+      case Hat.OLD_DIVER: {
+        return "Old Diver";
+      }
+      case Hat.CONSTRUCTION_WORKER: {
+        return "Worker";
+      }
+      case Hat.GRADUATE: {
+        return "Graduate";
+      }
+      case Hat.CHEF: {
+        return "Chef";
+      }
+      case Hat.PIRATE_CAPTAIN: {
+        return "Pirate Captain";
+      }
+    }
+  }
 
   Sprite get hatSprite {
     switch(_hat) {
