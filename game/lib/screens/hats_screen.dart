@@ -81,12 +81,18 @@ class _HatsScreenState extends State<HatsScreen> {
         body: Background(
             child: Column(
                 children: [
-                  Row(
+                  Stack(
                       children: [
-                          buttons.BackButton(onPress: () {
-                            Navigator.pop(context);
-                          }),
-                          Expanded(child: TitleHeader("Hats store")),
+                          Positioned(
+                              left: 5,
+                              top: 0,
+                              child: buttons.BackButton(onPress: () {
+                                Navigator.pop(context);
+                              }),
+                          ),
+                          Center(
+                              child: TitleHeader("Hats store")
+                          )
                       ],
                   ),
                   Label(label: "Current coins: $currentCoins"),
@@ -125,7 +131,11 @@ class _HatsScreenState extends State<HatsScreen> {
                             },
                             child: Column(
                                        children: [
-                                         Flame.util.spriteAsWidget(const Size(90, 80), hatSprite.hatSprite),
+                                         SizedBox(
+                                             width: 96,
+                                             height: 64,
+                                             child:Flame.util.spriteAsWidget(const Size(96, 64), hatSprite.hatSprite)
+                                         ),
                                          Label(label: hatSprite.label, fontSize: 14),
                                        ]
                                    )
