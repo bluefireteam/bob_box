@@ -20,11 +20,24 @@ class Main {
 void main() async {
   await Flame.audio.load("bob_box.mp3");
   await Flame.init(fullScreen: true, orientation: DeviceOrientation.portraitUp);
-  final initialBestScore = await GameData.getScore();
-  final initialCoins = await GameData.getCoins();
 
-  runApp(new MaterialApp(
-    home: new Scaffold(body: TitleScreen(initialBestScore: initialBestScore, initialCoins: initialCoins)),
+  runApp(MaterialApp(
+    home: FutureBuilder(
+        future: Future.wait([
+          GameData.getScore(),
+          GameData.getCoins(),
+        ]),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            int initialBestScore = snapshot.data[0];
+            int initialCoins = snapshot.data[1];
+
+            return Scaffold(body: TitleScreen(initialBestScore: initialBestScore, initialCoins: initialCoins));
+          }
+
+          return Background();
+        }
+    ),
     routes: {
       '/hats': (context) {
         return FutureBuilder(
@@ -33,7 +46,7 @@ void main() async {
               GameData.getOwnedHats(),
               GameData.getCoins()
             ]),
-            builder:(BuildContext context, AsyncSnapshot snapshot) {
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 Hat currentHat = snapshot.data[0];
                 List<Hat> ownedHats = snapshot.data[1];
