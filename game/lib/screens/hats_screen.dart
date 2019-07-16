@@ -8,7 +8,7 @@ import "game/player.dart";
 import "../game_data.dart";
 import "../main.dart";
 
-import "../ui/button.dart";
+import "../ui/button.dart" as buttons;
 import "../ui/background.dart";
 import "../ui/label.dart";
 import "../ui/title_header.dart";
@@ -81,7 +81,14 @@ class _HatsScreenState extends State<HatsScreen> {
         body: Background(
             child: Column(
                 children: [
-                  TitleHeader("Hats store"),
+                  Row(
+                      children: [
+                          buttons.BackButton(onPress: () {
+                            Navigator.pop(context);
+                          }),
+                          Expanded(child: TitleHeader("Hats store")),
+                      ],
+                  ),
                   Label(label: "Current coins: $currentCoins"),
                   SizedBox(
                       height: 150,
@@ -96,9 +103,9 @@ class _HatsScreenState extends State<HatsScreen> {
                     : owned.contains(selected)
                       ? selected == current
                         ? Label(label: "In use")
-                        : PrimaryButton(label: "Equip", onPress: () { _equipHat(); })
+                        : buttons.PrimaryButton(label: "Equip", onPress: () { _equipHat(); })
                       :  currentCoins >= price
-                        ? PrimaryButton(label: "Buy", onPress: () { _buyHat(); })
+                        ? buttons.PrimaryButton(label: "Buy", onPress: () { _buyHat(); })
                         : Label(label: "Not enough coins"),
 
                   SizedBox(height: 25),

@@ -5,15 +5,17 @@ typedef OnPress = void Function();
 class Button extends StatelessWidget {
 
   final String label;
-  OnPress onPress;
+  final OnPress onPress;
 
-  Color backgroundColor;
-  Color fontColor;
+  final Color backgroundColor;
+  final Color fontColor;
+  final double fontSize;
+  final double minWidth;
 
-  Button({ this.label, this.onPress, this.backgroundColor, this.fontColor });
+  Button({ this.label, this.onPress, this.backgroundColor, this.fontColor, this.fontSize = 20, this.minWidth = 250 });
 
   Widget build(BuildContext context) {
-    return ButtonTheme(minWidth: 250, child: RaisedButton(
+    return ButtonTheme(minWidth: minWidth, child: RaisedButton(
       onPressed: () {
         onPress();
       },
@@ -21,7 +23,7 @@ class Button extends StatelessWidget {
       child: Text(
         label,
         style: TextStyle(
-          fontSize: 20,
+          fontSize: fontSize,
           fontFamily: "PixelIntv",
           color: fontColor
         )
@@ -45,5 +47,16 @@ class SecondaryButton extends Button {
     onPress: onPress,
     backgroundColor: Color(0xFF8bd0ba),
     fontColor: Color(0xFF38607c),
+  );
+}
+
+class BackButton extends Button {
+  BackButton({ OnPress onPress }): super(
+    label: "<",
+    onPress: onPress,
+    backgroundColor: Color(0xFF8bd0ba),
+    fontColor: Color(0xFF38607c),
+    fontSize: 30,
+    minWidth: 40,
   );
 }
