@@ -80,6 +80,7 @@ class _HatsScreenState extends State<HatsScreen> {
     return Scaffold(
         body: Background(
             child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Stack(
                       children: [
@@ -95,16 +96,16 @@ class _HatsScreenState extends State<HatsScreen> {
                           )
                       ],
                   ),
-                  Label(label: "Current coins: $currentCoins"),
+                  Center(child: Label(label: "Current coins: $currentCoins")),
                   SizedBox(
-                      height: 150,
+                      height: 100,
                       width: 300,
                       child: Preview(const Size(300, 150), selected).widget,
                   ),
 
                   SizedBox(height: 50),
 
-                  selected == null
+                  Center(child: selected == null
                     ? Label(label: "No hat selected")
                     : owned.contains(selected)
                       ? selected == current
@@ -112,36 +113,60 @@ class _HatsScreenState extends State<HatsScreen> {
                         : buttons.PrimaryButton(label: "Equip", onPress: () { _equipHat(); })
                       :  currentCoins >= price
                         ? buttons.PrimaryButton(label: "Buy", onPress: () { _buyHat(); })
-                        : Label(label: "Not enough coins"),
+                        : Label(label: "Not enough coins")
+                  ),
+                  SizedBox(height: 15),
 
-                  SizedBox(height: 25),
+                  Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  width: 3,
+                                  color: const Color(0xFF8bd0ba),
+                              ),
+                          )
+                      ),
+                      child: Center(child: Label(label: "Next hat price: $price")),
+                  ),
+                  Expanded(child:
+                      Container(
+                          decoration: const BoxDecoration(
+                              color: const Color(0xFF578aae),
+                              border: Border(
+                                  top: BorderSide(
+                                      width: 3,
+                                      color: const Color(0xFF38607c),
+                                  ),
+                              )
+                          ),
+                          padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                          child: GridView.count(
+                              crossAxisCount: 3,
+                              children: Hat.values.map((hatType) {
+                                final hatSprite = HatSprite(hatType, image: Main.hatsWithBackground);
 
-                  Label(label: "Next hat price: $price"),
-                  SizedBox(height: 25),
-                  Expanded(child: GridView.count(
-                      crossAxisCount: 3,
-                      children: Hat.values.map((hatType) {
-                        final hatSprite = HatSprite(hatType, image: Main.hatsWithBackground);
-
-                        return  GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selected = hatType;
-                              });
-                            },
-                            child: Column(
-                                       children: [
-                                         SizedBox(
-                                             width: 96,
-                                             height: 64,
-                                             child:Flame.util.spriteAsWidget(const Size(96, 64), hatSprite.hatSprite)
-                                         ),
-                                         Label(label: hatSprite.label, fontSize: 14),
-                                       ]
-                                   )
-                        );
-                      }).toList()
-                  ))
+                                return  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _selected = hatType;
+                                      });
+                                    },
+                                    child: Opacity(
+                                               opacity: owned.contains(hatType) ? 1 : 0.4,
+                                               child:Column(
+                                                   children: [
+                                                     SizedBox(
+                                                         width: 96,
+                                                         height: 64,
+                                                         child: Flame.util.spriteAsWidget(const Size(96, 64), hatSprite.hatSprite)
+                                                     ),
+                                                     Label(label: hatSprite.label, fontSize: 14),
+                                                   ]
+                                               )
+                                           )
+                                );
+                              }).toList()
+                      )))
                 ]
             )
         )
