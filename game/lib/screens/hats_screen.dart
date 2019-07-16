@@ -6,6 +6,7 @@ import "game/hats.dart";
 import "game/player.dart";
 
 import "../game_data.dart";
+import "../main.dart";
 
 import "../ui/button.dart";
 import "../ui/background.dart";
@@ -30,7 +31,9 @@ class HatsScreen extends StatefulWidget {
   List<Hat> owned;
   int currentCoins;
 
-  HatsScreen({ this.current, this.owned, this.currentCoins });
+  Image hatsImage;
+
+  HatsScreen({ this.current, this.owned, this.currentCoins, this.hatsImage });
 
   @override
   State<StatefulWidget> createState() => _HatsScreenState();
@@ -105,29 +108,20 @@ class _HatsScreenState extends State<HatsScreen> {
                   Expanded(child: GridView.count(
                       crossAxisCount: 3,
                       children: Hat.values.map((hatType) {
-                        final hatSprite = HatSprite(hatType, imageName: "hats-background.png");
+                        final hatSprite = HatSprite(hatType, image: Main.hatsWithBackground);
 
-                        return  FutureBuilder(
-                            future: hatSprite.load(),
-                            builder: (BuildContext context, AsyncSnapshot snapshot) {
-                              if (snapshot.connectionState == ConnectionState.done) {
-                                return  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        _selected = hatType;
-                                      });
-                                    },
-                                    child: Column(
-                                               children: [
-                                                 Flame.util.spriteAsWidget(const Size(90, 80), hatSprite.hatSprite),
-                                                 Label(label: hatSprite.label, fontSize: 14),
-                                               ]
-                                           )
-                                );
-                              }
-
-                              return Label(label: "Loading");
-                            }
+                        return  GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _selected = hatType;
+                              });
+                            },
+                            child: Column(
+                                       children: [
+                                         Flame.util.spriteAsWidget(const Size(90, 80), hatSprite.hatSprite),
+                                         Label(label: hatSprite.label, fontSize: 14),
+                                       ]
+                                   )
                         );
                       }).toList()
                   ))

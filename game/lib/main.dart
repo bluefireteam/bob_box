@@ -1,3 +1,4 @@
+import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
@@ -15,10 +16,24 @@ import 'game_data.dart';
 
 class Main {
   static Game game;
+
+  // Caching these images so we can use this right away on our UI
+  static ui.Image hatsWithBackground;
+  static ui.Image hats;
+  static ui.Image bob;
+  static ui.Image enemies;
 }
 
 void main() async {
   await Flame.audio.load("bob_box.mp3");
+
+  // Hats images cache
+  Main.hatsWithBackground = await Flame.images.load("hats-background.png");
+  Main.hats = await Flame.images.load("hats.png");
+
+  Main.bob = await Flame.images.load("bob.png");
+  Main.enemies = await Flame.images.load("enemies.png");
+
   await Flame.init(fullScreen: true, orientation: DeviceOrientation.portraitUp);
 
   runApp(MaterialApp(

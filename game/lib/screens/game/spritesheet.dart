@@ -1,8 +1,9 @@
+import 'dart:ui';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 
 class SpriteSheet {
-  String imageName;
+  Image image;
   int textureWidth;
   int textureHeight;
   int columns;
@@ -10,10 +11,10 @@ class SpriteSheet {
 
   List<List<Sprite>> _sprites;
 
-  SpriteSheet({ this.imageName, this.textureWidth, this.textureHeight, this.columns, this.rows }) {
+  SpriteSheet({ this.image, this.textureWidth, this.textureHeight, this.columns, this.rows }) {
     _sprites = List.generate(rows, (y) => List.generate(columns, (x) =>
-      Sprite(
-        imageName,
+      Sprite.fromImage(
+        image,
         x: (x * textureWidth).toDouble(),
         y: (y * textureHeight).toDouble(),
         width: textureWidth.toDouble(),
@@ -23,8 +24,4 @@ class SpriteSheet {
   }
 
   Sprite getSprite(int row, int column) => _sprites[row][column];
-
-  Future<void> load() async {
-    await Flame.images.load(imageName);
-  }
 }

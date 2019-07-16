@@ -10,6 +10,8 @@ import 'dart:math';
 import 'spritesheet.dart';
 import 'hats.dart';
 
+import '../../main.dart';
+
 enum BobState {
   NEAR_RIGHT,
   NEAR_LEFT,
@@ -54,7 +56,7 @@ class Player extends PositionComponent {
   Player(this.gameRef, { Hat hat = null }) {
 
     if (hat != null) {
-      _hatSprite = HatSprite(hat);
+      _hatSprite = HatSprite(hat, image: Main.hats);
     }
 
     setByPosition(Position(gameRef.size.width / 2 - 25, gameRef.size.height - 200));
@@ -62,7 +64,7 @@ class Player extends PositionComponent {
     height = 50;
 
     _spriteSheet = SpriteSheet(
-      imageName: "bob.png",
+      image: Main.bob,
       textureWidth: 16,
       textureHeight: 16,
       columns: 6,

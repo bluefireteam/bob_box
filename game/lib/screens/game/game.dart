@@ -8,6 +8,8 @@ import 'hats.dart';
 
 import 'spritesheet.dart';
 
+import '../../main.dart';
+
 class PauseableGame extends BaseGame {
 
   bool paused = false;
@@ -39,7 +41,7 @@ class Game extends PauseableGame {
 
   Game(Size screenSize, int currentCoins, Hat currentHat, this._onBack) {
     enemiesSpritesheet = SpriteSheet(
-      imageName: "enemies.png",
+      image: Main.enemies,
       textureWidth: 16,
       textureHeight: 16,
       columns: 4,

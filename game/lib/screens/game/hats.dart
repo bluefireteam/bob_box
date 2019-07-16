@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'spritesheet.dart';
+import '../../main.dart';
+
 import 'package:flame/sprite.dart';
 
 enum Hat {
@@ -32,9 +34,9 @@ class HatSprite {
 
   Hat _hat;
 
-  HatSprite(this._hat, { String imageName = 'hats.png'}) {
+  HatSprite(this._hat, { Image image }) {
     _spriteSheet = SpriteSheet(
-        imageName: imageName,
+        image: image,
         textureWidth: 48,
         textureHeight: 32,
         rows: 7,
@@ -44,10 +46,6 @@ class HatSprite {
 
   void render(Canvas canvas, double x, double y) {
     hatSprite.renderRect(canvas, Rect.fromLTWH(x - 50, y - 50, 150, 100));
-  }
-
-  Future<void> load() async {
-    return await _spriteSheet.load();
   }
 
   Sprite get rider => _spriteSheet.getSprite(0, 0);
