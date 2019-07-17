@@ -6,11 +6,11 @@ class SoundManager {
   Duration _backgorundDuration;
 
   void init() async {
-    await Flame.audio.load("bob_box.wav");
+    await Flame.audio.load("bob_box_loop.wav");
   }
 
   void startBackgroundMusic() async {
-    _backgroundMusicPlayer = await Flame.audio.loopLongAudio("bob_box.wav");
+    _backgroundMusicPlayer = await Flame.audio.loopLongAudio("bob_box_loop.wav");
   }
 
   void pauseBackgroundMusic() async {
