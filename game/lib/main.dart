@@ -13,6 +13,7 @@ import 'screens/hats_screen.dart';
 import 'ui/background.dart';
 
 import 'game_data.dart';
+import 'sound_manager.dart';
 
 class Main {
   static Game game;
@@ -22,10 +23,89 @@ class Main {
   static ui.Image hats;
   static ui.Image bob;
   static ui.Image enemies;
+
+  static SoundManager soundManager;
+}
+
+class GameWidget extends StatefulWidget {
+  @override
+  _GameWidgetState createState() => _GameWidgetState();
+}
+
+class _GameWidgetState extends State<GameWidget> with WidgetsBindingObserver {
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        home: FutureBuilder(
+            future: Future.wait([
+              GameData.getScore(),
+              GameData.getCoins(),
+            ]),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                int initialBestScore = snapshot.data[0];
+                int initialCoins = snapshot.data[1];
+
+                return Scaffold(body: TitleScreen(initialBestScore: initialBestScore, initialCoins: initialCoins));
+              }
+
+              return Background();
+            }
+        ),
+        routes: {
+          '/hats': (context) {
+            return FutureBuilder(
+                future: Future.wait([
+                  GameData.getCurrentHat(),
+                  GameData.getOwnedHats(),
+                  GameData.getCoins()
+                ]),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    Hat currentHat = snapshot.data[0];
+                    List<Hat> ownedHats = snapshot.data[1];
+                    int currentCoins = snapshot.data[2];
+
+                    return HatsScreen(current: currentHat, owned: ownedHats, currentCoins: currentCoins);
+                  }
+
+                  return Background();
+                }
+
+            );
+          },
+        });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      Main.soundManager.pauseBackgroundMusic();
+    }
+
+    if (state == AppLifecycleState.resumed) {
+      Main.soundManager.resumeBackgroundMusic();
+    }
+  }
+
 }
 
 void main() async {
-  await Flame.audio.load("bob_box.mp3");
+  Main.soundManager = SoundManager();
+  await Main.soundManager.init();
 
   // Hats images cache
   Main.hatsWithBackground = await Flame.images.load("hats-background.png");
@@ -36,47 +116,9 @@ void main() async {
 
   await Flame.init(fullScreen: true, orientation: DeviceOrientation.portraitUp);
 
-  runApp(MaterialApp(
-    home: FutureBuilder(
-        future: Future.wait([
-          GameData.getScore(),
-          GameData.getCoins(),
-        ]),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            int initialBestScore = snapshot.data[0];
-            int initialCoins = snapshot.data[1];
+  runApp(GameWidget());
 
-            return Scaffold(body: TitleScreen(initialBestScore: initialBestScore, initialCoins: initialCoins));
-          }
-
-          return Background();
-        }
-    ),
-    routes: {
-      '/hats': (context) {
-        return FutureBuilder(
-            future: Future.wait([
-              GameData.getCurrentHat(),
-              GameData.getOwnedHats(),
-              GameData.getCoins()
-            ]),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                Hat currentHat = snapshot.data[0];
-                List<Hat> ownedHats = snapshot.data[1];
-                int currentCoins = snapshot.data[2];
-
-                return HatsScreen(current: currentHat, owned: ownedHats, currentCoins: currentCoins);
-              }
-
-              return Background();
-            }
-
-        );
-      },
-    },
-  ));
+  Main.soundManager.startBackgroundMusic();
 
   Flame.util.addGestureRecognizer(TapGestureRecognizer()
     ..onTapDown = (TapDownDetails evt) {
