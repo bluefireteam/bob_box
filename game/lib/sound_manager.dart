@@ -1,25 +1,20 @@
 import 'package:flame/flame.dart';
 import "package:audioplayers/audioplayers.dart";
+import 'package:gapless_audio_loop/gapless_audio_loop.dart';
 
 class SoundManager {
-  AudioPlayer _backgroundMusicPlayer;
-  Duration _backgorundDuration;
+  GaplessAudioLoop _backgroundPlayer;
 
   void init() async {
-    await Flame.audio.load("bob_box_loop.wav");
+    _backgroundPlayer = GaplessAudioLoop();
+    await _backgroundPlayer.load("audio/bob_box_loop.wav");
   }
 
   void startBackgroundMusic() async {
-    _backgroundMusicPlayer = await Flame.audio.loopLongAudio("bob_box_loop.wav");
+    await _backgroundPlayer.play();
   }
 
   void pauseBackgroundMusic() async {
-    if (_backgroundMusicPlayer == null) return;
-    await _backgroundMusicPlayer.pause();
-  }
-
-  void resumeBackgroundMusic() async {
-    if (_backgroundMusicPlayer == null) return;
-    await _backgroundMusicPlayer.resume();
+    await _backgroundPlayer.stop();
   }
 }

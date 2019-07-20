@@ -97,7 +97,7 @@ class _GameWidgetState extends State<GameWidget> with WidgetsBindingObserver {
     }
 
     if (state == AppLifecycleState.resumed) {
-      Main.soundManager.resumeBackgroundMusic();
+      Main.soundManager.startBackgroundMusic();
     }
   }
 
