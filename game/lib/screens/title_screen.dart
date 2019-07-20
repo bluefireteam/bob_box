@@ -53,28 +53,47 @@ class _TitleScreenState extends State<TitleScreen>  {
     }
 
     return Background(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: 50),
-            Image(image: AssetImage("assets/images/title-screen.png")),
-            SizedBox(height: 50),
-            Label(label: "Best score: $bestScore"),
-            Label(label: "Current Coins: $totalCoins"),
-            PrimaryButton(label: "Play", onPress: () {
-              startGame();
-            }),
-            SecondaryButton(label: "Hats", onPress: () {
-              Navigator.pushNamed(context, '/hats');
-            }),
-            SecondaryButton(label: "Support the game", onPress: () {
-            }),
-            SecondaryButton(label: "Credits", onPress: () {
-            }),
-          ],
-        ),
-      )
+      child: Stack(
+              children: <Widget>[
+                Positioned(
+                    top: 5,
+                    right: 0,
+                    child:Image(
+                        image: AssetImage("assets/images/sound-icon-on.png"),
+                        fit: BoxFit.fill,
+                        width: 50,
+                        height: 25
+                    )
+                ),
+                Center(child:
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(height: 10),
+                          Image(
+                              image: AssetImage("assets/images/title-screen.png"),
+                              fit: BoxFit.fill,
+                              width: 400,
+                              height: 270 
+                          ),
+                          SizedBox(height: 50),
+                          Label(label: "Best score: $bestScore"),
+                          Label(label: "Current Coins: $totalCoins"),
+                          PrimaryButton(label: "Play", onPress: () {
+                            startGame();
+                          }),
+                          SecondaryButton(label: "Hats", onPress: () {
+                            Navigator.pushNamed(context, '/hats');
+                          }),
+                          SecondaryButton(label: "Support the game", onPress: () {
+                          }),
+                          SecondaryButton(label: "Credits", onPress: () {
+                          }),
+                        ],
+                    ),
+                ),
+              ]
+          ),
     );
   }
 

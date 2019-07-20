@@ -8,6 +8,7 @@ class Background extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      constraints: BoxConstraints.expand(),
       decoration: BoxDecoration(color: Color(0xFFfff8c0)),
       child: child
     );

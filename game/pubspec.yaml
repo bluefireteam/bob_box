@@ -41,5 +41,7 @@ flutter:
     - assets/images/hats-background.png
 
     - assets/images/title-screen.png
+    - assets/images/sound-icon-on.png
+    - assets/images/sound-icon-off.png
 
     - assets/audio/bob_box_loop.wav

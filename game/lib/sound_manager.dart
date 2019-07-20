@@ -3,6 +3,7 @@ import "package:audioplayers/audioplayers.dart";
 import 'package:gapless_audio_loop/gapless_audio_loop.dart';
 
 class SoundManager {
+  static bool soundEnabled = false;
   GaplessAudioLoop _backgroundPlayer;
 
   void init() async {
@@ -11,10 +12,12 @@ class SoundManager {
   }
 
   void startBackgroundMusic() async {
-    await _backgroundPlayer.play();
+    if (soundEnabled)
+      await _backgroundPlayer.play();
   }
 
   void pauseBackgroundMusic() async {
-    await _backgroundPlayer.stop();
+    if (soundEnabled)
+      await _backgroundPlayer.stop();
   }
 }
