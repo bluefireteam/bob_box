@@ -40,4 +40,6 @@ flutter:
     - assets/images/hats.png
     - assets/images/hats-background.png
 
+    - assets/images/title-screen.png
+
     - assets/audio/bob_box_loop.wav

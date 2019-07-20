@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:flutter/services.dart";
+import "package:flutter/painting.dart";
 import "package:flame/flame.dart";
 
 import "game/game.dart";
@@ -57,7 +57,9 @@ class _TitleScreenState extends State<TitleScreen>  {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: 200),
+            SizedBox(height: 50),
+            Image(image: AssetImage("assets/images/title-screen.png")),
+            SizedBox(height: 50),
             Label(label: "Best score: $bestScore"),
             Label(label: "Current Coins: $totalCoins"),
             PrimaryButton(label: "Play", onPress: () {
