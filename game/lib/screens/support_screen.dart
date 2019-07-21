@@ -32,22 +32,29 @@ class SupportScreen extends StatelessWidget {
                         )
                       ],
                   ),
-                  Center(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Flame.util.animationAsWidget(
-                                Position(240, 200),
-                                FlameAnimation.Animation.sequenced("buy-coffee.png", 4, textureWidth: 48)..stepTime = 0.2,
+                  Expanded(child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Column(
+                                children: <Widget>[
+                                  SizedBox(height: 20),
+                                  Flame.util.animationAsWidget(
+                                      Position(240, 160),
+                                      FlameAnimation.Animation.sequenced("buy-coffee.png", 4, textureWidth: 48)..stepTime = 0.2,
+                                  ),
+                                  Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                                      child: Label(label: "If you enjoy this game, you can support this and our others game development endeavours by buying us a coffee!", textAlign: TextAlign.justify),
+                                  ),
+                                ]
                             ),
-                            Container(
-                                padding: EdgeInsets.all(40),
-                                child: Label(label: "If you enjoy this game, you can support this or our others games by buying us a coffee!", textAlign: TextAlign.justify),
+                            buttons.PrimaryButton(
+                                label: "Buy us a coffee!",
+                                onPress: () {
+                                }
                             ),
-                            
                           ]
-                      )
-                  ),
+                  )),
                 ]
             )
         )
