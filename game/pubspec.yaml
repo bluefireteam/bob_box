@@ -49,6 +49,7 @@ flutter:
 
     # Credits screen
     - assets/images/fire-slime.png
+    - assets/images/fabrisounds-logo.png
 
     # Support screen
     - assets/images/buy-coffee.png
