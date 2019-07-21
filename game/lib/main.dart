@@ -10,6 +10,7 @@ import 'screens/game/hats.dart';
 import 'screens/title_screen.dart';
 import 'screens/hats_screen.dart';
 import 'screens/credits_screen.dart';
+import 'screens/support_screen.dart';
 
 import 'ui/background.dart';
 
@@ -78,6 +79,9 @@ class _GameWidgetState extends State<GameWidget> with WidgetsBindingObserver {
           },
           '/credits': (context) {
             return CreditsScreen();
+          },
+          '/support': (context) {
+            return SupportScreen();
           }
         });
   }

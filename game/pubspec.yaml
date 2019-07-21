@@ -50,6 +50,9 @@ flutter:
     # Credits screen
     - assets/images/fire-slime.png
 
+    # Support screen
+    - assets/images/buy-coffee.png
+
     # Music
     - assets/audio/bob_box_loop.wav
     - assets/audio/bob_box_menu.wav
