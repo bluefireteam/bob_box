@@ -49,6 +49,7 @@ class Hud {
 
 class GameController extends PositionComponent {
   final TextConfig textConfig = TextConfig(color: const Color(0xFF8bd0ba), fontFamily: "PixelIntv", fontSize: 16);
+  final TextConfig backButtonTextConfig = TextConfig(color: const Color(0xFF8bd0ba), fontFamily: "PixelIntv", fontSize: 26);
   final TextConfig pausedTextConfig = TextConfig(color: const Color(0xFF2a2a3a), fontFamily: "PixelIntv", fontSize: 64);
 
   static final Random random = Random();
@@ -80,7 +81,7 @@ class GameController extends PositionComponent {
     _scorePosition = Position(20, 10);
     _coinsPosition = Position(gameRef.size.width - 240, 10);
 
-    _backButtonRect = Rect.fromLTWH(gameRef.size.width - 20, 10, 20, 20);
+    _backButtonRect = Rect.fromLTWH(gameRef.size.width - 30, 6, 20, 20);
     _pauseButtonRect = Rect.fromLTWH(gameRef.size.width - 60, 10, 20, 20);
 
     _backButtonPosition = Position(_backButtonRect.left, _backButtonRect.top);
@@ -158,7 +159,7 @@ class GameController extends PositionComponent {
     textConfig.render(canvas, "Score: $_score", _scorePosition);
     textConfig.render(canvas, "Coins: $_coins", _coinsPosition);
 
-    textConfig.render(canvas, "<", _backButtonPosition);
+    backButtonTextConfig.render(canvas, "<", _backButtonPosition);
     if (gameRef.paused) {
       textConfig.render(canvas, ">", _pauseButtonPosition);
 
