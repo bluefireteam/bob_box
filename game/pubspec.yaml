@@ -14,6 +14,7 @@ dependencies:
   shared_preferences: ^0.5.3+1
   gapless_audio_loop: ^0.0.1
   url_launcher: ^5.1.0
+  vector_math: ^2.0.8
 
 
 dev_dependencies:

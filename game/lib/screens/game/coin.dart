@@ -1,34 +1,67 @@
+import "dart:math";
+import "package:flutter/animation.dart" as FlutterAnimations;
+
 import "package:flame/components/animation_component.dart";
 import "package:flame/animation.dart";
+import "package:flame/position.dart";
+
+import "package:vector_math/vector_math.dart";
 
 import "game.dart";
 
 class CoinComponent extends AnimationComponent {
   static const double COIN_SPEED = 50;
+  static const double COLLECTED_COIN_SPEED = 1000;
+
+  static const double COLLECTION_EASE_DURATION = 1.5;
 
   Game gameRef;
 
+  Position _collectionDestination;
   bool _collected = false;
 
-  CoinComponent(this.gameRef, double x) : super(30.0, 30.0, new Animation.sequenced("coin.png", 4, textureWidth: 8.0, textureHeight: 8.0)..stepTime = 0.2) {
+  double _easeStep = 0;
+
+  CoinComponent(this.gameRef, double x, this._collectionDestination) : super(30.0, 30.0, new Animation.sequenced("coin.png", 4, textureWidth: 8.0, textureHeight: 8.0)..stepTime = 0.2) {
     this.x = x;
-    this.y = -8.0;
+    this.y = -30.0;
   }
 
   @override
   void update(double dt) {
     super.update(dt);
 
-    y += dt * COIN_SPEED;
+    if (!_collected) {
+      y += dt * COIN_SPEED;
 
-    if (toRect().overlaps(gameRef.player.toRect())) {
-      gameRef.controller.increaseCoins();
-      _collected = true;
+      if (toRect().overlaps(gameRef.player.toRect())) {
+        gameRef.controller.increaseCoins();
+        _collected = true;
+      }
+    } else {
+      // Move it to the collection destination
+      final location = Vector2(x, y);
+      final destination = Vector2(_collectionDestination.x, _collectionDestination.y);
+
+      final desired = destination.clone();
+      desired.sub(location);
+      desired.normalize();
+
+      _easeStep = min(COLLECTION_EASE_DURATION, _easeStep + dt);
+      final percent = (_easeStep / COLLECTION_EASE_DURATION);
+
+      final curve = FlutterAnimations.Curves.easeIn.transformInternal(percent);
+
+      final s = (COLLECTED_COIN_SPEED * curve) * dt;
+      x += desired.x * s;
+      y += desired.y * s;
     }
   }
 
   @override
   bool destroy() {
-    return _collected || y >= gameRef.size.height;
+    final destroyed = (_collected && y <= _collectionDestination.y) || y >= gameRef.size.height;
+
+    return destroyed;
   }
 }

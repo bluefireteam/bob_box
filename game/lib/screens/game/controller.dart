@@ -106,7 +106,8 @@ class GameController extends PositionComponent {
       if (random.nextDouble() >= 0.6) {
         gameRef.add(CoinComponent(
           gameRef,
-          random.nextInt((gameRef.size.width - 8).toInt()).toDouble(),
+          random.nextInt((gameRef.size.width - 15).toInt()).toDouble(),
+          _coinsPosition,
         ));
       }
     });
