@@ -4,32 +4,56 @@ import 'package:gapless_audio_loop/gapless_audio_loop.dart';
 
 class SoundManager {
   bool soundsEnabled = false;
-  GaplessAudioLoop _backgroundPlayer;
+  GaplessAudioLoop _loopPlayer;
+  GaplessAudioLoop _menuPlayer;
+
+  GaplessAudioLoop _lastPlayer;
 
   void init(bool soundsEnabled) async {
     this.soundsEnabled = soundsEnabled;
 
-    _backgroundPlayer = GaplessAudioLoop();
-    await _backgroundPlayer.load("audio/bob_box_loop.wav");
+    _loopPlayer = GaplessAudioLoop();
+    await _loopPlayer.load("audio/bob_box_loop.wav");
+
+    _menuPlayer = GaplessAudioLoop();
+    await _menuPlayer.load("audio/bob_box_menu.wav");
   }
 
   void toggleSoundsEnabled() {
     soundsEnabled = !soundsEnabled;
 
-    if (!soundsEnabled && _backgroundPlayer != null) {
-      _backgroundPlayer.stop();
+    if (!soundsEnabled && _loopPlayer != null) {
+      pauseBackgroundMusic();
     } else {
-      _backgroundPlayer.play();
+      resumeBackgroundMusic();
     }
   }
 
-  void startBackgroundMusic() async {
+  void playLoop() async {
+    pauseBackgroundMusic();
+
+    _lastPlayer = _loopPlayer;
+
     if (soundsEnabled)
-      await _backgroundPlayer.play();
+      await _loopPlayer.play();
+  }
+
+  void playMenu() async {
+    pauseBackgroundMusic();
+
+    _lastPlayer = _menuPlayer;
+
+    if (soundsEnabled)
+      await _menuPlayer.play();
+  }
+
+  void resumeBackgroundMusic() async {
+    if (soundsEnabled) 
+      await _lastPlayer.play();
   }
 
   void pauseBackgroundMusic() async {
     if (soundsEnabled)
-      await _backgroundPlayer.stop();
+      await _lastPlayer.stop();
   }
 }

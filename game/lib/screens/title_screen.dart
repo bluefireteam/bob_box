@@ -110,7 +110,9 @@ class _TitleScreenState extends State<TitleScreen>  {
     final initialCoins = await GameData.getCoins();
     final currentHat = await GameData.getCurrentHat();
 
+    Main.soundManager.playLoop();
     Main.game = Game(size, initialCoins, currentHat, () {
+      Main.soundManager.playMenu();
       onBack();
     });
     setState(() {});

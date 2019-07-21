@@ -97,7 +97,7 @@ class _GameWidgetState extends State<GameWidget> with WidgetsBindingObserver {
     }
 
     if (state == AppLifecycleState.resumed) {
-      Main.soundManager.startBackgroundMusic();
+      Main.soundManager.resumeBackgroundMusic();
     }
   }
 
@@ -120,7 +120,7 @@ void main() async {
 
   runApp(GameWidget());
 
-  Main.soundManager.startBackgroundMusic();
+  Main.soundManager.playMenu();
 
   Flame.util.addGestureRecognizer(TapGestureRecognizer()
     ..onTapDown = (TapDownDetails evt) {

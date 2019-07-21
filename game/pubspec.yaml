@@ -45,3 +45,4 @@ flutter:
     - assets/images/sound-icon-off.png
 
     - assets/audio/bob_box_loop.wav
+    - assets/audio/bob_box_menu.wav
