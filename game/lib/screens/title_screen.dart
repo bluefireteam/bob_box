@@ -58,11 +58,19 @@ class _TitleScreenState extends State<TitleScreen>  {
                 Positioned(
                     top: 5,
                     right: 0,
-                    child:Image(
-                        image: AssetImage("assets/images/sound-icon-on.png"),
-                        fit: BoxFit.fill,
-                        width: 50,
-                        height: 25
+                    child: GestureDetector(
+                        child: Image(
+                            image: AssetImage("assets/images/sound-icon-${Main.soundManager.soundsEnabled ? "on" : "off"}.png"),
+                            fit: BoxFit.fill,
+                            width: 50,
+                            height: 25
+                        ),
+                        onTap: () {
+                          Main.soundManager.toggleSoundsEnabled();
+                          GameData.setSoundsEnabled(Main.soundManager.soundsEnabled);
+                          // Redraw
+                          setState(() {});
+                        }
                     )
                 ),
                 Center(child:
@@ -74,7 +82,7 @@ class _TitleScreenState extends State<TitleScreen>  {
                               image: AssetImage("assets/images/title-screen.png"),
                               fit: BoxFit.fill,
                               width: 400,
-                              height: 270 
+                              height: 270
                           ),
                           SizedBox(height: 50),
                           Label(label: "Best score: $bestScore"),

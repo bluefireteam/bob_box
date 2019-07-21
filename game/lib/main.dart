@@ -105,7 +105,9 @@ class _GameWidgetState extends State<GameWidget> with WidgetsBindingObserver {
 
 void main() async {
   Main.soundManager = SoundManager();
-  await Main.soundManager.init();
+
+  bool soundsEnabled = await GameData.isSoundsEnabled();
+  await Main.soundManager.init(soundsEnabled);
 
   // Hats images cache
   Main.hatsWithBackground = await Flame.images.load("hats-background.png");

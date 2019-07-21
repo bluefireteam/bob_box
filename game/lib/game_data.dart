@@ -60,4 +60,19 @@ class GameData {
   }
 
   static Hat _hatFromString(String hatString) => Hat.values.firstWhere((hat) => hat.toString() == hatString);
+
+
+  static Future<bool> isSoundsEnabled() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool soundsEnabled = prefs.getBool("soundsEnabled");
+
+    if (soundsEnabled == null) return true;
+
+    return soundsEnabled;
+  }
+
+  static Future<void> setSoundsEnabled(bool soundsEnabled) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("soundsEnabled", soundsEnabled);
+  }
 }
