@@ -103,9 +103,9 @@ class _HatsScreenState extends State<HatsScreen> {
                       child: Preview(const Size(300, 150), selected).widget,
                   ),
 
-                  SizedBox(height: 50),
+                  SizedBox(height: 80),
 
-                  Center(child: selected == null
+                  SizedBox(height: 50, child: Center(child: selected == null
                     ? Label(label: "No hat selected")
                     : owned.contains(selected)
                       ? selected == current
@@ -114,7 +114,7 @@ class _HatsScreenState extends State<HatsScreen> {
                       :  currentCoins >= price
                         ? buttons.PrimaryButton(label: "Buy", onPress: () { _buyHat(); })
                         : Label(label: "Not enough coins")
-                  ),
+                  )),
                   SizedBox(height: 15),
 
                   Container(
