@@ -22,7 +22,7 @@ class SoundManager {
   void toggleSoundsEnabled() {
     soundsEnabled = !soundsEnabled;
 
-    if (!soundsEnabled && _loopPlayer != null) {
+    if (!soundsEnabled) {
       pauseBackgroundMusic();
     } else {
       resumeBackgroundMusic();
@@ -53,7 +53,7 @@ class SoundManager {
   }
 
   void pauseBackgroundMusic() async {
-    if (soundsEnabled)
+    if (_lastPlayer != null)
       await _lastPlayer.stop();
   }
 }
