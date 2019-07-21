@@ -13,6 +13,7 @@ dependencies:
     path: ../../flame
   shared_preferences: ^0.5.3+1
   gapless_audio_loop: ^0.0.1
+  url_launcher: ^5.1.0
 
 
 dev_dependencies:
@@ -32,6 +33,7 @@ flutter:
       fonts:
         - asset: assets/PixelIntv.otf
   assets:
+    # Gameplay
     - assets/images/bob.png
     - assets/images/background-texture.png
     - assets/images/enemies.png
@@ -40,9 +42,14 @@ flutter:
     - assets/images/hats.png
     - assets/images/hats-background.png
 
+    # Title screen
     - assets/images/title-screen.png
     - assets/images/sound-icon-on.png
     - assets/images/sound-icon-off.png
 
+    # Credits screen
+    - assets/images/fire-slime.png
+
+    # Music
     - assets/audio/bob_box_loop.wav
     - assets/audio/bob_box_menu.wav

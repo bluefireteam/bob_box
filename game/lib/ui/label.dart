@@ -4,8 +4,9 @@ class Label extends StatelessWidget {
 
   final String label;
   final double fontSize;
+  final Color fontColor;
 
-  Label({ this.label, this.fontSize = 20 });
+  Label({ this.label, this.fontSize = 20, this.fontColor = const Color(0xFF38607c)});
 
   Widget build(BuildContext context) {
     return Text(
@@ -13,7 +14,7 @@ class Label extends StatelessWidget {
         style: TextStyle(
             fontSize: fontSize,
             fontFamily: "PixelIntv",
-            color: Color(0xFF38607c)
+            color: fontColor,
         )
     );
   }

@@ -96,6 +96,7 @@ class _TitleScreenState extends State<TitleScreen>  {
                           SecondaryButton(label: "Support the game", onPress: () {
                           }),
                           SecondaryButton(label: "Credits", onPress: () {
+                            Navigator.pushNamed(context, '/credits');
                           }),
                         ],
                     ),
