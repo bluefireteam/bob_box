@@ -33,25 +33,31 @@ class CreditsScreen extends StatelessWidget {
                       child: Column(
                           children: [
                             // Fireslime
-                            SizedBox(height: 50),
+                            SizedBox(height: 30),
                             Image(
                                 image: AssetImage("assets/images/fire-slime.png"),
                                 fit: BoxFit.fill,
-                                width: 300,
+                                width: 250,
                             ),
                             SizedBox(height: 10),
-                            Label(label: "Game developed by Fireslime"),
+                            Container(
+                                padding: EdgeInsets.symmetric(horizontal: 40),
+                                child: Label(label: "Game developed by Fireslime", textAlign: TextAlign.justify),
+                            ),
                             Link(link: "https://fireslime.xyz"),
 
                             // Fabri sounds
-                            SizedBox(height: 50),
+                            SizedBox(height: 30),
                             Image(
                                 image: AssetImage("assets/images/fabrisounds-logo.png"),
                                 fit: BoxFit.fill,
-                                width: 300,
+                                width: 250,
                             ),
                             SizedBox(height: 10),
-                            Label(label: "Music composed by Fabri Sounds"),
+                            Container(
+                                padding: EdgeInsets.symmetric(horizontal: 40),
+                                child: Label(label: "Music composed by Fabri Sounds", textAlign: TextAlign.justify),
+                            ),
                             Link(link: "https://tiny.cc/fabri"),
                           ]
                       )
