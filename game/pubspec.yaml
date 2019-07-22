@@ -41,6 +41,9 @@ flutter:
     - assets/images/coin.png
     - assets/images/hud.png
     - assets/images/hats.png
+    - assets/images/enemy-death.png
+
+    # Hats screen
     - assets/images/hats-background.png
 
     # Title screen
