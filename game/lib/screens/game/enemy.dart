@@ -21,10 +21,16 @@ class Enemy extends PositionComponent {
     _sprite = gameRef.enemiesSpritesheet.getSprite(0, random.nextInt(4));
   }
 
-  AnimationComponent _createDeathAnimation() {
+  AnimationComponent _createBottomDeathAnimation() {
     return AnimationComponent.sequenced(50.0, 200.0, "enemy-death.png", 4, textureWidth: 16.0, textureHeight: 64.0, destroyOnFinish: true)
         ..x = x
         ..y = gameRef.size.height - 200;
+  }
+
+  AnimationComponent _createPoofDeathAnimation() {
+    return AnimationComponent.sequenced(200.0, 200.0, "enemy-death-poof.png", 4, textureWidth: 32.0, textureHeight: 32.0, destroyOnFinish: true)
+        ..x = x - 50
+        ..y = y - 50;
   }
 
   @override
@@ -36,11 +42,12 @@ class Enemy extends PositionComponent {
       gameRef.controller.resetScore();
 
       _hittedPlayer = true;
+      gameRef.add(_createPoofDeathAnimation());
     }
 
     // We only add score when the enemy has died by reaching the bottom of the screen
     if (!_hittedPlayer && destroy()) {
-      gameRef.add(_createDeathAnimation());
+      gameRef.add(_createBottomDeathAnimation());
       gameRef.controller.increaseScore();
     }
   }
