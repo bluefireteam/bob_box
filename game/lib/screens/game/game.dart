@@ -33,12 +33,6 @@ class Game extends PauseableGame {
   // instantiate another instance upon enemy creation.
   SpriteSheet enemiesSpritesheet;
 
-  static const INITIAL_ENEMY_SPEED = 100;
-  static const ENEMY_SPEED_STEP = 20;
-  static const MAX_ENEMY_SPEED = 600;
-
-  int currentEnemySpeed = INITIAL_ENEMY_SPEED;
-
   Game(Size screenSize, int currentCoins, Hat currentHat, this._onBack) {
     enemiesSpritesheet = SpriteSheet(
       image: Main.enemies,

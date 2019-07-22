@@ -11,6 +11,7 @@ import 'dart:math';
 import '../../game_data.dart';
 
 import 'enemy.dart';
+import 'enemy_creator.dart';
 import 'coin.dart';
 import 'game.dart';
 
@@ -47,6 +48,7 @@ class Hud {
   }
 }
 
+
 class GameController extends PositionComponent {
   final TextConfig textConfig = TextConfig(color: const Color(0xFF8bd0ba), fontFamily: "PixelIntv", fontSize: 16);
   final TextConfig backButtonTextConfig = TextConfig(color: const Color(0xFF8bd0ba), fontFamily: "PixelIntv", fontSize: 26);
@@ -67,9 +69,8 @@ class GameController extends PositionComponent {
 
   Position _pauseTextPosition;
 
-  Timer enemyCreator;
-  Timer enemySpeedIncreaser;
-
+  List<EnemyCreator> enemyCreators = [];
+  List<EnemyCreator> enemyCreatorsToAdd = [];
   Timer coinCreator;
 
   Hud _hud;
@@ -90,18 +91,6 @@ class GameController extends PositionComponent {
     final o = Offset(gameRef.size.width / 2, gameRef.size.height / 2);
     _pauseTextPosition = Position(o.dx, o.dy);
 
-    enemyCreator = Timer(2.5, repeat: true, callback: () {
-      final enemy = Enemy(gameRef);
-      enemy.setByPosition(Position(random.nextInt(gameRef.size.width.toInt() - enemy.width.toInt()).toDouble(), enemy.height * -1));
-      gameRef.add(enemy);
-    });
-    enemyCreator.start();
-
-    enemySpeedIncreaser = Timer(5, repeat: true, callback: () {
-      gameRef.currentEnemySpeed = min(gameRef.currentEnemySpeed + Game.ENEMY_SPEED_STEP, Game.MAX_ENEMY_SPEED);
-    });
-    enemySpeedIncreaser.start();
-
     coinCreator = Timer(4, repeat: true, callback: () {
       if (random.nextDouble() >= 0.6) {
         gameRef.add(CoinComponent(
@@ -111,6 +100,8 @@ class GameController extends PositionComponent {
         ));
       }
     });
+
+    enemyCreators.add(EnemyCreator(gameRef, this));
     coinCreator.start();
 
     _hud = Hud(gameRef.size.width);
@@ -132,13 +123,21 @@ class GameController extends PositionComponent {
 
   @override
   void update(double dt) {
-    enemyCreator.update(dt);
-    enemySpeedIncreaser.update(dt);
+    enemyCreators.forEach((creator) {
+      creator.update(dt);
+    });
+
+    if (enemyCreatorsToAdd.length > 0) {
+      enemyCreators.addAll(enemyCreatorsToAdd);
+      enemyCreatorsToAdd.clear();
+    }
+
     coinCreator.update(dt);
   }
 
   void resetScore() {
-    gameRef.currentEnemySpeed = Game.INITIAL_ENEMY_SPEED;
+    enemyCreators.clear();
+    enemyCreators.add(EnemyCreator(gameRef, this));
 
     _score = 0;
   }

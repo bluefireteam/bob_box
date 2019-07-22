@@ -4,15 +4,17 @@ import 'dart:ui';
 import 'dart:math';
 
 import 'game.dart';
+import 'enemy_creator.dart';
 
 class Enemy extends PositionComponent {
   bool _hittedPlayer = false;
   final Game gameRef;
+  final EnemyCreator _enemyCreator;
 
   Sprite _sprite;
   static final Random random = Random();
 
-  Enemy(this.gameRef) {
+  Enemy(this.gameRef, this._enemyCreator) {
     width = height = 50;
 
     _sprite = gameRef.enemiesSpritesheet.getSprite(0, random.nextInt(4));
@@ -20,7 +22,7 @@ class Enemy extends PositionComponent {
 
   @override
   void update(double dt) {
-    y += gameRef.currentEnemySpeed * dt;
+    y += _enemyCreator.currentEnemySpeed * dt;
 
     if (toRect().overlaps(gameRef.player.toRect())) {
       gameRef.player.hurt();
