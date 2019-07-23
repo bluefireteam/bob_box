@@ -43,6 +43,7 @@ flutter:
     - assets/images/hats.png
     - assets/images/enemy-death.png
     - assets/images/enemy-death-poof.png
+    - assets/images/pick-ups.png
 
     # Hats screen
     - assets/images/hats-background.png

@@ -13,6 +13,7 @@ import '../../game_data.dart';
 import 'enemy.dart';
 import 'enemy_creator.dart';
 import 'coin.dart';
+import 'pick_ups_handler.dart';
 import 'game.dart';
 
 class Hud {
@@ -48,7 +49,6 @@ class Hud {
   }
 }
 
-
 class GameController extends PositionComponent {
   final TextConfig textConfig = TextConfig(color: const Color(0xFF8bd0ba), fontFamily: "PixelIntv", fontSize: 16);
   final TextConfig backButtonTextConfig = TextConfig(color: const Color(0xFF8bd0ba), fontFamily: "PixelIntv", fontSize: 26);
@@ -61,6 +61,8 @@ class GameController extends PositionComponent {
   Position _scorePosition;
   Position _coinsPosition;
 
+  Position get coinsCollectionDestination => _coinsPosition;
+
   Position _pauseButtonPosition;
   Position _backButtonPosition;
 
@@ -69,6 +71,7 @@ class GameController extends PositionComponent {
 
   Position _pauseTextPosition;
 
+  PickUpsHandler _pickUpsHandler;
   List<EnemyCreator> enemyCreators = [];
   List<EnemyCreator> enemyCreatorsToAdd = [];
   Timer coinCreator;
@@ -96,7 +99,6 @@ class GameController extends PositionComponent {
         gameRef.add(CoinComponent(
           gameRef,
           random.nextInt((gameRef.size.width - 15).toInt()).toDouble(),
-          _coinsPosition,
         ));
       }
     });
@@ -104,6 +106,7 @@ class GameController extends PositionComponent {
     enemyCreators.add(EnemyCreator(gameRef, this));
     coinCreator.start();
 
+    _pickUpsHandler = PickUpsHandler(gameRef);
     _hud = Hud(gameRef.size.width);
   }
 
@@ -123,6 +126,7 @@ class GameController extends PositionComponent {
 
   @override
   void update(double dt) {
+    _pickUpsHandler.update(dt);
     enemyCreators.forEach((creator) {
       creator.update(dt);
     });
@@ -161,6 +165,7 @@ class GameController extends PositionComponent {
 
     backButtonTextConfig.render(canvas, "<", _backButtonPosition);
     if (gameRef.paused) {
+      // TODO this is not equals the back button font size
       textConfig.render(canvas, ">", _pauseButtonPosition);
 
       pausedTextConfig.render(canvas, "Paused", _pauseTextPosition, anchor: Anchor.center);
