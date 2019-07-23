@@ -18,9 +18,11 @@ class PickUpsHandler {
       if (random.nextDouble() <= 0.4) {
         final r = random.nextDouble();
 
+        // TODO plan better the percentage of each pick up
         if (r <= 0.2) {
-          final nugget = GoldNuggetComponent(_gameRef);
-          _gameRef.add(nugget);
+          _gameRef.add(GoldNuggetComponent(_gameRef));
+        } else if (r <= 0.4) {
+          _gameRef.add(MagnetComponent(_gameRef));
         }
       }
     });
@@ -30,26 +32,25 @@ class PickUpsHandler {
   void update(double dt) {
     _pickUpCreatorTimer.update(dt);
   }
-
-  void _createGoldNuggetPickUp() {
-  }
 }
 
-class GoldNuggetComponent extends SpriteComponent {
-  static double COINS_AMMOUNT = 5;
+abstract class PickupComponent extends SpriteComponent {
   static const double SPEED = 150;
 
   bool _collected = false;
 
   final Game _gameRef;
 
-  GoldNuggetComponent(this._gameRef) {
-    sprite = Sprite("pick-ups.png", width: 16, height: 16);
+  PickupComponent(this._gameRef) {
+    sprite = Sprite("pick-ups.png", width: 16, height: 16, x: _textureX());
     width = 50;
     height = 50;
     y = -50;
     x = (_gameRef.size.width * random.nextDouble()) - 50;
   }
+
+  double _textureX() => 0.0;
+  void _onPickup();
 
   @override
   void update(double dt) {
@@ -60,24 +61,44 @@ class GoldNuggetComponent extends SpriteComponent {
     if (toRect().overlaps(_gameRef.player.toRect())) {
       _collected = true;
 
-      final double factor = _gameRef.size.width / COINS_AMMOUNT;
-
-      for (var y = 0; y < COINS_AMMOUNT; y++) {
-        for (var x = 0; x < COINS_AMMOUNT; x++) {
-          _gameRef.add(
-              CoinComponent(
-                  _gameRef,
-                  (x * factor) + (factor * random.nextDouble()),
-                  y: (y * factor) + (factor * random.nextDouble()),
-              )
-          );
-        }
-      }
+      _onPickup();
     }
   }
 
   @override
   bool destroy() {
     return _collected || y >= _gameRef.size.height;
+  }
+}
+
+class MagnetComponent extends PickupComponent {
+  MagnetComponent(Game gameRef): super(gameRef);
+
+  double _textureX() => 16.0;
+
+  void _onPickup() {
+  }
+}
+
+class GoldNuggetComponent extends PickupComponent {
+  static double COINS_AMMOUNT = 5;
+
+  GoldNuggetComponent(Game gameRef): super(gameRef); 
+
+  @override
+  void _onPickup() {
+    final double factor = _gameRef.size.width / COINS_AMMOUNT;
+
+    for (var y = 0; y < COINS_AMMOUNT; y++) {
+      for (var x = 0; x < COINS_AMMOUNT; x++) {
+        _gameRef.add(
+            CoinComponent(
+                _gameRef,
+                (x * factor) + (factor * random.nextDouble()),
+                y: (y * factor) + (factor * random.nextDouble()),
+            )
+        );
+      }
+    }
   }
 }
