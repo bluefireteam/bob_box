@@ -20,6 +20,8 @@ class CoinComponent extends AnimationComponent {
   Position _collectionDestination;
   bool _collected = false;
 
+  bool removed = false;
+
   double _easeStep = 0;
 
   CoinComponent(this.gameRef, double x, { y = -30.0 }) : super(30.0, 30.0, new Animation.sequenced("coin.png", 4, textureWidth: 8.0, textureHeight: 8.0)..stepTime = 0.2) {
@@ -62,8 +64,6 @@ class CoinComponent extends AnimationComponent {
 
   @override
   bool destroy() {
-    final destroyed = (_collected && y <= _collectionDestination.y) || y >= gameRef.size.height;
-
-    return destroyed;
+    return (_collected && y <= _collectionDestination.y) || y >= gameRef.size.height || removed;
   }
 }

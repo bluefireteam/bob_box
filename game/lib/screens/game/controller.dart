@@ -144,6 +144,13 @@ class GameController extends PositionComponent {
     enemyCreators.add(EnemyCreator(gameRef, this));
 
     _score = 0;
+
+    // Remove the current coins
+    gameRef.components.forEach((c) {
+      if (c is CoinComponent) {
+        (c as CoinComponent).removed = true;
+      }
+    });
   }
 
   void increaseScore() {
