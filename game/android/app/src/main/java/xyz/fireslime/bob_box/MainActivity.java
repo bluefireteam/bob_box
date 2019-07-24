@@ -1,4 +1,4 @@
-package com.example.bounce_box;
+package xyz.fireslime.bob_box;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
