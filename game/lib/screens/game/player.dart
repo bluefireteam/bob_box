@@ -3,12 +3,14 @@ import 'package:flame/components/component.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame/time.dart';
-import 'package:flame/game.dart';
+import 'package:flame/game.dart' as FlameGame;
 import 'dart:ui';
 import 'dart:math';
 
 import 'spritesheet.dart';
 import 'hats.dart';
+import 'game.dart';
+import 'pick_ups_handler.dart';
 
 import '../../main.dart';
 
@@ -32,6 +34,7 @@ class ResumeableTimer extends Timer {
 
 class Player extends PositionComponent {
   static const PLAYER_SPEED = 200;
+  static const COFFEE_PLAYER_SPEED = 400;
   static const NEAR_MARGIN = 80;
 
   static double HOLDING_LIMIT = 3;
@@ -41,7 +44,7 @@ class Player extends PositionComponent {
   bool _playerMoving = true;
   int _playerDirection = 1;
 
-  final BaseGame gameRef;
+  final FlameGame.BaseGame gameRef;
 
   HatSprite _hatSprite;
 
@@ -109,6 +112,8 @@ class Player extends PositionComponent {
   Sprite get hit => _spriteSheet.getSprite(0, 4);
   Sprite get beenHold => _spriteSheet.getSprite(0, 5);
 
+  bool _hasCoffee() => gameRef is Game && (gameRef as Game).controller.powerUp == PowerUp.COFFEE;
+
   @override
   void update(double dt) {
     _resetStateTimer.update(dt);
@@ -119,7 +124,7 @@ class Player extends PositionComponent {
     }
 
     if (_playerMoving) {
-      x += PLAYER_SPEED * dt * _playerDirection;
+      x += (_hasCoffee() ? COFFEE_PLAYER_SPEED : PLAYER_SPEED) * dt * _playerDirection;
 
       final rect = toRect();
       if (rect.left <= 0) {

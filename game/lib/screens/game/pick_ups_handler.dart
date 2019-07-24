@@ -23,7 +23,10 @@ class PickUpsHandler {
         // TODO plan better the percentage of each pick up
         if (r <= 0.2) {
           _gameRef.add(GoldNuggetComponent(_gameRef));
-        } else if (r <= 0.4 && _gameRef.controller.powerUp == null) {
+        //} else if (r <= 0.2 && _gameRef.controller.powerUp == null) {
+        } else if (r <= 1 && _gameRef.controller.powerUp == null) {
+          _gameRef.add(CoffeeComponent(_gameRef));
+        } else if (r <= 0.6 && _gameRef.controller.powerUp == null) {
           _gameRef.add(MagnetComponent(_gameRef));
         }
       }
@@ -75,20 +78,7 @@ abstract class PickupComponent extends SpriteComponent {
 
 enum PowerUp {
   MAGNET,
-}
-
-class MagnetComponent extends PickupComponent {
-  MagnetComponent(Game gameRef): super(gameRef);
-
-  double _textureX() => 16.0;
-
-  void _onPickup() {
-    gameRef.controller.powerUpTimer = Timer(120)..start();
-    gameRef.controller.powerUpSprite = sprite;
-    gameRef.controller.powerUpSpriteRect = Rect.fromLTWH(gameRef.size.width - 60, 50, 50, 50);
-    gameRef.controller.powerUpTimerTextPosition = Position(gameRef.size.width - 100, 70);
-    gameRef.controller.powerUp = PowerUp.MAGNET;
-  }
+  COFFEE,
 }
 
 class GoldNuggetComponent extends PickupComponent {
@@ -113,3 +103,39 @@ class GoldNuggetComponent extends PickupComponent {
     }
   }
 }
+
+abstract class HoldeablePickupComponent extends PickupComponent {
+  HoldeablePickupComponent(Game gameRef): super(gameRef);
+
+  double _time();
+  PowerUp _powerUp();
+
+  void _onPickup() {
+    gameRef.controller.powerUpTimer = Timer(_time())..start();
+    gameRef.controller.powerUpSprite = sprite;
+    gameRef.controller.powerUpSpriteRect = Rect.fromLTWH(gameRef.size.width - 60, 50, 50, 55);
+    gameRef.controller.powerUpTimerTextPosition = Position(gameRef.size.width - 100, 75);
+    gameRef.controller.powerUp = _powerUp();
+  }
+}
+
+class MagnetComponent extends HoldeablePickupComponent {
+  MagnetComponent(Game gameRef): super(gameRef);
+
+  double _textureX() => 16.0;
+
+  double _time() => 120;
+
+  PowerUp _powerUp() => PowerUp.MAGNET;
+}
+
+class CoffeeComponent extends HoldeablePickupComponent {
+  CoffeeComponent(Game gameRef): super(gameRef);
+
+  double _textureX() => 32.0;
+
+  double _time() => 15.0;
+
+  PowerUp _powerUp() => PowerUp.COFFEE;
+}
+
