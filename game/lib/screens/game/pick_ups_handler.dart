@@ -23,8 +23,7 @@ class PickUpsHandler {
         // TODO plan better the percentage of each pick up
         if (r <= 0.2) {
           _gameRef.add(GoldNuggetComponent(_gameRef));
-        //} else if (r <= 0.2 && _gameRef.controller.powerUp == null) {
-        } else if (r <= 1 && _gameRef.controller.powerUp == null) {
+        } else if (r <= 0.2 && _gameRef.controller.powerUp == null) {
           _gameRef.add(CoffeeComponent(_gameRef));
         } else if (r <= 0.6 && _gameRef.controller.powerUp == null) {
           _gameRef.add(MagnetComponent(_gameRef));
