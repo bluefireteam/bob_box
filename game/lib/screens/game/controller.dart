@@ -51,6 +51,8 @@ class Hud {
 
 class GameController extends PositionComponent {
   final TextConfig textConfig = TextConfig(color: const Color(0xFF8bd0ba), fontFamily: "PixelIntv", fontSize: 16);
+  final TextConfig textConfigDark = TextConfig(color: const Color(0xFF38607c), fontFamily: "PixelIntv", fontSize: 16);
+
   final TextConfig backButtonTextConfig = TextConfig(color: const Color(0xFF8bd0ba), fontFamily: "PixelIntv", fontSize: 26);
   final TextConfig pausedTextConfig = TextConfig(color: const Color(0xFF2a2a3a), fontFamily: "PixelIntv", fontSize: 64);
 
@@ -76,6 +78,13 @@ class GameController extends PositionComponent {
   List<EnemyCreator> enemyCreatorsToAdd = [];
   Timer coinCreator;
 
+  Timer powerUpTimer;
+  PowerUp powerUp;
+  Sprite powerUpSprite;
+
+  Position powerUpTimerTextPosition;
+  Rect powerUpSpriteRect;
+
   Hud _hud;
 
   int _score = 0;
@@ -95,11 +104,13 @@ class GameController extends PositionComponent {
     _pauseTextPosition = Position(o.dx, o.dy);
 
     coinCreator = Timer(4, repeat: true, callback: () {
-      if (random.nextDouble() >= 0.6) {
-        gameRef.add(CoinComponent(
-          gameRef,
-          random.nextInt((gameRef.size.width - 15).toInt()).toDouble(),
-        ));
+      for (var i = 0; i < 3; i++) {
+        if (random.nextDouble() >= 0.6) {
+          gameRef.add(CoinComponent(
+                  gameRef,
+                  random.nextInt((gameRef.size.width - 15).toInt()).toDouble(),
+          ));
+        }
       }
     });
 
@@ -127,6 +138,17 @@ class GameController extends PositionComponent {
   @override
   void update(double dt) {
     _pickUpsHandler.update(dt);
+
+    if (powerUpTimer != null) {
+      powerUpTimer.update(dt);
+      if (powerUpTimer.isFinished()) {
+        powerUp = null;
+        powerUpTimer = null;
+        powerUpSprite = null;
+        powerUpSpriteRect = null;
+      }
+    }
+
     enemyCreators.forEach((creator) {
       creator.update(dt);
     });
@@ -169,6 +191,11 @@ class GameController extends PositionComponent {
 
     textConfig.render(canvas, "Score: $_score", _scorePosition);
     textConfig.render(canvas, "Coins: $_coins", _coinsPosition);
+
+    if (powerUpTimer != null) {
+      textConfigDark.render(canvas, "${((1 - powerUpTimer.progress) * 100).toInt()}%", powerUpTimerTextPosition);
+      powerUpSprite.renderRect(canvas, powerUpSpriteRect);
+    }
 
     backButtonTextConfig.render(canvas, "<", _backButtonPosition);
     if (gameRef.paused) {

@@ -8,9 +8,11 @@ import "package:flame/position.dart";
 import "package:vector_math/vector_math.dart";
 
 import "game.dart";
+import "pick_ups_handler.dart";
 
 class CoinComponent extends AnimationComponent {
   static const double COIN_SPEED = 50;
+  static const double MAGNET_COIN_SPEED = 500;
   static const double COLLECTED_COIN_SPEED = 1000;
 
   static const double COLLECTION_EASE_DURATION = 1.5;
@@ -36,7 +38,20 @@ class CoinComponent extends AnimationComponent {
     super.update(dt);
 
     if (!_collected) {
-      y += dt * COIN_SPEED;
+      if (gameRef.controller.powerUp == PowerUp.MAGNET && (gameRef.player.y - y) <= 300) {
+        final location = Vector2(x, y);
+        final destination = Vector2(gameRef.player.x, gameRef.player.y);
+
+        final desired = destination.clone();
+        desired.sub(location);
+        desired.normalize();
+
+        final s = MAGNET_COIN_SPEED * dt;
+        x += desired.x * s;
+        y += desired.y * s;
+      } else {
+        y += dt * COIN_SPEED;
+      }
 
       if (toRect().overlaps(gameRef.player.toRect())) {
         gameRef.controller.increaseCoins();

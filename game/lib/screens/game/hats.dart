@@ -27,6 +27,7 @@ enum Hat {
   GRADUATE,
   CHEF,
   PIRATE_CAPTAIN,
+  ASSASSIN,
 }
 
 class HatSprite {
@@ -40,7 +41,7 @@ class HatSprite {
         textureWidth: 48,
         textureHeight: 32,
         rows: 7,
-        columns: 3
+        columns: 4
     );
   }
 
@@ -71,6 +72,8 @@ class HatSprite {
   Sprite get graduate => _spriteSheet.getSprite(4, 2);
   Sprite get chef => _spriteSheet.getSprite(5, 2);
   Sprite get pirateCaptain => _spriteSheet.getSprite(6, 2);
+
+  Sprite get assassin => _spriteSheet.getSprite(0, 3);
 
   String get label {
     switch(_hat) {
@@ -136,6 +139,9 @@ class HatSprite {
       }
       case Hat.PIRATE_CAPTAIN: {
         return "Pirate Captain";
+      }
+      case Hat.ASSASSIN: {
+        return "Assassin";
       }
     }
   }
@@ -204,6 +210,9 @@ class HatSprite {
       }
       case Hat.PIRATE_CAPTAIN: {
         return pirateCaptain;
+      }
+      case Hat.ASSASSIN: {
+        return assassin;
       }
     }
   }

@@ -1,5 +1,7 @@
+import 'dart:ui';
 import 'dart:math';
 import 'package:flame/time.dart';
+import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame/components/component.dart';
 
@@ -15,13 +17,13 @@ class PickUpsHandler {
 
   PickUpsHandler(this._gameRef) {
     _pickUpCreatorTimer = Timer(5, repeat: true, callback: () {
-      if (random.nextDouble() <= 0.4) {
+      if (random.nextDouble() <= 0.6) {
         final r = random.nextDouble();
 
         // TODO plan better the percentage of each pick up
         if (r <= 0.2) {
           _gameRef.add(GoldNuggetComponent(_gameRef));
-        } else if (r <= 0.4) {
+        } else if (r <= 0.4 && _gameRef.controller.powerUp == null) {
           _gameRef.add(MagnetComponent(_gameRef));
         }
       }
@@ -39,14 +41,14 @@ abstract class PickupComponent extends SpriteComponent {
 
   bool _collected = false;
 
-  final Game _gameRef;
+  final Game gameRef;
 
-  PickupComponent(this._gameRef) {
+  PickupComponent(this.gameRef) {
     sprite = Sprite("pick-ups.png", width: 16, height: 16, x: _textureX());
     width = 50;
     height = 50;
     y = -50;
-    x = (_gameRef.size.width * random.nextDouble()) - 50;
+    x = (gameRef.size.width * random.nextDouble()) - 50;
   }
 
   double _textureX() => 0.0;
@@ -58,7 +60,7 @@ abstract class PickupComponent extends SpriteComponent {
 
     y += SPEED * dt;
 
-    if (toRect().overlaps(_gameRef.player.toRect())) {
+    if (toRect().overlaps(gameRef.player.toRect())) {
       _collected = true;
 
       _onPickup();
@@ -67,8 +69,12 @@ abstract class PickupComponent extends SpriteComponent {
 
   @override
   bool destroy() {
-    return _collected || y >= _gameRef.size.height;
+    return _collected || y >= gameRef.size.height;
   }
+}
+
+enum PowerUp {
+  MAGNET,
 }
 
 class MagnetComponent extends PickupComponent {
@@ -77,23 +83,28 @@ class MagnetComponent extends PickupComponent {
   double _textureX() => 16.0;
 
   void _onPickup() {
+    gameRef.controller.powerUpTimer = Timer(120)..start();
+    gameRef.controller.powerUpSprite = sprite;
+    gameRef.controller.powerUpSpriteRect = Rect.fromLTWH(gameRef.size.width - 60, 50, 50, 50);
+    gameRef.controller.powerUpTimerTextPosition = Position(gameRef.size.width - 100, 70);
+    gameRef.controller.powerUp = PowerUp.MAGNET;
   }
 }
 
 class GoldNuggetComponent extends PickupComponent {
   static double COINS_AMMOUNT = 5;
 
-  GoldNuggetComponent(Game gameRef): super(gameRef); 
+  GoldNuggetComponent(Game gameRef): super(gameRef);
 
   @override
   void _onPickup() {
-    final double factor = _gameRef.size.width / COINS_AMMOUNT;
+    final double factor = gameRef.size.width / COINS_AMMOUNT;
 
     for (var y = 0; y < COINS_AMMOUNT; y++) {
       for (var x = 0; x < COINS_AMMOUNT; x++) {
-        _gameRef.add(
+        gameRef.add(
             CoinComponent(
-                _gameRef,
+                gameRef,
                 (x * factor) + (factor * random.nextDouble()),
                 y: (y * factor) + (factor * random.nextDouble()),
             )
