@@ -6,6 +6,7 @@ import 'dart:math';
 
 import 'game.dart';
 import 'enemy_creator.dart';
+import 'pick_ups_handler.dart';
 
 class Enemy extends PositionComponent {
   bool _hittedPlayer = false;
@@ -38,8 +39,12 @@ class Enemy extends PositionComponent {
     y += _enemyCreator.currentEnemySpeed * dt;
 
     if (toRect().overlaps(gameRef.player.toRect())) {
-      gameRef.player.hurt();
-      gameRef.controller.resetScore();
+      if (gameRef.controller.powerUp == PowerUp.BUBBLE) {
+        gameRef.controller.resetPowerUp();
+      } else {
+        gameRef.player.hurt();
+        gameRef.controller.resetScore();
+      }
 
       _hittedPlayer = true;
       gameRef.add(_createPoofDeathAnimation());

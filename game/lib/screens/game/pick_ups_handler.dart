@@ -26,6 +26,8 @@ class PickUpsHandler {
         } else if (r <= 0.4 && _gameRef.controller.powerUp == null) {
           _gameRef.add(CoffeeComponent(_gameRef));
         } else if (r <= 0.6 && _gameRef.controller.powerUp == null) {
+          _gameRef.add(BubbleComponent(_gameRef));
+        } else if (r <= 0.8 && _gameRef.controller.powerUp == null) {
           _gameRef.add(MagnetComponent(_gameRef));
         }
       }
@@ -79,6 +81,7 @@ abstract class PickupComponent extends SpriteComponent {
 enum PowerUp {
   MAGNET,
   COFFEE,
+  BUBBLE,
 }
 
 class GoldNuggetComponent extends PickupComponent {
@@ -128,6 +131,17 @@ class MagnetComponent extends HoldeablePickupComponent {
 
   PowerUp _powerUp() => PowerUp.MAGNET;
 }
+
+class BubbleComponent extends HoldeablePickupComponent {
+  BubbleComponent(Game gameRef): super(gameRef);
+
+  double _textureX() => 48.0;
+
+  double _time() => 10;
+
+  PowerUp _powerUp() => PowerUp.BUBBLE;
+}
+
 
 class CoffeeComponent extends HoldeablePickupComponent {
   CoffeeComponent(Game gameRef): super(gameRef);

@@ -1,3 +1,4 @@
+import "package:flutter/material.dart";
 import 'package:flutter/animation.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/position.dart';
@@ -55,6 +56,8 @@ class Player extends PositionComponent {
   double _holdingCooldown = 0.0;
 
   BobState _state = BobState.IDLE;
+
+  final _bubblePaint = Paint()..color = const Color(0x9938607c);
 
   Player(this.gameRef, { Hat hat = null }) {
 
@@ -197,6 +200,10 @@ class Player extends PositionComponent {
 
     if (_hatSprite != null) {
       _hatSprite.render(canvas, rect.left, rect.top);
+    }
+
+    if (gameRef is Game && (gameRef as Game).controller.powerUp == PowerUp.BUBBLE) {
+       (gameRef as Game).controller.powerUpSprite.renderRect(canvas, rect.inflate(25), _bubblePaint);
     }
   }
 }

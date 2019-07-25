@@ -135,7 +135,7 @@ class GameController extends PositionComponent {
 
   }
 
-  void _resetPowerUp() {
+  void resetPowerUp() {
     powerUp = null;
     powerUpTimer = null;
     powerUpSprite = null;
@@ -149,7 +149,7 @@ class GameController extends PositionComponent {
     if (powerUpTimer != null) {
       powerUpTimer.update(dt);
       if (powerUpTimer.isFinished()) {
-        _resetPowerUp();
+        resetPowerUp();
       }
     }
 
@@ -170,7 +170,7 @@ class GameController extends PositionComponent {
     enemyCreators.add(EnemyCreator(gameRef, this));
 
     _score = 0;
-    _resetPowerUp();
+    resetPowerUp();
 
     // Remove the current coins
     gameRef.components.forEach((c) {
