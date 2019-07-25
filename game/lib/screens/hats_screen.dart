@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flame/flame.dart";
+import "package:flame/sprite.dart";
 import "package:flame/game.dart";
 
 import "game/hats.dart";
@@ -25,6 +26,30 @@ class Preview extends BaseGame {
   }
 }
 
+class _SpriteCustomPainter extends CustomPainter {
+  final Sprite _sprite;
+  final bool _owned;
+
+  _SpriteCustomPainter(this._sprite, this._owned);
+
+
+  Paint _paint() {
+    if (_owned)
+      return null;
+    else
+      return Paint()..colorFilter = ColorFilter.mode(Colors.black.withOpacity(0.8), BlendMode.srcATop);
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (_sprite.loaded()) {
+      _sprite.render(canvas, size.width, size.height, _paint());
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter old) => true;
+}
 
 class HatsScreen extends StatefulWidget {
   Hat current;
@@ -55,6 +80,15 @@ class _HatsScreenState extends State<HatsScreen> {
     await GameData.setCurrentHat(selected);
     setState(() {
       _current = selected;
+    });
+  }
+
+  void _unEquipHat() async {
+    await GameData.setCurrentHat(null);
+    setState(() {
+      _current = null;
+      _selected = null;
+      widget.current = null;
     });
   }
 
@@ -109,7 +143,7 @@ class _HatsScreenState extends State<HatsScreen> {
                     ? Label(label: "No hat selected")
                     : owned.contains(selected)
                       ? selected == current
-                        ? Label(label: "In use")
+                        ? buttons.PrimaryButton(label: "Unequip", onPress: () { _unEquipHat(); })
                         : buttons.PrimaryButton(label: "Equip", onPress: () { _equipHat(); })
                       :  currentCoins >= price
                         ? buttons.PrimaryButton(label: "Buy", onPress: () { _buyHat(); })
@@ -131,7 +165,7 @@ class _HatsScreenState extends State<HatsScreen> {
                   Expanded(child:
                       Container(
                           decoration: const BoxDecoration(
-                              color: const Color(0xFF578aae),
+                              color: const Color(0xFFf3e67d),
                               border: Border(
                                   top: BorderSide(
                                       width: 3,
@@ -151,19 +185,16 @@ class _HatsScreenState extends State<HatsScreen> {
                                         _selected = hatType;
                                       });
                                     },
-                                    child: Opacity(
-                                               opacity: owned.contains(hatType) ? 1 : 0.4,
-                                               child:Column(
-                                                   children: [
-                                                     SizedBox(
-                                                         width: 96,
-                                                         height: 64,
-                                                         child: Flame.util.spriteAsWidget(const Size(96, 64), hatSprite.hatSprite)
-                                                     ),
-                                                     Label(label: hatSprite.label, fontSize: 14),
-                                                   ]
-                                               )
-                                           )
+                                    child: Column(
+                                        children: [
+                                          SizedBox(
+                                              width: 96,
+                                              height: 64,
+                                              child: CustomPaint(size: const Size(96, 64), painter: _SpriteCustomPainter(hatSprite.hatSprite, owned.contains(hatType))),
+                                          ),
+                                          Label(label: hatSprite.label, fontSize: 14),
+                                        ]
+                                    )
                                 );
                               }).toList()
                       )))

@@ -29,7 +29,11 @@ class GameData {
 
   static Future<void> setCurrentHat(Hat hat) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("currentHat", hat.toString());
+    if (hat == null) {
+      prefs.remove("currentHat");
+    } else {
+      prefs.setString("currentHat", hat.toString());
+    }
   }
 
   static Future<Hat> getCurrentHat() async {
