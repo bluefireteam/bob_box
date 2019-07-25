@@ -23,7 +23,7 @@ class PickUpsHandler {
         // TODO plan better the percentage of each pick up
         if (r <= 0.2) {
           _gameRef.add(GoldNuggetComponent(_gameRef));
-        } else if (r <= 0.2 && _gameRef.controller.powerUp == null) {
+        } else if (r <= 0.4 && _gameRef.controller.powerUp == null) {
           _gameRef.add(CoffeeComponent(_gameRef));
         } else if (r <= 0.6 && _gameRef.controller.powerUp == null) {
           _gameRef.add(MagnetComponent(_gameRef));
@@ -42,6 +42,7 @@ abstract class PickupComponent extends SpriteComponent {
   static const double SPEED = 150;
 
   bool _collected = false;
+  bool removed = false;
 
   final Game gameRef;
 
@@ -50,7 +51,7 @@ abstract class PickupComponent extends SpriteComponent {
     width = 50;
     height = 50;
     y = -50;
-    x = (gameRef.size.width * random.nextDouble()) - 50;
+    x = (gameRef.size.width - 50) * random.nextDouble();
   }
 
   double _textureX() => 0.0;
@@ -71,7 +72,7 @@ abstract class PickupComponent extends SpriteComponent {
 
   @override
   bool destroy() {
-    return _collected || y >= gameRef.size.height;
+    return removed || _collected || y >= gameRef.size.height;
   }
 }
 

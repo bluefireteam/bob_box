@@ -135,6 +135,13 @@ class GameController extends PositionComponent {
 
   }
 
+  void _resetPowerUp() {
+    powerUp = null;
+    powerUpTimer = null;
+    powerUpSprite = null;
+    powerUpSpriteRect = null;
+  }
+
   @override
   void update(double dt) {
     _pickUpsHandler.update(dt);
@@ -142,10 +149,7 @@ class GameController extends PositionComponent {
     if (powerUpTimer != null) {
       powerUpTimer.update(dt);
       if (powerUpTimer.isFinished()) {
-        powerUp = null;
-        powerUpTimer = null;
-        powerUpSprite = null;
-        powerUpSpriteRect = null;
+        _resetPowerUp();
       }
     }
 
@@ -166,11 +170,15 @@ class GameController extends PositionComponent {
     enemyCreators.add(EnemyCreator(gameRef, this));
 
     _score = 0;
+    _resetPowerUp();
 
     // Remove the current coins
     gameRef.components.forEach((c) {
       if (c is CoinComponent) {
         (c as CoinComponent).removed = true;
+      }
+      if (c is PickupComponent) {
+        (c as PickupComponent).removed = true;
       }
     });
   }
