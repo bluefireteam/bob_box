@@ -122,7 +122,7 @@ class _HatsScreenState extends State<HatsScreen> {
                               left: 5,
                               top: 0,
                               child: buttons.BackButton(onPress: () {
-                                Navigator.pop(context);
+                                Navigator.pushNamed(context, "/");
                               }),
                           ),
                           Center(

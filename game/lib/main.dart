@@ -39,50 +39,45 @@ class _GameWidgetState extends State<GameWidget> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: FutureBuilder(
-            future: Future.wait([
-              GameData.getScore(),
-              GameData.getCoins(),
-            ]),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                int initialBestScore = snapshot.data[0];
-                int initialCoins = snapshot.data[1];
-
-                return Scaffold(body: TitleScreen(initialBestScore: initialBestScore, initialCoins: initialCoins));
-              }
-
-              return Background();
-            }
-        ),
+        initialRoute: '/',
         routes: {
-          '/hats': (context) {
-            return FutureBuilder(
-                future: Future.wait([
-                  GameData.getCurrentHat(),
-                  GameData.getOwnedHats(),
-                  GameData.getCoins()
-                ]),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    Hat currentHat = snapshot.data[0];
-                    List<Hat> ownedHats = snapshot.data[1];
-                    int currentCoins = snapshot.data[2];
+          '/': (context) => FutureBuilder(
+              future: Future.wait([
+                GameData.getScore(),
+                GameData.getCoins(),
+              ]),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  int initialBestScore = snapshot.data[0];
+                  int initialCoins = snapshot.data[1];
 
-                    return HatsScreen(current: currentHat, owned: ownedHats, currentCoins: currentCoins);
-                  }
-
-                  return Background();
+                  return Scaffold(body: TitleScreen(initialBestScore: initialBestScore, initialCoins: initialCoins));
                 }
 
-            );
-          },
-          '/credits': (context) {
-            return CreditsScreen();
-          },
-          '/support': (context) {
-            return SupportScreen();
-          }
+                return Background();
+              }
+          ),
+          '/hats': (context) => FutureBuilder(
+              future: Future.wait([
+                GameData.getCurrentHat(),
+                GameData.getOwnedHats(),
+                GameData.getCoins()
+              ]),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  Hat currentHat = snapshot.data[0];
+                  List<Hat> ownedHats = snapshot.data[1];
+                  int currentCoins = snapshot.data[2];
+
+                  return HatsScreen(current: currentHat, owned: ownedHats, currentCoins: currentCoins);
+                }
+
+                return Background();
+              }
+
+          ),
+          '/credits': (context) => CreditsScreen(),
+          '/support': (context) => SupportScreen(),
         });
   }
 
