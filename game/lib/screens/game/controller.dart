@@ -64,6 +64,7 @@ class GameController extends PositionComponent {
   Position _coinsPosition;
 
   Position get coinsCollectionDestination => _coinsPosition;
+  Position get scoreCollectionDestination => _scorePosition;
 
   Position _pauseButtonPosition;
   Position _backButtonPosition;
@@ -89,6 +90,8 @@ class GameController extends PositionComponent {
 
   int _score = 0;
   int _coins = 0;
+
+  get score => _score;
 
   GameController(this.gameRef, this._coins, this._onBack) {
     _scorePosition = Position(20, 10);

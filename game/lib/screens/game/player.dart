@@ -12,6 +12,7 @@ import 'spritesheet.dart';
 import 'hats.dart';
 import 'game.dart';
 import 'pick_ups_handler.dart';
+import 'score_label.dart';
 
 import '../../main.dart';
 
@@ -104,6 +105,9 @@ class Player extends PositionComponent {
   }
 
   void hurt() {
+    final game = gameRef as Game;
+    game.addLater(ScoreLabel(game, '-${game.controller.score}'));
+
     changeState(BobState.HIT);
     resetStateLater();
   }
@@ -116,6 +120,14 @@ class Player extends PositionComponent {
   Sprite get beenHold => _spriteSheet.getSprite(0, 5);
 
   bool _hasCoffee() => gameRef is Game && (gameRef as Game).controller.powerUp == PowerUp.COFFEE;
+
+  void _increaseScore() {
+    if (gameRef is Game) {
+      final game = (gameRef as Game);
+      game.controller.increaseScore();
+      game.addLater(ScoreLabel(game, '+1'));
+    }
+  }
 
   @override
   void update(double dt) {
@@ -131,6 +143,7 @@ class Player extends PositionComponent {
 
       final rect = toRect();
       if (rect.left <= 0) {
+        _increaseScore();
         setByPosition(Position(0, rect.top));
         _playerDirection = 1;
         changeState(BobState.BOUNCED);
@@ -142,6 +155,7 @@ class Player extends PositionComponent {
       final screenSize = gameRef.size;
 
       if (rect.right >= gameRef.size.width) {
+        _increaseScore();
         setByPosition(Position(screenSize.width - rect.width, rect.top));
         _playerDirection = -1;
         changeState(BobState.BOUNCED);
