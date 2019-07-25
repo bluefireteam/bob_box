@@ -210,8 +210,7 @@ class GameController extends PositionComponent {
 
     backButtonTextConfig.render(canvas, "<", _backButtonPosition);
     if (gameRef.paused) {
-      // TODO this is not equals the back button font size
-      textConfig.render(canvas, ">", _pauseButtonPosition);
+      backButtonTextConfig.render(canvas, ">", Position(_pauseButtonPosition.x, _backButtonPosition.y));
 
       pausedTextConfig.render(canvas, "Paused", _pauseTextPosition, anchor: Anchor.center);
     } else {
