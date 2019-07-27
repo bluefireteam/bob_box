@@ -15,7 +15,7 @@ dependencies:
   gapless_audio_loop: ^0.0.1
   url_launcher: ^5.1.0
   vector_math: ^2.0.8
-
+  flutter_inapp_purchase: ^1.0.1
 
 dev_dependencies:
   flutter_test:

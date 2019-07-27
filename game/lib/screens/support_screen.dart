@@ -3,13 +3,29 @@ import "package:flame/flame.dart";
 import "package:flame/position.dart";
 import "package:flame/animation.dart" as FlameAnimation;
 
+import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
+
 import "../ui/button.dart" as buttons;
 import "../ui/background.dart";
 import "../ui/label.dart";
 import "../ui/link.dart";
 import "../ui/title_header.dart";
 
-class SupportScreen extends StatelessWidget {
+class SupportScreen extends StatefulWidget {
+  IAPItem purchaseItem;
+  bool boughtAlready;
+
+  SupportScreen({ this.purchaseItem, this.boughtAlready });
+
+  @override
+  State<StatefulWidget> createState() => _SupportScreenState();
+}
+
+class _SupportScreenState extends State<SupportScreen> {
+
+  bool _boughtAlready;
+
+  get boughtAlready => _boughtAlready ?? widget.boughtAlready;
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +60,25 @@ class SupportScreen extends StatelessWidget {
                                   ),
                                   Container(
                                       padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                                      child: Label(label: "If you enjoy this game, you can support this and our others game development endeavours by buying us a coffee!", textAlign: TextAlign.justify),
+                                      child: Label(label: "You can support our game development endeavours by buying us a coffee!", textAlign: TextAlign.justify),
+                                  ),
+                                  Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                                      child: Label(label: "And as a Thanks You you will have increased chances of coins spawning on the game!", textAlign: TextAlign.justify),
                                   ),
                                 ]
                             ),
                             buttons.PrimaryButton(
                                 label: "Buy us a coffee!",
-                                onPress: () {
+                                onPress: () async {
+                                  try {
+                                    await FlutterInappPurchase.buyProduct(widget.purchaseItem.productId);
+                                    setState(() {
+                                      _boughtAlready = true;
+                                    });
+                                  } catch (error) {
+                                    print("$error");
+                                  }
                                 }
                             ),
                           ]
