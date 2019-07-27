@@ -10,7 +10,7 @@ class Background extends StatelessWidget {
     return Container(
       constraints: BoxConstraints.expand(),
       decoration: BoxDecoration(color: Color(0xFFfff8c0)),
-      child: child
+      child: SafeArea(child: child)
     );
   }
 }

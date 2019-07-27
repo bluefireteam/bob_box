@@ -22,17 +22,33 @@ class Hud {
   Sprite _rightCorner;
   Sprite _middle;
 
+  Sprite _leftNotch;
+  Sprite _rightNotch;
+
   Rect _leftRect;
   Rect _rightRect;
   Rect _middleRect;
+
+  Rect _leftNotchRect;
+  Rect _rightNotchRect;
+
+  Rect _notchFillArea;
+
+  Paint _notchFillPaint = Paint()..color = const Color(0xFF38607c);
 
   Hud(this._screenWidth) {
     _leftCorner = Sprite("hud.png", x: 0, y: 0, width: 16, height: 16);
     _middle = Sprite("hud.png", x: 16, y: 0, width: 16, height: 16);
     _rightCorner = Sprite("hud.png", x: 32, y: 0, width: 16, height: 16);
 
+    _leftNotch = Sprite("hud.png", x: 48, y: 0, width: 16, height: 16);
+    _rightNotch = Sprite("hud.png", x: 64, y: 0, width: 16, height: 16);
+
     _leftRect = Rect.fromLTWH(0, 0, 50, 50);
     _rightRect = Rect.fromLTWH(_screenWidth - 50, 0, 50, 50);
+
+    _leftNotchRect = Rect.fromLTWH(0, -50, 50, 50);
+    _rightNotchRect = Rect.fromLTWH(_screenWidth - 50, -50, 50, 50);
 
     _middleRect = Rect.fromLTWH(
         _leftRect.right,
@@ -40,9 +56,15 @@ class Hud {
         _rightRect.left - _leftRect.right,
         50
     );
+
+    _notchFillArea = Rect.fromLTWH(0, -100, _screenWidth, 100);
   }
 
   void render(Canvas canvas) {
+    canvas.drawRect(_notchFillArea, _notchFillPaint);
+    _leftNotch.renderRect(canvas, _leftNotchRect);
+    _rightNotch.renderRect(canvas, _rightNotchRect);
+
     _leftCorner.renderRect(canvas, _leftRect);
     _middle.renderRect(canvas, _middleRect);
     _rightCorner.renderRect(canvas, _rightRect);
@@ -97,8 +119,8 @@ class GameController extends PositionComponent {
     _scorePosition = Position(20, 10);
     _coinsPosition = Position(gameRef.size.width - 240, 10);
 
-    _backButtonRect = Rect.fromLTWH(gameRef.size.width - 30, 6, 20, 20);
-    _pauseButtonRect = Rect.fromLTWH(gameRef.size.width - 60, 10, 20, 20);
+    _backButtonRect = Rect.fromLTWH(gameRef.size.width - 30, 6, 20, 50);
+    _pauseButtonRect = Rect.fromLTWH(gameRef.size.width - 60, 10, 20, 50);
 
     _backButtonPosition = Position(_backButtonRect.left, _backButtonRect.top);
     _pauseButtonPosition = Position(_pauseButtonRect.left, _pauseButtonRect.top);

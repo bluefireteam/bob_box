@@ -48,7 +48,7 @@ class _TitleScreenState extends State<TitleScreen>  {
             return false;
           }
         },
-        child: Main.game.widget,
+        child: Background(child: Main.game.widget),
       );
     }
 
