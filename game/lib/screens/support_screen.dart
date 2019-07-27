@@ -58,29 +58,37 @@ class _SupportScreenState extends State<SupportScreen> {
                                       Position(240, 160),
                                       FlameAnimation.Animation.sequenced("buy-coffee.png", 4, textureWidth: 48)..stepTime = 0.2,
                                   ),
-                                  Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                                      child: Label(label: "You can support our game development endeavours by buying us a coffee!", textAlign: TextAlign.justify),
-                                  ),
-                                  Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                                      child: Label(label: "And as a Thanks You you will have increased chances of coins spawning on the game!", textAlign: TextAlign.justify),
-                                  ),
+                                  !boughtAlready
+                                    ? Column(children: [
+                                        Container(
+                                            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                                            child: Label(label: "You can support our game development endeavours by buying us a coffee!", textAlign: TextAlign.justify),
+                                        ),
+                                        Container(
+                                            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                                            child: Label(label: "And as a Thanks You you will have increased chances of coins spawning in the game!", textAlign: TextAlign.justify),
+                                        )
+                                      ])
+                                    : Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                                        child: Label(label: "Thanks a lot for your support!", textAlign: TextAlign.justify),
+                                    ),
                                 ]
                             ),
-                            buttons.PrimaryButton(
-                                label: "Buy us a coffee!",
-                                onPress: () async {
-                                  try {
-                                    await FlutterInappPurchase.buyProduct(widget.purchaseItem.productId);
-                                    setState(() {
-                                      _boughtAlready = true;
-                                    });
-                                  } catch (error) {
-                                    print("$error");
-                                  }
-                                }
-                            ),
+                            !boughtAlready
+                                ?  buttons.PrimaryButton(
+                                    label: "Buy us a coffee!",
+                                    onPress: () async {
+                                      try {
+                                        await FlutterInappPurchase.buyProduct(widget.purchaseItem.productId);
+                                        setState(() {
+                                          _boughtAlready = true;
+                                        });
+                                      } catch (error) {
+                                        print("$error");
+                                      }
+                                    }
+                                ) : Text("")
                           ]
                   )),
                 ]

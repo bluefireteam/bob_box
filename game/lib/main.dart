@@ -84,6 +84,8 @@ class _GameWidgetState extends State<GameWidget> with WidgetsBindingObserver {
           '/credits': (context) => CreditsScreen(),
           '/support': (context) => FutureBuilder(
               future: Future.wait([
+                //Future.value(null),
+                //Future.value(null),
                 FlutterInappPurchase.getProducts(
                     Platform.isAndroid ? ['support_coffee'] : ['xyz.fireslime.bob_box.support_coffee']
                 ),
@@ -107,7 +109,7 @@ class _GameWidgetState extends State<GameWidget> with WidgetsBindingObserver {
                     ));
                   } else {
                     IAPItem item = snapshot.data[0];
-                    bool boughtAlready = (snapshot.data[1] as List<PurchasedItem>).length > 0;
+                    bool boughtAlready = snapshot.data[1] != null && (snapshot.data[1] as List<PurchasedItem>).length > 0;
 
                     return SupportScreen(purchaseItem: item, boughtAlready: boughtAlready);
                   }
