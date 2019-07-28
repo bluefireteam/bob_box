@@ -8,6 +8,8 @@ import 'game.dart';
 import 'enemy_creator.dart';
 import 'pick_ups_handler.dart';
 
+import '../../main.dart';
+
 class Enemy extends PositionComponent {
   bool _hittedPlayer = false;
   final Game gameRef;
@@ -39,6 +41,8 @@ class Enemy extends PositionComponent {
     y += _enemyCreator.currentEnemySpeed * dt;
 
     if (toRect().overlaps(gameRef.player.toRect())) {
+      Main.soundManager.playSfxs("Hit_Enemy.wav");
+
       if (gameRef.controller.powerUp == PowerUp.BUBBLE) {
         gameRef.controller.resetPowerUp();
       } else {
@@ -50,9 +54,10 @@ class Enemy extends PositionComponent {
       gameRef.add(_createPoofDeathAnimation());
     }
 
-    // We only add score when the enemy has died by reaching the bottom of the screen
+    // Reached the bottom of the screen
     if (!_hittedPlayer && destroy()) {
       gameRef.add(_createBottomDeathAnimation());
+      Main.soundManager.playSfxs("Enemy_Burn.wav");
     }
   }
 

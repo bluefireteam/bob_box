@@ -63,3 +63,13 @@ flutter:
     # Music
     - assets/audio/bob_box_loop.wav
     - assets/audio/bob_box_menu.wav
+
+    # sfxs
+    - assets/audio/sfxs/Coin.wav
+    - assets/audio/sfxs/Enemy_Burn.wav
+    - assets/audio/sfxs/Hit_Enemy.wav
+    - assets/audio/sfxs/Magnet.wav
+    - assets/audio/sfxs/Nugget.wav
+    - assets/audio/sfxs/Select_Menu.wav
+    - assets/audio/sfxs/UI_Start_Game.wav
+    - assets/audio/sfxs/Buy_Hat.wav

@@ -10,6 +10,8 @@ import "package:vector_math/vector_math.dart";
 import "game.dart";
 import "pick_ups_handler.dart";
 
+import "../../main.dart";
+
 class CoinComponent extends AnimationComponent {
   static const double COIN_SPEED = 50;
   static const double MAGNET_COIN_SPEED = 500;
@@ -56,6 +58,8 @@ class CoinComponent extends AnimationComponent {
       if (toRect().overlaps(gameRef.player.toRect())) {
         gameRef.controller.increaseCoins();
         _collected = true;
+
+        Main.soundManager.playSfxs("Coin.wav");
       }
     } else {
       // Move it to the collection destination

@@ -102,6 +102,8 @@ class _HatsScreenState extends State<HatsScreen> {
     await GameData.setOwnedHats(hats);
     await GameData.updateCoins(newBalance);
 
+    Main.soundManager.playSfxs("Buy_Hat.wav");
+
     setState(() {
       _owned = hats;
       _currentCoins = newBalance;

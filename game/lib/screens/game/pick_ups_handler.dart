@@ -8,6 +8,8 @@ import 'package:flame/components/component.dart';
 import "game.dart";
 import "coin.dart";
 
+import "../../main.dart";
+
 final Random random = Random();
 
 class PickUpsHandler {
@@ -59,6 +61,8 @@ abstract class PickupComponent extends SpriteComponent {
   double _textureX() => 0.0;
   void _onPickup();
 
+  String _pickupSfx();
+
   @override
   void update(double dt) {
     super.update(dt);
@@ -69,6 +73,10 @@ abstract class PickupComponent extends SpriteComponent {
       _collected = true;
 
       _onPickup();
+
+      if (_pickupSfx() != null) {
+        Main.soundManager.playSfxs(_pickupSfx());
+      }
     }
   }
 
@@ -88,6 +96,9 @@ class GoldNuggetComponent extends PickupComponent {
   static double COINS_AMMOUNT = 5;
 
   GoldNuggetComponent(Game gameRef): super(gameRef);
+
+  @override
+  String _pickupSfx() => "Nugget.wav";
 
   @override
   void _onPickup() {
@@ -125,6 +136,9 @@ abstract class HoldeablePickupComponent extends PickupComponent {
 class MagnetComponent extends HoldeablePickupComponent {
   MagnetComponent(Game gameRef): super(gameRef);
 
+  @override
+  String _pickupSfx() => "Magnet.wav";
+
   double _textureX() => 16.0;
 
   double _time() => 120;
@@ -134,6 +148,9 @@ class MagnetComponent extends HoldeablePickupComponent {
 
 class BubbleComponent extends HoldeablePickupComponent {
   BubbleComponent(Game gameRef): super(gameRef);
+
+  @override
+  String _pickupSfx() => null;
 
   double _textureX() => 48.0;
 
@@ -145,6 +162,9 @@ class BubbleComponent extends HoldeablePickupComponent {
 
 class CoffeeComponent extends HoldeablePickupComponent {
   CoffeeComponent(Game gameRef): super(gameRef);
+
+  @override
+  String _pickupSfx() => null;
 
   double _textureX() => 32.0;
 

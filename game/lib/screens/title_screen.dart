@@ -91,12 +91,15 @@ class _TitleScreenState extends State<TitleScreen>  {
                             startGame();
                           }),
                           SecondaryButton(label: "Hats", onPress: () {
+                            _menuSfx();
                             Navigator.pushNamed(context, '/hats');
                           }),
                           SecondaryButton(label: "Support the game", onPress: () {
+                            _menuSfx();
                             Navigator.pushNamed(context, '/support');
                           }),
                           SecondaryButton(label: "Credits", onPress: () {
+                            _menuSfx();
                             Navigator.pushNamed(context, '/credits');
                           }),
                         ],
@@ -107,12 +110,17 @@ class _TitleScreenState extends State<TitleScreen>  {
     );
   }
 
+  void _menuSfx() {
+    Main.soundManager.playSfxs("Select_Menu.wav");
+  }
+
   startGame() async {
     final size = await Flame.util.initialDimensions();
     final initialCoins = await GameData.getCoins();
     final currentHat = await GameData.getCurrentHat();
 
     Main.soundManager.playLoop();
+    Main.soundManager.playSfxs("UI_Start_Game.wav");
     Main.game = Game(size, initialCoins, currentHat, () {
       Main.soundManager.playMenu();
       onBack();

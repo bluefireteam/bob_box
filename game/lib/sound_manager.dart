@@ -56,4 +56,11 @@ class SoundManager {
     if (_lastPlayer != null)
       await _lastPlayer.stop();
   }
+
+
+  void playSfxs(String file) {
+    if (soundsEnabled) {
+      Flame.audio.play("sfxs/$file");
+    }
+  }
 }
