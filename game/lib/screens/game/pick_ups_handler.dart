@@ -22,7 +22,8 @@ class PickUpsHandler {
       if (random.nextDouble() <= 0.6) {
         final r = random.nextDouble();
 
-        // TODO plan better the percentage of each pick up
+        _gameRef.add(ShrinkMushroomComponent(_gameRef));
+
         if (r <= 0.2) {
           _gameRef.add(GoldNuggetComponent(_gameRef));
         } else if (r <= 0.4 && _gameRef.controller.powerUp == null) {
@@ -31,6 +32,13 @@ class PickUpsHandler {
           _gameRef.add(BubbleComponent(_gameRef));
         } else if (r <= 0.8 && _gameRef.controller.powerUp == null) {
           _gameRef.add(MagnetComponent(_gameRef));
+        } else {
+          final mushroomR = random.nextDouble();
+          if (mushroomR >= 0.5) {
+            _gameRef.add(GrowMushroomComponent(_gameRef));
+          } else {
+            _gameRef.add(ShrinkMushroomComponent(_gameRef));
+          }
         }
       }
     });
@@ -91,6 +99,8 @@ enum PowerUp {
   MAGNET,
   COFFEE,
   BUBBLE,
+  GROW_MUSHROOM,
+  SHRINK_MUSHROOM,
 }
 
 Sprite powerUpSprite(PowerUp powerUp) {
@@ -111,6 +121,14 @@ Sprite powerUpSprite(PowerUp powerUp) {
     }
     case PowerUp.BUBBLE: {
       textureX = 48;
+      break;
+    }
+    case PowerUp.GROW_MUSHROOM: {
+      textureX = 64;
+      break;
+    }
+    case PowerUp.SHRINK_MUSHROOM: {
+      textureX = 80;
       break;
     }
   }
@@ -167,12 +185,20 @@ abstract class HoldeablePickupComponent extends PickupComponent {
 
   double _time();
 
+  void Function() _expireCallback() => null;
+
   void _onPickup() {
     gameRef.controller.powerUpTimer = Timer(_time())..start();
     gameRef.controller.powerUpSprite = sprite;
     gameRef.controller.powerUpSpriteRect = Rect.fromLTWH(gameRef.size.width - 60, 50, 50, 55);
     gameRef.controller.powerUpTimerTextPosition = Position(gameRef.size.width - 100, 75);
     gameRef.controller.powerUp = _powerUp();
+
+    final callback = _expireCallback();
+
+    if (callback != null) {
+      gameRef.controller.powerUpOnFinish = callback;
+    }
   }
 }
 
@@ -187,15 +213,65 @@ class MagnetComponent extends HoldeablePickupComponent {
   PowerUp _powerUp() => PowerUp.MAGNET;
 }
 
-
 class CoffeeComponent extends HoldeablePickupComponent {
   CoffeeComponent(Game gameRef): super(gameRef);
 
   @override
   String _pickupSfx() => null;
 
+  @override
   double _time() => 15.0;
 
+  @override
   PowerUp _powerUp() => PowerUp.COFFEE;
+}
+
+class GrowMushroomComponent extends HoldeablePickupComponent {
+  GrowMushroomComponent(Game gameRef): super(gameRef);
+
+  @override
+  String _pickupSfx() => null;
+
+  double _time() => 30.0;
+
+  @override
+  PowerUp _powerUp() => PowerUp.GROW_MUSHROOM;
+
+  @override
+  void _onPickup() {
+    super._onPickup();
+
+    gameRef.player.grow();
+  }
+
+  @override
+  void Function() _expireCallback() => () {
+    gameRef.player.resetGrow();
+  };
+}
+
+class ShrinkMushroomComponent extends HoldeablePickupComponent {
+  ShrinkMushroomComponent(Game gameRef): super(gameRef);
+
+  @override
+  String _pickupSfx() => null;
+
+  @override
+  double _time() => 30.0;
+
+  @override
+  PowerUp _powerUp() => PowerUp.SHRINK_MUSHROOM;
+
+  @override
+  void _onPickup() {
+    super._onPickup();
+
+    gameRef.player.shrink();
+  }
+
+  @override
+  void Function() _expireCallback() => () {
+    gameRef.player.resetShrink();
+  };
 }
 

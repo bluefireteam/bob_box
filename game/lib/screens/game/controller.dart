@@ -107,6 +107,7 @@ class GameController extends PositionComponent {
 
   Position powerUpTimerTextPosition;
   Rect powerUpSpriteRect;
+  void Function() powerUpOnFinish;
 
   Hud _hud;
 
@@ -161,10 +162,14 @@ class GameController extends PositionComponent {
   }
 
   void resetPowerUp() {
+    if (powerUpOnFinish != null) {
+      powerUpOnFinish();
+    }
     powerUp = null;
     powerUpTimer = null;
     powerUpSprite = null;
     powerUpSpriteRect = null;
+    powerUpOnFinish = null;
   }
 
   @override
@@ -208,8 +213,8 @@ class GameController extends PositionComponent {
     });
   }
 
-  void increaseScore() {
-    _score++;
+  void increaseScore({ score = 1}) {
+    _score += score;
     GameData.updateScore(_score);
   }
 

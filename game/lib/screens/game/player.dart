@@ -39,6 +39,11 @@ class Player extends PositionComponent {
   static const COFFEE_PLAYER_SPEED = 400;
   static const NEAR_MARGIN = 80;
 
+  static const ORIGINAL_SIZE = 50.0;
+  static const GROW_RATE = 1.5;
+  static const SHRUNK_RATE = 0.5;
+
+
   static double HOLDING_LIMIT = 3;
 
   static final Random random = Random();
@@ -62,6 +67,9 @@ class Player extends PositionComponent {
 
   bool hasBubble = false;
 
+  bool _isShrunk = false;
+  bool _isGrowed = false;
+
   Sprite _bubbleSpriteCache;
   get _bubbleSprite {
     if (_bubbleSpriteCache == null) {
@@ -78,8 +86,8 @@ class Player extends PositionComponent {
     }
 
     setByPosition(Position(gameRef.size.width / 2 - 25, gameRef.size.height - 200));
-    width = 50;
-    height = 50;
+    width = ORIGINAL_SIZE;
+    height = ORIGINAL_SIZE;
 
     _spriteSheet = SpriteSheet(
       image: Main.bob,
@@ -135,9 +143,56 @@ class Player extends PositionComponent {
   void _increaseScore() {
     if (gameRef is Game) {
       final game = (gameRef as Game);
-      game.controller.increaseScore();
-      game.addLater(ScoreLabel(game, '+1'));
+
+      final score = _isGrowed ? 4 : 1;
+
+      game.controller.increaseScore(score: score);
+      game.addLater(ScoreLabel(game, '+$score'));
     }
+  }
+
+  void grow() {
+    _isGrowed = true;
+
+    final newSize = ORIGINAL_SIZE * GROW_RATE;
+    x -= newSize / 2;
+    y -= newSize / 2;
+
+    width = newSize;
+    height = newSize;
+  }
+
+  void resetGrow() {
+    _isGrowed = false;
+
+    final newSize = ORIGINAL_SIZE * GROW_RATE;
+    x += newSize / 2;
+    y += newSize / 2;
+
+    width = ORIGINAL_SIZE;
+    height = ORIGINAL_SIZE;
+  }
+
+  void shrink() {
+    _isShrunk = true;
+
+    final newSize = ORIGINAL_SIZE * SHRUNK_RATE;
+    x -= newSize / 2;
+    y -= newSize / 2;
+
+    width = newSize;
+    height = newSize;
+  }
+
+  void resetShrink() {
+    _isShrunk = false;
+
+    final newSize = ORIGINAL_SIZE * SHRUNK_RATE;
+    x += newSize / 2;
+    y += newSize / 2;
+
+    width = ORIGINAL_SIZE;
+    height = ORIGINAL_SIZE;
   }
 
   @override
@@ -224,7 +279,7 @@ class Player extends PositionComponent {
     }
 
     if (_hatSprite != null) {
-      _hatSprite.render(canvas, rect.left, rect.top);
+      _hatSprite.render(canvas, rect.left, rect.top, _isGrowed, _isShrunk);
     }
 
     if (hasBubble) {

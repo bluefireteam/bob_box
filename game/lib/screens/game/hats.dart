@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'spritesheet.dart';
+import 'player.dart';
 import '../../main.dart';
 
 import 'package:flame/sprite.dart';
@@ -45,8 +46,19 @@ class HatSprite {
     );
   }
 
-  void render(Canvas canvas, double x, double y) {
-    hatSprite.renderRect(canvas, Rect.fromLTWH(x - 50, y - 50, 150, 100));
+  void render(Canvas canvas, double x, double y, bool isGrowed, bool isShrunk) {
+
+    final delta = (isGrowed ? Player.GROW_RATE : isShrunk ? Player.SHRUNK_RATE : 1.0);
+
+    hatSprite.renderRect(
+        canvas,
+        Rect.fromLTWH(
+            x - 50 * delta,
+            y - 50 * delta,
+            150 * delta,
+            100 * delta 
+            )
+        );
   }
 
   Sprite get rider => _spriteSheet.getSprite(0, 0);
