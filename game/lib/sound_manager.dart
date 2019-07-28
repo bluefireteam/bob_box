@@ -48,7 +48,7 @@ class SoundManager {
   }
 
   void resumeBackgroundMusic() async {
-    if (soundsEnabled) 
+    if (soundsEnabled)
       await _lastPlayer.play();
   }
 

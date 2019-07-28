@@ -51,14 +51,14 @@ abstract class PickupComponent extends SpriteComponent {
   final Game gameRef;
 
   PickupComponent(this.gameRef) {
-    sprite = Sprite("pick-ups.png", width: 16, height: 16, x: _textureX());
+    sprite = powerUpSprite(_powerUp());
     width = 50;
     height = 50;
     y = -50;
     x = (gameRef.size.width - 50) * random.nextDouble();
   }
 
-  double _textureX() => 0.0;
+  PowerUp _powerUp();
   void _onPickup();
 
   String _pickupSfx();
@@ -87,15 +87,44 @@ abstract class PickupComponent extends SpriteComponent {
 }
 
 enum PowerUp {
+  NUGGET,
   MAGNET,
   COFFEE,
   BUBBLE,
+}
+
+Sprite powerUpSprite(PowerUp powerUp) {
+  double textureX;
+
+  switch(powerUp) {
+    case PowerUp.NUGGET: {
+      textureX = 0;
+      break;
+    }
+    case PowerUp.MAGNET: {
+      textureX = 16;
+      break;
+    }
+    case PowerUp.COFFEE: {
+      textureX = 32;
+      break;
+    }
+    case PowerUp.BUBBLE: {
+      textureX = 48;
+      break;
+    }
+  }
+
+  return Sprite("pick-ups.png", width: 16, height: 16, x: textureX);
 }
 
 class GoldNuggetComponent extends PickupComponent {
   static double COINS_AMMOUNT = 5;
 
   GoldNuggetComponent(Game gameRef): super(gameRef);
+
+  @override
+  PowerUp _powerUp() => PowerUp.NUGGET;
 
   @override
   String _pickupSfx() => "Nugget.wav";
@@ -118,11 +147,25 @@ class GoldNuggetComponent extends PickupComponent {
   }
 }
 
+class BubbleComponent extends PickupComponent {
+  BubbleComponent(Game gameRef): super(gameRef);
+
+  @override
+  String _pickupSfx() => null;
+
+  @override
+  PowerUp _powerUp() => PowerUp.BUBBLE;
+
+  @override
+  void _onPickup() {
+    gameRef.player.hasBubble = true;
+  }
+}
+
 abstract class HoldeablePickupComponent extends PickupComponent {
   HoldeablePickupComponent(Game gameRef): super(gameRef);
 
   double _time();
-  PowerUp _powerUp();
 
   void _onPickup() {
     gameRef.controller.powerUpTimer = Timer(_time())..start();
@@ -139,24 +182,9 @@ class MagnetComponent extends HoldeablePickupComponent {
   @override
   String _pickupSfx() => "Magnet.wav";
 
-  double _textureX() => 16.0;
-
   double _time() => 120;
 
   PowerUp _powerUp() => PowerUp.MAGNET;
-}
-
-class BubbleComponent extends HoldeablePickupComponent {
-  BubbleComponent(Game gameRef): super(gameRef);
-
-  @override
-  String _pickupSfx() => null;
-
-  double _textureX() => 48.0;
-
-  double _time() => 10;
-
-  PowerUp _powerUp() => PowerUp.BUBBLE;
 }
 
 
@@ -165,8 +193,6 @@ class CoffeeComponent extends HoldeablePickupComponent {
 
   @override
   String _pickupSfx() => null;
-
-  double _textureX() => 32.0;
 
   double _time() => 15.0;
 

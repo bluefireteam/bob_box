@@ -60,6 +60,17 @@ class Player extends PositionComponent {
 
   final _bubblePaint = Paint()..color = const Color(0x9938607c);
 
+  bool hasBubble = false;
+
+  Sprite _bubbleSpriteCache;
+  get _bubbleSprite {
+    if (_bubbleSpriteCache == null) {
+      _bubbleSpriteCache = powerUpSprite(PowerUp.BUBBLE);
+    }
+
+    return _bubbleSpriteCache;
+  }
+
   Player(this.gameRef, { Hat hat = null }) {
 
     if (hat != null) {
@@ -216,8 +227,8 @@ class Player extends PositionComponent {
       _hatSprite.render(canvas, rect.left, rect.top);
     }
 
-    if (gameRef is Game && (gameRef as Game).controller.powerUp == PowerUp.BUBBLE) {
-       (gameRef as Game).controller.powerUpSprite.renderRect(canvas, rect.inflate(25), _bubblePaint);
+    if (hasBubble) {
+       _bubbleSprite.renderRect(canvas, rect.inflate(25), _bubblePaint);
     }
   }
 }

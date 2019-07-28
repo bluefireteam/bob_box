@@ -43,8 +43,8 @@ class Enemy extends PositionComponent {
     if (toRect().overlaps(gameRef.player.toRect())) {
       Main.soundManager.playSfxs("Hit_Enemy.wav");
 
-      if (gameRef.controller.powerUp == PowerUp.BUBBLE) {
-        gameRef.controller.resetPowerUp();
+      if (gameRef.player.hasBubble) {
+        gameRef.player.hasBubble = false;
       } else {
         gameRef.player.hurt();
         gameRef.controller.resetScore();
