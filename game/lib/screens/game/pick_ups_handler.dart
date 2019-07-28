@@ -22,8 +22,6 @@ class PickUpsHandler {
       if (random.nextDouble() <= 0.6) {
         final r = random.nextDouble();
 
-        _gameRef.add(ShrinkMushroomComponent(_gameRef));
-
         if (r <= 0.2) {
           _gameRef.add(GoldNuggetComponent(_gameRef));
         } else if (r <= 0.4 && _gameRef.controller.powerUp == null) {
@@ -32,7 +30,7 @@ class PickUpsHandler {
           _gameRef.add(BubbleComponent(_gameRef));
         } else if (r <= 0.8 && _gameRef.controller.powerUp == null) {
           _gameRef.add(MagnetComponent(_gameRef));
-        } else {
+        } else if(_gameRef.controller.powerUp == null) {
           final mushroomR = random.nextDouble();
           if (mushroomR >= 0.5) {
             _gameRef.add(GrowMushroomComponent(_gameRef));
@@ -169,7 +167,7 @@ class BubbleComponent extends PickupComponent {
   BubbleComponent(Game gameRef): super(gameRef);
 
   @override
-  String _pickupSfx() => null;
+  String _pickupSfx() => "Bubble_Shield.wav";
 
   @override
   PowerUp _powerUp() => PowerUp.BUBBLE;
@@ -217,7 +215,7 @@ class CoffeeComponent extends HoldeablePickupComponent {
   CoffeeComponent(Game gameRef): super(gameRef);
 
   @override
-  String _pickupSfx() => null;
+  String _pickupSfx() => "Coffee.wav";
 
   @override
   double _time() => 15.0;

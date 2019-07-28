@@ -73,3 +73,5 @@ flutter:
     - assets/audio/sfxs/Select_Menu.wav
     - assets/audio/sfxs/UI_Start_Game.wav
     - assets/audio/sfxs/Buy_Hat.wav
+    - assets/audio/sfxs/Bubble_Shield.wav
+    - assets/audio/sfxs/Coffee.wav
