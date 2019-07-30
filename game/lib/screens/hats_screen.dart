@@ -35,7 +35,7 @@ class _SpriteCustomPainter extends CustomPainter {
 
   Paint _paint() {
     if (_owned)
-      return null;
+      return Paint();
     else
       return Paint()..colorFilter = ColorFilter.mode(Colors.black.withOpacity(0.6), BlendMode.srcATop);
   }
