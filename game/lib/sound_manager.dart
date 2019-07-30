@@ -9,6 +9,8 @@ class SoundManager {
 
   GaplessAudioLoop _lastPlayer;
 
+  bool _isSomethingPlaying = false;
+
   void init(bool soundsEnabled) async {
     this.soundsEnabled = soundsEnabled;
 
@@ -34,8 +36,10 @@ class SoundManager {
 
     _lastPlayer = _loopPlayer;
 
-    if (soundsEnabled)
+    if (soundsEnabled) {
       await _loopPlayer.play();
+      _isSomethingPlaying = true;
+    }
   }
 
   void playMenu() async {
@@ -43,18 +47,24 @@ class SoundManager {
 
     _lastPlayer = _menuPlayer;
 
-    if (soundsEnabled)
+    if (soundsEnabled) {
       await _menuPlayer.play();
+      _isSomethingPlaying = true;
+    }
   }
 
   void resumeBackgroundMusic() async {
-    if (soundsEnabled)
+    if (soundsEnabled) {
       await _lastPlayer.play();
+      _isSomethingPlaying = true;
+    }
   }
 
   void pauseBackgroundMusic() async {
-    if (_lastPlayer != null)
+    if (_lastPlayer != null && _isSomethingPlaying) {
       await _lastPlayer.stop();
+      _isSomethingPlaying = false;
+    }
   }
 
 
