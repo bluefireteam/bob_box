@@ -75,3 +75,5 @@ flutter:
     - assets/audio/sfxs/Buy_Hat.wav
     - assets/audio/sfxs/Bubble_Shield.wav
     - assets/audio/sfxs/Coffee.wav
+    - assets/audio/sfxs/Grow.wav
+    - assets/audio/sfxs/Shrink.wav

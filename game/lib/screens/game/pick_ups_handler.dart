@@ -228,7 +228,7 @@ class GrowMushroomComponent extends HoldeablePickupComponent {
   GrowMushroomComponent(Game gameRef): super(gameRef);
 
   @override
-  String _pickupSfx() => null;
+  String _pickupSfx() => "Grow.wav";
 
   double _time() => 30.0;
 
@@ -252,7 +252,7 @@ class ShrinkMushroomComponent extends HoldeablePickupComponent {
   ShrinkMushroomComponent(Game gameRef): super(gameRef);
 
   @override
-  String _pickupSfx() => null;
+  String _pickupSfx() => "Shrink.wav";
 
   @override
   double _time() => 30.0;
