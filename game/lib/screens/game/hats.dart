@@ -29,6 +29,12 @@ enum Hat {
   CHEF,
   PIRATE_CAPTAIN,
   ASSASSIN,
+  LEPRECHAUN,
+  FRANK,
+  PHARAOH,
+  VIKING,
+  DRINKING_HAT,
+  ARCHER,
 }
 
 class HatSprite {
@@ -56,7 +62,7 @@ class HatSprite {
             x - 50 * delta,
             y - 50 * delta,
             150 * delta,
-            100 * delta 
+            100 * delta
             )
         );
   }
@@ -86,6 +92,12 @@ class HatSprite {
   Sprite get pirateCaptain => _spriteSheet.getSprite(6, 2);
 
   Sprite get assassin => _spriteSheet.getSprite(0, 3);
+  Sprite get leprechaun => _spriteSheet.getSprite(1, 3);
+  Sprite get frank => _spriteSheet.getSprite(2, 3);
+  Sprite get pharaoh => _spriteSheet.getSprite(3, 3);
+  Sprite get viking => _spriteSheet.getSprite(4, 3);
+  Sprite get drinkingHat => _spriteSheet.getSprite(5, 3);
+  Sprite get archer => _spriteSheet.getSprite(6, 3);
 
   String get label {
     switch(_hat) {
@@ -154,6 +166,24 @@ class HatSprite {
       }
       case Hat.ASSASSIN: {
         return "Assassin";
+      }
+      case Hat.LEPRECHAUN: {
+        return "Leprechaun";
+      }
+      case Hat.FRANK: {
+        return "Frank";
+      }
+      case Hat.PHARAOH: {
+        return "Pharaoh";
+      }
+      case Hat.VIKING: {
+        return "Viking";
+      }
+      case Hat.DRINKING_HAT: {
+        return "Drinking Hat";
+      }
+      case Hat.ARCHER: {
+        return "Archer";
       }
     }
   }
@@ -225,6 +255,24 @@ class HatSprite {
       }
       case Hat.ASSASSIN: {
         return assassin;
+      }
+      case Hat.LEPRECHAUN: {
+        return leprechaun;
+      }
+      case Hat.FRANK: {
+        return frank;
+      }
+      case Hat.PHARAOH: {
+        return pharaoh;
+      }
+      case Hat.VIKING: {
+        return viking;
+      }
+      case Hat.DRINKING_HAT: {
+        return drinkingHat;
+      }
+      case Hat.ARCHER: {
+        return archer;
       }
     }
   }
