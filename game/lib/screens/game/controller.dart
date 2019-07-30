@@ -114,9 +114,11 @@ class GameController extends PositionComponent {
   int _score = 0;
   int _coins = 0;
 
+  bool _hasBoughtSupport;
+
   get score => _score;
 
-  GameController(this.gameRef, this._coins, this._onBack) {
+  GameController(this.gameRef, this._coins, this._hasBoughtSupport, this._onBack) {
     _scorePosition = Position(20, 10);
     _coinsPosition = Position(gameRef.size.width - 240, 10);
 
@@ -129,9 +131,11 @@ class GameController extends PositionComponent {
     final o = Offset(gameRef.size.width / 2, gameRef.size.height / 2);
     _pauseTextPosition = Position(o.dx, o.dy);
 
+    print("User has bought suppport? $_hasBoughtSupport");
+
     coinCreator = Timer(4, repeat: true, callback: () {
       for (var i = 0; i < 3; i++) {
-        if (random.nextDouble() >= 0.6) {
+        if (random.nextDouble() >= (_hasBoughtSupport ? 0.8 : 0.4)) {
           gameRef.add(CoinComponent(
                   gameRef,
                   random.nextInt((gameRef.size.width - 15).toInt()).toDouble(),

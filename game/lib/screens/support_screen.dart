@@ -80,6 +80,8 @@ class _SupportScreenState extends State<SupportScreen> {
                                     label: "Buy us a coffee!",
                                     onPress: () async {
                                       try {
+                                        print("Product id");
+                                        print("- ${widget.purchaseItem.productId}");
                                         await FlutterInappPurchase.buyProduct(widget.purchaseItem.productId);
                                         setState(() {
                                           _boughtAlready = true;

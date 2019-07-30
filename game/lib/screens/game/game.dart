@@ -33,7 +33,7 @@ class Game extends PauseableGame {
   // instantiate another instance upon enemy creation.
   SpriteSheet enemiesSpritesheet;
 
-  Game(Size screenSize, int currentCoins, Hat currentHat, this._onBack) {
+  Game(Size screenSize, int currentCoins, Hat currentHat, bool hasBoughtSupport, this._onBack) {
     enemiesSpritesheet = SpriteSheet(
       image: Main.enemies,
       textureWidth: 16,
@@ -45,7 +45,7 @@ class Game extends PauseableGame {
     size = screenSize;
 
     player = Player(this, hat: currentHat);
-    controller = GameController(this, currentCoins, _onBack);
+    controller = GameController(this, currentCoins, hasBoughtSupport, _onBack);
 
     add(BackgroundComponent(this));
     add(controller);

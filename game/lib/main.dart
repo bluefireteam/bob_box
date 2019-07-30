@@ -2,11 +2,10 @@ import 'dart:ui' as ui;
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter/gestures.dart';
-import 'package:flame/flame.dart';
-
 import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
+
+import 'package:flame/flame.dart';
 
 import 'screens/game/game.dart';
 import 'screens/game/hats.dart';
@@ -21,6 +20,8 @@ import 'ui/button.dart' as buttons;
 
 import 'game_data.dart';
 import 'sound_manager.dart';
+
+import "iap.dart";
 
 class Main {
   static Game game;
@@ -86,10 +87,8 @@ class _GameWidgetState extends State<GameWidget> with WidgetsBindingObserver {
               future: Future.wait([
                 //Future.value(null),
                 //Future.value(null),
-                FlutterInappPurchase.getProducts(
-                    Platform.isAndroid ? ['support_coffee'] : ['xyz.fireslime.bob_box.support_coffee']
-                ),
-                FlutterInappPurchase.getPurchaseHistory(),
+                IAP.getSupportProduct(),
+                IAP.hasAlreadyBought(),
               ]),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
@@ -109,7 +108,7 @@ class _GameWidgetState extends State<GameWidget> with WidgetsBindingObserver {
                     ));
                   } else {
                     IAPItem item = snapshot.data[0];
-                    bool boughtAlready = snapshot.data[1] != null && (snapshot.data[1] as List<PurchasedItem>).length > 0;
+                    bool boughtAlready = snapshot.data[1];
 
                     return SupportScreen(purchaseItem: item, boughtAlready: boughtAlready);
                   }
@@ -121,7 +120,7 @@ class _GameWidgetState extends State<GameWidget> with WidgetsBindingObserver {
   }
 
   void _asyncInit() async {
-    await FlutterInappPurchase.initConnection;
+    await IAP.initConnection();
   }
 
   @override
@@ -137,7 +136,7 @@ class _GameWidgetState extends State<GameWidget> with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
 
-    await FlutterInappPurchase.endConnection;
+    await IAP.endConnection();
   }
 
   @override

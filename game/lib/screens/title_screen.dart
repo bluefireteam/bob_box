@@ -10,6 +10,7 @@ import "../ui/background.dart";
 
 import "../game_data.dart";
 import "../main.dart";
+import "../iap.dart";
 
 class TitleScreen extends StatefulWidget {
   int initialBestScore;
@@ -118,10 +119,11 @@ class _TitleScreenState extends State<TitleScreen>  {
     final size = await Flame.util.initialDimensions();
     final initialCoins = await GameData.getCoins();
     final currentHat = await GameData.getCurrentHat();
+    final hasBoughtSupport = await IAP.hasAlreadyBought();
 
     Main.soundManager.playLoop();
     Main.soundManager.playSfxs("UI_Start_Game.wav");
-    Main.game = Game(size, initialCoins, currentHat, () {
+    Main.game = Game(size, initialCoins, currentHat, hasBoughtSupport, () {
       Main.soundManager.playMenu();
       onBack();
     });
