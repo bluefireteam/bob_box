@@ -85,8 +85,6 @@ class _GameWidgetState extends State<GameWidget> with WidgetsBindingObserver {
           '/credits': (context) => CreditsScreen(),
           '/support': (context) => FutureBuilder(
               future: Future.wait([
-                //Future.value(null),
-                //Future.value(null),
                 IAP.getSupportProduct(),
                 IAP.hasAlreadyBought(),
               ]),
