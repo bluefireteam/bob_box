@@ -6,7 +6,7 @@ class IAP {
   static Future<IAPItem> getSupportProduct() async {
     try {
       final products = await FlutterInappPurchase.getProducts(
-          Platform.isAndroid ? ['support_coffee'] : ['1475026492' ]//xyz.fireslime.bob_box.support_coffee
+          Platform.isAndroid ? ['support_coffee'] : ['xyz.fireslime.bob_box.support_coffee']
       );
 
       return products.first;
@@ -31,7 +31,14 @@ class IAP {
   }
 
   static Future<void> initConnection() async {
-    await FlutterInappPurchase.initConnection;
+    try {
+      print("Initing iap connection");
+      await FlutterInappPurchase.initConnection;
+      print("Iap connection done");
+    } catch (e) {
+      print("Error initing iap connection");
+      print("$e");
+    }
   }
 
   static Future<void> endConnection() async {
