@@ -43,7 +43,7 @@ class _SpriteCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     if (_sprite.loaded()) {
-      _sprite.render(canvas, size.width, size.height, _paint());
+      _sprite.render(canvas, width: size.width, height: size.height, overridePaint: _paint());
     }
   }
 
