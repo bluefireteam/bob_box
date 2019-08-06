@@ -77,7 +77,7 @@ packages:
       path: "../../flame"
       relative: true
     source: path
-    version: "0.14.2"
+    version: "0.15.0"
   flare_dart:
     dependency: transitive
     description:

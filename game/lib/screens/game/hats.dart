@@ -35,6 +35,10 @@ enum Hat {
   VIKING,
   DRINKING_HAT,
   ARCHER,
+  FISH_HAT,
+  ROBIN_HOOD,
+  GNOME,
+  AFRO,
 }
 
 class HatSprite {
@@ -48,7 +52,7 @@ class HatSprite {
         textureWidth: 48,
         textureHeight: 32,
         rows: 7,
-        columns: 4
+        columns: 5
     );
   }
 
@@ -98,6 +102,11 @@ class HatSprite {
   Sprite get viking => _spriteSheet.getSprite(4, 3);
   Sprite get drinkingHat => _spriteSheet.getSprite(5, 3);
   Sprite get archer => _spriteSheet.getSprite(6, 3);
+
+  Sprite get fishHat => _spriteSheet.getSprite(0, 4);
+  Sprite get robinHood => _spriteSheet.getSprite(1, 4);
+  Sprite get gnome => _spriteSheet.getSprite(2, 4);
+  Sprite get afro => _spriteSheet.getSprite(3, 4);
 
   String get label {
     switch(_hat) {
@@ -184,6 +193,18 @@ class HatSprite {
       }
       case Hat.ARCHER: {
         return "Archer";
+      }
+      case Hat.FISH_HAT: {
+        return "Fish Hat";
+      }
+      case Hat.ROBIN_HOOD: {
+        return "Robin Hood";
+      }
+      case Hat.GNOME: {
+        return "Gnome";
+      }
+      case Hat.AFRO: {
+        return "Afro";
       }
     }
   }
@@ -273,6 +294,18 @@ class HatSprite {
       }
       case Hat.ARCHER: {
         return archer;
+      }
+      case Hat.FISH_HAT: {
+        return fishHat;
+      }
+      case Hat.ROBIN_HOOD: {
+        return robinHood;
+      }
+      case Hat.GNOME: {
+        return gnome;
+      }
+      case Hat.AFRO: {
+        return afro;
       }
     }
   }
