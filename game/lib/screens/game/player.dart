@@ -71,7 +71,7 @@ class Player extends PositionComponent {
   bool _isGrowed = false;
 
   Sprite _bubbleSpriteCache;
-  get _bubbleSprite {
+  Sprite get _bubbleSprite {
     if (_bubbleSpriteCache == null) {
       _bubbleSpriteCache = powerUpSprite(PowerUp.BUBBLE);
     }
@@ -283,7 +283,7 @@ class Player extends PositionComponent {
     }
 
     if (hasBubble) {
-       _bubbleSprite.renderRect(canvas, rect.inflate(25), _bubblePaint);
+       _bubbleSprite.renderRect(canvas, rect.inflate(25), overridePaint: _bubblePaint);
     }
   }
 }

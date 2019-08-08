@@ -51,12 +51,5 @@ class Game extends PauseableGame {
     add(controller);
     add(player);
   }
-
-  @override
-  void lifecycleStateChange(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
-      paused = true;
-    }
-  }
 }
 

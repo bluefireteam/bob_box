@@ -28,9 +28,12 @@ class CoinComponent extends AnimationComponent {
 
   double _easeStep = 0;
 
-  CoinComponent(this.gameRef, double x, { y = -30.0 }) : super(30.0, 30.0, new Animation.sequenced("coin.png", 4, textureWidth: 8.0, textureHeight: 8.0)..stepTime = 0.2) {
+  CoinComponent(this.gameRef, double x, { y = -30.0, special = false }) : super(30.0, 30.0, new Animation.sequenced("coin.png", 4, textureWidth: 8.0, textureHeight: 8.0)..stepTime = 0.2) {
     this.x = x;
     this.y = y;
+
+    if (special)
+      animation = animation.reversed();
 
     _collectionDestination = gameRef.controller.coinsCollectionDestination;
   }

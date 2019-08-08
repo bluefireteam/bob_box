@@ -10,6 +10,7 @@ import "../ui/background.dart";
 import "../ui/label.dart";
 import "../ui/link.dart";
 import "../ui/title_header.dart";
+import "../iap.dart";
 
 class SupportScreen extends StatefulWidget {
   IAPItem purchaseItem;
@@ -80,9 +81,8 @@ class _SupportScreenState extends State<SupportScreen> {
                                     label: "Buy us a coffee!",
                                     onPress: () async {
                                       try {
-                                        print("Product id");
-                                        print("- ${widget.purchaseItem.productId}");
-                                        await FlutterInappPurchase.buyProduct(widget.purchaseItem.productId);
+                                        await IAP.buy(widget.purchaseItem.productId);
+
                                         setState(() {
                                           _boughtAlready = true;
                                         });

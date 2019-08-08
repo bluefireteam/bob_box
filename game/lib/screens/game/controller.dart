@@ -135,10 +135,12 @@ class GameController extends PositionComponent {
 
     coinCreator = Timer(4, repeat: true, callback: () {
       for (var i = 0; i < 3; i++) {
-        if (random.nextDouble() >= (_hasBoughtSupport ? 0.8 : 0.4)) {
+        final r = random.nextDouble();
+        if (r >= (_hasBoughtSupport ? 0.8 : 0.4)) {
           gameRef.add(CoinComponent(
                   gameRef,
                   random.nextInt((gameRef.size.width - 15).toInt()).toDouble(),
+                  special: r > 0.4,
           ));
         }
       }

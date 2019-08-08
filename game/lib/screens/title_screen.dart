@@ -26,6 +26,8 @@ class _TitleScreenState extends State<TitleScreen>  {
   int _bestScore;
   int _coins;
 
+  bool _loading = false;
+
   int get bestScore => _bestScore ??  widget.initialBestScore ?? 0;
   int get totalCoins => _coins ??  widget.initialCoins;
 
@@ -34,6 +36,7 @@ class _TitleScreenState extends State<TitleScreen>  {
 
     final score = await GameData.getScore();
     final coins = await GameData.getCoins();
+
     setState(() {
       _bestScore = score;
       _coins = coins;
@@ -88,7 +91,7 @@ class _TitleScreenState extends State<TitleScreen>  {
                           SizedBox(height: 50),
                           Label(label: "Best score: $bestScore"),
                           Label(label: "Current Coins: $totalCoins"),
-                          PrimaryButton(label: "Play", onPress: () {
+                          PrimaryButton(label: _loading ? "Loading" : "Play", onPress: () {
                             startGame();
                           }),
                           SecondaryButton(label: "Hats", onPress: () {
@@ -116,6 +119,14 @@ class _TitleScreenState extends State<TitleScreen>  {
   }
 
   startGame() async {
+    if (_loading) {
+      return;
+    }
+
+    setState(() {
+      _loading = true;
+    });
+
     final size = await Flame.util.initialDimensions();
     final initialCoins = await GameData.getCoins();
     final currentHat = await GameData.getCurrentHat();
@@ -127,6 +138,9 @@ class _TitleScreenState extends State<TitleScreen>  {
       Main.soundManager.playMenu();
       onBack();
     });
-    setState(() {});
+
+    setState(() {
+      _loading = false;
+    });
   }
 }
