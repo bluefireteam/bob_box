@@ -1,7 +1,7 @@
 name: bounce_box
 description: Bounce box game
 
-version: 1.0.1+6
+version: 1.0.2+7
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
