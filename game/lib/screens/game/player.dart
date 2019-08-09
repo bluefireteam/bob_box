@@ -253,6 +253,8 @@ class Player extends PositionComponent {
 
   @override
   void render(Canvas canvas) {
+    Paint _paint = null;
+    Sprite _sprite = null;
     var rect = toRect();
 
     if (!_playerMoving) {
@@ -262,21 +264,25 @@ class Player extends PositionComponent {
           randomModifier() * curve,
           randomModifier() * curve,
       );
+
+      _paint = Paint()..colorFilter = ColorFilter.mode(const Color(0xFFd44e52).withOpacity(min(curve, 0.8)), BlendMode.srcATop);
     }
 
     if (_state == BobState.IDLE) {
-      idle.renderRect(canvas, rect);
+      _sprite = idle;
     } else if (_state == BobState.NEAR_LEFT) {
-      nearLeft.renderRect(canvas, rect);
+      _sprite = nearLeft;
     } else if (_state == BobState.NEAR_RIGHT) {
-      nearRight.renderRect(canvas, rect);
+      _sprite = nearRight;
     } else if (_state == BobState.BOUNCED) {
-      bounced.renderRect(canvas, rect);
+      _sprite = bounced;
     } else if (_state == BobState.HIT) {
-      hit.renderRect(canvas, rect);
+      _sprite = hit;
     } else if (_state == BobState.BEEN_HOLD) {
-      beenHold.renderRect(canvas, rect);
+      _sprite = beenHold;
     }
+
+    _sprite.renderRect(canvas, rect, overridePaint: _paint);
 
     if (_hatSprite != null) {
       _hatSprite.render(canvas, rect.left, rect.top, _isGrowed, _isShrunk);
