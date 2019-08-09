@@ -15,6 +15,7 @@ import 'enemy_creator.dart';
 import 'coin.dart';
 import 'pick_ups_handler.dart';
 import 'game.dart';
+import 'in_game_message.dart';
 
 class Hud {
   double _screenWidth = 0.0;
@@ -227,6 +228,9 @@ class GameController extends PositionComponent {
   void increaseCoins() {
     _coins++;
     GameData.updateCoins(_coins);
+
+    // TODO this should not be hardcoded
+    gameRef.add(InGameMessage("You can buy a new hat!"));
   }
 
   @override
