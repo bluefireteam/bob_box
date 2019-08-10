@@ -5,6 +5,7 @@ import "package:flame/game.dart";
 
 import "game/hats.dart";
 import "game/player.dart";
+import "util.dart";
 
 import "../game_data.dart";
 import "../main.dart";
@@ -74,7 +75,7 @@ class _HatsScreenState extends State<HatsScreen> {
   Hat get selected => _selected ?? widget.current;
   List<Hat> get owned => _owned ?? widget.owned;
   int get currentCoins => _currentCoins ?? widget.currentCoins;
-  int get price => (owned.length * 50) + 10;
+  int get price => calcHatPrice(owned.length);
 
   void _equipHat() async {
     await GameData.setCurrentHat(selected);

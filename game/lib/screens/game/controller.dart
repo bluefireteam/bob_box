@@ -9,6 +9,7 @@ import 'dart:ui';
 import 'dart:math';
 
 import '../../game_data.dart';
+import '../util.dart';
 
 import 'enemy.dart';
 import 'enemy_creator.dart';
@@ -117,6 +118,9 @@ class GameController extends PositionComponent {
 
   bool _hasBoughtSupport;
 
+  int _nextHatPrice;
+  bool _newHatMessage = false;
+
   get score => _score;
 
   GameController(this.gameRef, this._coins, this._hasBoughtSupport, this._onBack) {
@@ -152,6 +156,10 @@ class GameController extends PositionComponent {
 
     _pickUpsHandler = PickUpsHandler(gameRef);
     _hud = Hud(gameRef.size.width);
+
+    GameData.getOwnedHats().then((owned) {
+      _nextHatPrice = calcHatPrice(owned.length);
+    });
   }
 
   void onTapUp(TapUpDetails evt) {
@@ -229,8 +237,12 @@ class GameController extends PositionComponent {
     _coins++;
     GameData.updateCoins(_coins);
 
-    // TODO this should not be hardcoded
-    gameRef.add(InGameMessage("You can buy a new hat!"));
+    if (!_newHatMessage && _nextHatPrice != null) {
+      if (_coins >= _nextHatPrice) {
+        gameRef.add(InGameMessage("You can buy a new hat!"));
+        _newHatMessage = true;
+      }
+    }
   }
 
   @override
