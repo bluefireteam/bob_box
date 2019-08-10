@@ -1,5 +1,7 @@
 import 'dart:ui';
+import 'dart:math';
 
+import 'package:flutter/animation.dart';
 import 'package:flame/position.dart';
 import 'package:flame/components/component.dart';
 import 'package:flame/text_config.dart';
@@ -18,6 +20,10 @@ class InGameMessage extends PositionComponent {
 
   double _waitingTime = 2.0;
 
+  static double SPEED = 800;
+
+  double _travelled = 0.0;
+
   InGameMessage(this._message) {
     final _painter = _textConfig.toTextPainter(_message);
     width = _painter.width + 10;
@@ -32,10 +38,18 @@ class InGameMessage extends PositionComponent {
   void update(double dt) {
     if (_appearing) {
       if (x <= 10) {
-        x += 400 * dt;
+        final _progress = max(0.1, _travelled / (width + 10));
+        final _curve = _progress > 1 ? 1 : Curves.easeIn.transformInternal(_progress);
+
+        final _step = SPEED * dt * max(_curve, 0.25);
+        _travelled += _step;
+
+        x += _step;
       } else {
         _appearing = false;
         _waiting = true;
+
+        _travelled = 0;
       }
     }
 
@@ -49,7 +63,14 @@ class InGameMessage extends PositionComponent {
     }
 
     if (_vanishing) {
-      x -= 400 * dt;
+      final _progress = max(0.1, _travelled / width);
+      final _curve = _progress > 1 ? 1 : Curves.easeIn.transformInternal(_progress);
+
+      final _step = SPEED * dt * max(_curve, 0.25);
+
+      _travelled += _step;
+
+      x -= _step;
     }
   }
 
