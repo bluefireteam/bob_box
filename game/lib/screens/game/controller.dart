@@ -123,6 +123,8 @@ class GameController extends PositionComponent {
 
   get score => _score;
 
+  int _lastHighscore = 0;
+
   GameController(this.gameRef, this._coins, this._hasBoughtSupport, this._onBack) {
     _scorePosition = Position(20, 10);
     _coinsPosition = Position(gameRef.size.width - 240, 10);
@@ -159,6 +161,10 @@ class GameController extends PositionComponent {
 
     GameData.getOwnedHats().then((owned) {
       _nextHatPrice = calcHatPrice(owned.length);
+    });
+
+    GameData.getScore().then((score) {
+        _lastHighscore = score;
     });
   }
 
@@ -210,22 +216,28 @@ class GameController extends PositionComponent {
     coinCreator.update(dt);
   }
 
-  void resetScore() {
-    enemyCreators.clear();
-    enemyCreators.add(EnemyCreator(gameRef, this));
+  void resetScore() async {
+      _newHatMessage = false;
+      enemyCreators.clear();
+      enemyCreators.add(EnemyCreator(gameRef, this));
 
-    _score = 0;
-    resetPowerUp();
+      if (_score > _lastHighscore) {
+          gameRef.add(InGameMessage("New best score!"));
+          _lastHighscore = _score;
+      }
 
-    // Remove the current coins
-    gameRef.components.forEach((c) {
-      if (c is CoinComponent) {
-        (c as CoinComponent).removed = true;
-      }
-      if (c is PickupComponent) {
-        (c as PickupComponent).removed = true;
-      }
-    });
+      _score = 0;
+      resetPowerUp();
+
+      // Remove the current coins
+      gameRef.components.forEach((c) {
+          if (c is CoinComponent) {
+              c.removed = true;
+          }
+          if (c is PickupComponent) {
+              c.removed = true;
+          }
+      });
   }
 
   void increaseScore({ score = 1}) {

@@ -6,7 +6,6 @@ import 'dart:math';
 
 import 'game.dart';
 import 'enemy_creator.dart';
-import 'pick_ups_handler.dart';
 
 import '../../main.dart';
 
