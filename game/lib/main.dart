@@ -139,16 +139,17 @@ class _GameWidgetState extends State<GameWidget> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
-      Main.soundManager.pauseBackgroundMusic();
-      if (Main.game != null) {
-        Main.game = null;
+      if (state == AppLifecycleState.paused) {
+          Main.soundManager.pauseBackgroundMusic();
+          if (Main.game != null) {
+              Main.game = null;
+              setState(() {});
+          }
       }
-    }
 
-    if (state == AppLifecycleState.resumed) {
-      Main.soundManager.resumeBackgroundMusic();
-    }
+      if (state == AppLifecycleState.resumed) {
+          Main.soundManager.resumeBackgroundMusic();
+      }
   }
 
 }
