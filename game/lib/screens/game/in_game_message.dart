@@ -30,7 +30,6 @@ class InGameMessage extends PositionComponent {
     height = _painter.height + 10;
 
     x = width * -1;
-    // TODO this can't be hardecode because of the notch
     y = 100;
   }
 
