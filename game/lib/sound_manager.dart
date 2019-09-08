@@ -1,5 +1,4 @@
 import 'package:flame/flame.dart';
-import "package:audioplayers/audioplayers.dart";
 import 'package:gapless_audio_loop/gapless_audio_loop.dart';
 
 class SoundManager {

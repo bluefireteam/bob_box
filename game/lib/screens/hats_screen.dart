@@ -195,7 +195,7 @@ class _HatsScreenState extends State<HatsScreen> {
                                               height: 64,
                                               child: CustomPaint(size: const Size(96, 64), painter: _SpriteCustomPainter(hatSprite.hatSprite, owned.contains(hatType))),
                                           ),
-                                          Center(child: Label(label: hatSprite.label, fontSize: 12)),
+                                          Center(child: Label(label: hatSprite.label, fontSize: 13)),
                                         ]
                                     )
                                 );
