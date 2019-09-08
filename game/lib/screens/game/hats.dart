@@ -39,6 +39,9 @@ enum Hat {
   ROBIN_HOOD,
   GNOME,
   AFRO,
+  SAMURAI,
+  FIGHTER_PILOT,
+  SHIP_CAPTAIN,
 }
 
 class HatSprite {
@@ -107,6 +110,9 @@ class HatSprite {
   Sprite get robinHood => _spriteSheet.getSprite(1, 4);
   Sprite get gnome => _spriteSheet.getSprite(2, 4);
   Sprite get afro => _spriteSheet.getSprite(3, 4);
+  Sprite get samurai => _spriteSheet.getSprite(4, 4);
+  Sprite get fighterPilot => _spriteSheet.getSprite(5, 4);
+  Sprite get shipCaptain => _spriteSheet.getSprite(6, 4);
 
   String get label {
     switch(_hat) {
@@ -205,6 +211,15 @@ class HatSprite {
       }
       case Hat.AFRO: {
         return "Afro";
+      }
+      case Hat.SAMURAI: {
+        return "Samurai";
+      }
+      case Hat.FIGHTER_PILOT: {
+        return "Fighter Pilot";
+      }
+      case Hat.SHIP_CAPTAIN: {
+        return "Ship Captain";
       }
     }
   }
@@ -306,6 +321,15 @@ class HatSprite {
       }
       case Hat.AFRO: {
         return afro;
+      }
+      case Hat.SAMURAI: {
+        return samurai;
+      }
+      case Hat.FIGHTER_PILOT: {
+        return fighterPilot;
+      }
+      case Hat.SHIP_CAPTAIN: {
+        return shipCaptain;
       }
     }
   }
