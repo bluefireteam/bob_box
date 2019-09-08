@@ -40,7 +40,7 @@ class Enemy extends PositionComponent {
     y += _enemyCreator.currentEnemySpeed * dt;
 
     if (toRect().overlaps(gameRef.player.toRect())) {
-      Main.soundManager.playSfxs("Hit_Enemy.wav");
+      Main.soundManager.playSfxs("Hit_Enemy");
 
       if (gameRef.player.hasBubble) {
         gameRef.player.hasBubble = false;
@@ -56,7 +56,7 @@ class Enemy extends PositionComponent {
     // Reached the bottom of the screen
     if (!_hittedPlayer && destroy()) {
       gameRef.add(_createBottomDeathAnimation());
-      Main.soundManager.playSfxs("Enemy_Burn.wav");
+      Main.soundManager.playSfxs("Enemy_Burn");
     }
   }
 

@@ -61,19 +61,19 @@ flutter:
     - assets/images/buy-coffee.png
 
     # Music
-    - assets/audio/bob_box_loop.wav
-    - assets/audio/bob_box_menu.wav
+    - assets/audio/bob_box_loop.aac
+    - assets/audio/bob_box_menu.aac
 
     # sfxs
-    - assets/audio/sfxs/Coin.wav
-    - assets/audio/sfxs/Enemy_Burn.wav
-    - assets/audio/sfxs/Hit_Enemy.wav
-    - assets/audio/sfxs/Magnet.wav
-    - assets/audio/sfxs/Nugget.wav
-    - assets/audio/sfxs/Select_Menu.wav
-    - assets/audio/sfxs/UI_Start_Game.wav
-    - assets/audio/sfxs/Buy_Hat.wav
-    - assets/audio/sfxs/Bubble_Shield.wav
-    - assets/audio/sfxs/Coffee.wav
-    - assets/audio/sfxs/Grow.wav
-    - assets/audio/sfxs/Shrink.wav
+    - assets/audio/sfxs/Coin.aac
+    - assets/audio/sfxs/Enemy_Burn.aac
+    - assets/audio/sfxs/Hit_Enemy.aac
+    - assets/audio/sfxs/Magnet.aac
+    - assets/audio/sfxs/Nugget.aac
+    - assets/audio/sfxs/Select_Menu.aac
+    - assets/audio/sfxs/UI_Start_Game.aac
+    - assets/audio/sfxs/Buy_Hat.aac
+    - assets/audio/sfxs/Bubble_Shield.aac
+    - assets/audio/sfxs/Coffee.aac
+    - assets/audio/sfxs/Grow.aac
+    - assets/audio/sfxs/Shrink.aac

@@ -14,10 +14,10 @@ class SoundManager {
     this.soundsEnabled = soundsEnabled;
 
     _loopPlayer = GaplessAudioLoop();
-    await _loopPlayer.load("audio/bob_box_loop.wav");
+    await _loopPlayer.load("audio/bob_box_loop.aac");
 
     _menuPlayer = GaplessAudioLoop();
-    await _menuPlayer.load("audio/bob_box_menu.wav");
+    await _menuPlayer.load("audio/bob_box_menu.aac");
   }
 
   void toggleSoundsEnabled() {
@@ -69,7 +69,7 @@ class SoundManager {
 
   void playSfxs(String file) {
     if (soundsEnabled) {
-      Flame.audio.play("sfxs/$file");
+      Flame.audio.play("sfxs/$file.aac");
     }
   }
 }

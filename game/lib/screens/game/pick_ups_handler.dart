@@ -143,7 +143,7 @@ class GoldNuggetComponent extends PickupComponent {
   PowerUp _powerUp() => PowerUp.NUGGET;
 
   @override
-  String _pickupSfx() => "Nugget.wav";
+  String _pickupSfx() => "Nugget";
 
   @override
   void _onPickup() {
@@ -167,7 +167,7 @@ class BubbleComponent extends PickupComponent {
   BubbleComponent(Game gameRef): super(gameRef);
 
   @override
-  String _pickupSfx() => "Bubble_Shield.wav";
+  String _pickupSfx() => "Bubble_Shield";
 
   @override
   PowerUp _powerUp() => PowerUp.BUBBLE;
@@ -204,7 +204,7 @@ class MagnetComponent extends HoldeablePickupComponent {
   MagnetComponent(Game gameRef): super(gameRef);
 
   @override
-  String _pickupSfx() => "Magnet.wav";
+  String _pickupSfx() => "Magnet";
 
   double _time() => 120;
 
@@ -215,7 +215,7 @@ class CoffeeComponent extends HoldeablePickupComponent {
   CoffeeComponent(Game gameRef): super(gameRef);
 
   @override
-  String _pickupSfx() => "Coffee.wav";
+  String _pickupSfx() => "Coffee";
 
   @override
   double _time() => 15.0;
@@ -228,7 +228,7 @@ class GrowMushroomComponent extends HoldeablePickupComponent {
   GrowMushroomComponent(Game gameRef): super(gameRef);
 
   @override
-  String _pickupSfx() => "Grow.wav";
+  String _pickupSfx() => "Grow";
 
   double _time() => 30.0;
 
@@ -252,7 +252,7 @@ class ShrinkMushroomComponent extends HoldeablePickupComponent {
   ShrinkMushroomComponent(Game gameRef): super(gameRef);
 
   @override
-  String _pickupSfx() => "Shrink.wav";
+  String _pickupSfx() => "Shrink";
 
   @override
   double _time() => 30.0;

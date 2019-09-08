@@ -115,7 +115,7 @@ class _TitleScreenState extends State<TitleScreen>  {
   }
 
   void _menuSfx() {
-    Main.soundManager.playSfxs("Select_Menu.wav");
+    Main.soundManager.playSfxs("Select_Menu");
   }
 
   startGame() async {
@@ -133,7 +133,7 @@ class _TitleScreenState extends State<TitleScreen>  {
     final hasBoughtSupport = await IAP.hasAlreadyBought();
 
     Main.soundManager.playLoop();
-    Main.soundManager.playSfxs("UI_Start_Game.wav");
+    Main.soundManager.playSfxs("UI_Start_Game");
     Main.game = Game(size, initialCoins, currentHat, hasBoughtSupport, () {
       Main.soundManager.playMenu();
       onBack();

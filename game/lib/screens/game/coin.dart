@@ -62,7 +62,7 @@ class CoinComponent extends AnimationComponent {
         gameRef.controller.increaseCoins();
         _collected = true;
 
-        Main.soundManager.playSfxs("Coin.wav");
+        Main.soundManager.playSfxs("Coin");
       }
     } else {
       // Move it to the collection destination
