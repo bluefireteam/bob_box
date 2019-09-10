@@ -130,11 +130,10 @@ class _TitleScreenState extends State<TitleScreen>  {
     final size = await Flame.util.initialDimensions();
     final initialCoins = await GameData.getCoins();
     final currentHat = await GameData.getCurrentHat();
-    final hasBoughtSupport = await IAP.hasAlreadyBought();
 
     Main.soundManager.playLoop();
     Main.soundManager.playSfxs("UI_Start_Game");
-    Main.game = Game(size, initialCoins, currentHat, hasBoughtSupport, () {
+    Main.game = Game(size, initialCoins, currentHat, () {
       Main.soundManager.playMenu();
       onBack();
     });

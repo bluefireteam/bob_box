@@ -10,8 +10,8 @@ import 'dart:math';
 
 import '../../game_data.dart';
 import '../util.dart';
+import '../../iap.dart';
 
-import 'enemy.dart';
 import 'enemy_creator.dart';
 import 'coin.dart';
 import 'pick_ups_handler.dart';
@@ -116,7 +116,7 @@ class GameController extends PositionComponent {
   int _score = 0;
   int _coins = 0;
 
-  bool _hasBoughtSupport;
+  bool _hasBoughtSupport = false;
 
   int _nextHatPrice;
   bool _newHatMessage = false;
@@ -125,7 +125,7 @@ class GameController extends PositionComponent {
 
   int _lastHighscore = 0;
 
-  GameController(this.gameRef, this._coins, this._hasBoughtSupport, this._onBack) {
+  GameController(this.gameRef, this._coins, this._onBack) {
     _scorePosition = Position(20, 10);
     _coinsPosition = Position(gameRef.size.width - 240, 10);
 
@@ -138,7 +138,11 @@ class GameController extends PositionComponent {
     final o = Offset(gameRef.size.width / 2, gameRef.size.height / 2);
     _pauseTextPosition = Position(o.dx, o.dy);
 
-    print("User has bought suppport? $_hasBoughtSupport");
+    print("fetching if user has bought support");
+    IAP.hasAlreadyBought().then((value) {
+      _hasBoughtSupport = value;
+      print("User has bought suppport? $_hasBoughtSupport");
+    });
 
     coinCreator = Timer(4, repeat: true, callback: () {
       for (var i = 0; i < 3; i++) {
