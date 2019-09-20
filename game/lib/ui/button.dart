@@ -12,7 +12,7 @@ class Button extends StatelessWidget {
   final double fontSize;
   final double minWidth;
 
-  Button({ this.label, this.onPress, this.backgroundColor, this.fontColor, this.fontSize = 20, this.minWidth = 250 });
+  Button({ this.label, this.onPress, this.backgroundColor, this.fontColor, this.fontSize = 20, this.minWidth = 280 });
 
   Widget build(BuildContext context) {
     return ButtonTheme(minWidth: minWidth, child: RaisedButton(

@@ -98,6 +98,10 @@ class _TitleScreenState extends State<TitleScreen>  {
                             _menuSfx();
                             Navigator.pushNamed(context, '/hats');
                           }),
+                          SecondaryButton(label: "Global Scoreboard", onPress: () {
+                            _menuSfx();
+                            Navigator.pushNamed(context, '/scoreboard');
+                          }),
                           SecondaryButton(label: "Support the game", onPress: () {
                             _menuSfx();
                             Navigator.pushNamed(context, '/support');

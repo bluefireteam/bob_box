@@ -1,5 +1,4 @@
 import 'dart:ui' as ui;
-import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
@@ -13,6 +12,7 @@ import 'screens/title_screen.dart';
 import 'screens/hats_screen.dart';
 import 'screens/credits_screen.dart';
 import 'screens/support_screen.dart';
+import 'screens/scoreboard_screen.dart';
 
 import 'ui/background.dart';
 import 'ui/label.dart';
@@ -114,6 +114,7 @@ class _GameWidgetState extends State<GameWidget> with WidgetsBindingObserver {
                 return Background();
               }
           ),
+          '/scoreboard': (context) => ScoreboardScreen(),
         });
   }
 
