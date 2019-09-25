@@ -1,121 +1,46 @@
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:dio/dio.dart';
+
 import 'screens/game/hats.dart';
+
+Hat hatFromString(String value) => Hat.values.firstWhere((h) => h.toString() == value);
 
 class ScoreBoardEntry {
   String playerId;
   int points;
   Hat hat;
+
+  static ScoreBoardEntry fromJson(Map<String, dynamic> json) {
+    return ScoreBoardEntry()
+        ..hat = hatFromString(json["metadata"])
+        ..points = (json["score"] as double).toInt()
+        ..playerId = json["playerId"];
+  }
 }
 
 class ScoreBoard {
+  static String uuid;
+  static const String host = "https://api.score.fireslime.xyz";
+
+  static Future<String> getUuid() async {
+    if (uuid == null) {
+      uuid = await rootBundle.loadString('assets/firescore_uuid');
+
+      uuid = uuid.replaceAll("\n", "");
+    }
+    return uuid;
+  }
+
   static Future<List<ScoreBoardEntry>> fetchScoreboard() async {
-    return []
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "Ty"
-              ..points = 168
-              ..hat = Hat.DIVER
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "CptBlackPixel"
-              ..points = 163
-              ..hat = Hat.ASSASSIN
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "Don Vito Corleone"
-              ..points = 150
-              ..hat = Hat.KING
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "James Bond"
-              ..points = 120
-              ..hat = Hat.COP
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "Jack Sparrow"
-              ..points = 111
-              ..hat = Hat.PIRATE_CAPTAIN
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "Ozzy Osbourne"
-              ..points = 101
-              ..hat = Hat.CHEF
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "Ozzy Osbourne"
-              ..points = 101
-              ..hat = Hat.CHEF
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "Ozzy Osbourne"
-              ..points = 101
-              ..hat = Hat.OLD_DIVER
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "Ozzy Osbourne"
-              ..points = 101
-              ..hat = Hat.OLD_DIVER
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "Ozzy Osbourne"
-              ..points = 101
-              ..hat = Hat.VIKING
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "Ozzy Osbourne"
-              ..points = 101
-              ..hat = Hat.VIKING
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "Ozzy Osbourne"
-              ..points = 101
-              ..hat = Hat.VIKING
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "Ozzy Osbourne"
-              ..points = 101
-              ..hat = Hat.VIKING
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "Ozzy Osbourne"
-              ..points = 101
-              ..hat = Hat.VIKING
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "Ozzy Osbourne"
-              ..points = 101
-              ..hat = Hat.VIKING
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "Ozzy Osbourne"
-              ..points = 101
-              ..hat = Hat.VIKING
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "Ozzy Osbourne"
-              ..points = 101
-              ..hat = Hat.VIKING
-        )
-        ..add(
-            ScoreBoardEntry()
-              ..playerId = "Ozzy Osbourne"
-              ..points = 101
-              ..hat = Hat.VIKING
-        );
+    final _uuid = await getUuid();
+    print("$host/scores/$_uuid?sortOrder=ASC");
+    Response resp = await Dio().get("$host/scores/$_uuid?sortOrder=ASC");
+
+    final data = resp.data;
+    if (data is List) {
+      return data.map((entry) => ScoreBoardEntry.fromJson(entry)).toList();
+    }
+
+    return [];
   }
 }

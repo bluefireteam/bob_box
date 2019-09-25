@@ -67,20 +67,23 @@ class _ScoreboardScreenState extends State<ScoreboardScreen> {
                                         SizedBox(width: 120, child:
                                                 Row(
                                                     mainAxisAlignment: MainAxisAlignment.start,
+                                                    crossAxisAlignment: CrossAxisAlignment.end,
                                                     children: [
                                                       Flame.util.spriteAsWidget(Size(60, 40), HatSprite(entry.hat, image: Main.hatsWithBackground).hatSprite),
-                                                      Label(label: "#${i++} "),
+                                                      Label(label: "#${i++} ", fontSize: 14),
                                                     ],
                                                 )
                                         ),
-                                        Expanded(child:
+                                        Expanded(child: SizedBox(height: 40, child:
                                                 Row(
-                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                    crossAxisAlignment: CrossAxisAlignment.end,
                                                     children: [
-                                                      Label(label: "${entry.playerId} ... ${entry.points}", fontSize: 14),
+                                                      Label(label: "${entry.playerId}", fontSize: 14),
+                                                      Label(label: "${entry.points}", fontSize: 14),
                                                     ]
                                                 )
-                                        ),
+                                        )),
                                       ]
                                   )
                               )

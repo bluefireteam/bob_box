@@ -16,6 +16,7 @@ dependencies:
   url_launcher: ^5.1.0
   vector_math: ^2.0.8
   flutter_inapp_purchase: ^1.0.1
+  dio: 3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -34,6 +35,9 @@ flutter:
       fonts:
         - asset: assets/PixelIntv.otf
   assets:
+    # Firescore
+    - assets/firescore_uuid
+
     # Gameplay
     - assets/images/bob.png
     - assets/images/background-texture.png
