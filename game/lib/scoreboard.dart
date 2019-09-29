@@ -33,7 +33,6 @@ class ScoreBoard {
 
   static Future<List<ScoreBoardEntry>> fetchScoreboard() async {
     final _uuid = await getUuid();
-    print("$host/scores/$_uuid?sortOrder=ASC");
     Response resp = await Dio().get("$host/scores/$_uuid?sortOrder=ASC");
 
     final data = resp.data;
@@ -42,5 +41,18 @@ class ScoreBoard {
     }
 
     return [];
+  }
+
+  static Future<bool> isPlayerIdAvailable(String playerId) async {
+    final _uuid = await getUuid();
+    Response resp = await Dio().get("$host/scores/$_uuid?sortOrder=ASC&playerId=$playerId");
+
+    final data = resp.data;
+
+    if (data is List) {
+      return data.length == 0;
+    }
+
+    throw ("Could not check player id availability");
   }
 }

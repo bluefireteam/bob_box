@@ -8,6 +8,7 @@ import "../ui/title_header.dart";
 
 import "./game/hats.dart";
 
+import "../game_data.dart";
 import "../scoreboard.dart";
 import "../main.dart";
 
@@ -17,8 +18,11 @@ class ScoreboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final builder = FutureBuilder(
-        future: ScoreBoard.fetchScoreboard(),
-        builder: (BuildContext context, AsyncSnapshot<List<ScoreBoardEntry>> snapshot) {
+        future: Future.wait([
+          ScoreBoard.fetchScoreboard(),
+          GameData.playerId(),
+        ]),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
             case ConnectionState.active:
@@ -29,9 +33,11 @@ class ScoreboardScreen extends StatelessWidget {
               if (snapshot.hasError) {
                 return Center(child: Label(label: "Could not fetch scoreboard."));
               }
-              final _entries = snapshot.data;
+              final _entries = snapshot.data[0] as List<ScoreBoardEntry>;
+              final _playerId = snapshot.data[1] as String;
+
               int i = 1;
-              return ListView(
+              final _list = ListView(
                 padding: const EdgeInsets.all(10),
                 children: _entries == null
                 ? []
@@ -63,7 +69,22 @@ class ScoreboardScreen extends StatelessWidget {
                         )
                     )
                 ).toList()
-            );
+              );
+
+              if (_playerId == null) {
+                return Column(children: [
+                  SizedBox(height: 50),
+                  buttons.PrimaryButton(
+                      label: "Join the scoreboard",
+                      onPress: () {
+                        Navigator.pushReplacementNamed(context, "/join-scoreboard");
+                      }
+                  ),
+                  Expanded(child: _list)
+                ]);
+              } else {
+                return _list;
+              }
             }
           }
         }

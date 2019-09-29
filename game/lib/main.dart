@@ -13,6 +13,7 @@ import 'screens/hats_screen.dart';
 import 'screens/credits_screen.dart';
 import 'screens/support_screen.dart';
 import 'screens/scoreboard_screen.dart';
+import 'screens/join_scoreboard_screen.dart';
 
 import 'ui/background.dart';
 import 'ui/label.dart';
@@ -115,6 +116,7 @@ class _GameWidgetState extends State<GameWidget> with WidgetsBindingObserver {
               }
           ),
           '/scoreboard': (context) => ScoreboardScreen(),
+          '/join-scoreboard': (context) => JoinScoreBoardScreen(),
         });
   }
 

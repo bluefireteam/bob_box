@@ -79,4 +79,15 @@ class GameData {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("soundsEnabled", soundsEnabled);
   }
+
+  static Future<String> playerId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString("playerId");
+  }
+
+  static Future<void> setPlayerId(String playerId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString("pplayerId", playerId);
+  }
 }
