@@ -9,6 +9,7 @@ import 'dart:ui';
 import 'dart:math';
 
 import '../../game_data.dart';
+import '../../scoreboard.dart';
 import '../util.dart';
 import '../../iap.dart';
 
@@ -168,7 +169,7 @@ class GameController extends PositionComponent {
     });
 
     GameData.getScore().then((score) {
-        _lastHighscore = score;
+        _lastHighscore = score ?? 0;
     });
   }
 
@@ -229,6 +230,8 @@ class GameController extends PositionComponent {
           gameRef.add(InGameMessage("New best score!"));
           _lastHighscore = _score;
       }
+
+      ScoreBoard.submit(_score.toDouble());
 
       _score = 0;
       resetPowerUp();

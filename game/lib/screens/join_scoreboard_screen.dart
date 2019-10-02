@@ -7,6 +7,7 @@ import "../ui/label.dart";
 import "../ui/title_header.dart";
 
 import "../scoreboard.dart";
+import "../game_data.dart";
 
 class JoinScoreBoardScreen extends StatefulWidget {
   @override
@@ -27,12 +28,19 @@ class _JoinScoreBoardScreenState extends State<JoinScoreBoardScreen> {
     super.dispose();
   }
 
-  void _checkPlayerIdAvailability() async {
+  Future<bool> _checkPlayerIdAvailability() async {
+    if (playerIdTextController.text.isEmpty) {
+      setState(() {
+        _status = "Player id cannot be empty";
+      });
+
+      return false;
+    }
+
     setState(() {
       _status = "Checking...";
     });
 
-    // TODO check empty playerId
     try {
       final isPlayerIdAvailable = await ScoreBoard.isPlayerIdAvailable(playerIdTextController.text);
 
@@ -41,10 +49,28 @@ class _JoinScoreBoardScreenState extends State<JoinScoreBoardScreen> {
             ? "Player id available"
             : "Player id already in use";
       });
+
+      return isPlayerIdAvailable;
     } catch(e) {
       setState(() {
         _status = "Error";
       });
+    }
+
+    return false;
+  }
+
+  void _join() async {
+    final isPlayerIdAvailable = await _checkPlayerIdAvailability();
+
+    if (isPlayerIdAvailable) {
+      await GameData.setPlayerId(playerIdTextController.text);
+
+      final currentScore = await GameData.getScore();
+      final score = currentScore ?? 0.0;
+      await ScoreBoard.submit(score.toDouble());
+
+      Navigator.pushReplacementNamed(context, "/scoreboard");
     }
   }
 
@@ -68,7 +94,7 @@ class _JoinScoreBoardScreenState extends State<JoinScoreBoardScreen> {
                         )
                       ],
                   ),
-                  Expanded(child: 
+                  Expanded(child:
                       Container(
                           padding: EdgeInsets.all(20),
                           child: Center(child: Column(
@@ -96,10 +122,16 @@ Those informations are only used for the display of the scoreboar.
                               ]),
                               Column(children: [
                                 Label(label: _status),
-                                buttons.PrimaryButton(
+                                buttons.SecondaryButton(
                                     label: "Check availability",
                                     onPress: () {
                                       _checkPlayerIdAvailability();
+                                    }
+                                ),
+                                buttons.PrimaryButton(
+                                    label: "Join",
+                                    onPress: () {
+                                      _join();
                                     }
                                 ),
                               ]),

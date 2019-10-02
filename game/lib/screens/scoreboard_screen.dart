@@ -50,7 +50,9 @@ class ScoreboardScreen extends StatelessWidget {
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.end,
                                           children: [
-                                            Flame.util.spriteAsWidget(Size(60, 40), HatSprite(entry.hat, image: Main.hatsWithBackground).hatSprite),
+                                            entry.hat == null
+                                              ? SizedBox(width: 60, height: 40)
+                                              : Flame.util.spriteAsWidget(Size(60, 40), HatSprite(entry.hat, image: Main.hatsWithBackground).hatSprite),
                                             Label(label: "#${i++} ", fontSize: 14),
                                           ],
                                       )
