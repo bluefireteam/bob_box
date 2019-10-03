@@ -60,8 +60,11 @@ class ScoreBoard {
     throw ("Could not check player id availability");
   }
 
-  static Future<void> submit(double score) async {
+  static Future<void> submit() async {
     final lastSubmittedScore = await GameData.getLastSubmittedScore();
+
+    final savedScore = await GameData.getScore();
+    double score = savedScore != null ? savedScore.toDouble() : 0.0;
 
     if (lastSubmittedScore == null || score > lastSubmittedScore) {
       // Get the token
@@ -87,7 +90,6 @@ class ScoreBoard {
             ),
         );
 
-        print(submitResponse);
         if (submitResponse.statusCode != 204) {
           print(submitResponse);
           throw "Could not submit the score";

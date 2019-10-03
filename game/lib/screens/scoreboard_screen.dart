@@ -31,10 +31,14 @@ class ScoreboardScreen extends StatelessWidget {
             }
             case ConnectionState.done: {
               if (snapshot.hasError) {
+                print(snapshot.error);
                 return Center(child: Label(label: "Could not fetch scoreboard."));
               }
               final _entries = snapshot.data[0] as List<ScoreBoardEntry>;
               final _playerId = snapshot.data[1] as String;
+
+              Color fontColor(ScoreBoardEntry entry) =>
+                  entry.playerId == _playerId ? const Color(0xfffff8c0) : const Color(0xFF38607c);
 
               int i = 1;
               final _list = ListView(
@@ -43,6 +47,9 @@ class ScoreboardScreen extends StatelessWidget {
                 ? []
                 : _entries.map((entry) =>
                     Container(
+                        margin: EdgeInsets.fromLTRB(0, 0, 10, 10),
+                        padding: EdgeInsets.fromLTRB(0, 0, 10, 10),
+                        color: entry.playerId == _playerId ? const Color(0xFF38607c) : null,
                         child: Row(
                             children: [
                               SizedBox(width: 120, child:
@@ -53,17 +60,22 @@ class ScoreboardScreen extends StatelessWidget {
                                             entry.hat == null
                                               ? SizedBox(width: 60, height: 40)
                                               : Flame.util.spriteAsWidget(Size(60, 40), HatSprite(entry.hat, image: Main.hatsWithBackground).hatSprite),
-                                            Label(label: "#${i++} ", fontSize: 14),
+                                            Label(
+                                                fontColor: fontColor(entry),
+                                                label: "#${i++} ", fontSize: 14
+                                            ),
                                           ],
                                       )
                               ),
                               Expanded(child: SizedBox(height: 40, child:
                                       Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          mainAxisAlignment: MainAxisAlignment.end,
                                           crossAxisAlignment: CrossAxisAlignment.end,
                                           children: [
-                                            Label(label: "${entry.playerId}", fontSize: 14),
-                                            Label(label: "${entry.points}", fontSize: 14),
+                                            Label(label: "${entry.playerId}", fontSize: 14, fontColor: fontColor(entry)),
+                                            SizedBox(width: 20),
+                                            Label(label: "${entry.points}", fontSize: 14, fontColor: fontColor(entry)),
+                                            SizedBox(width: 5),
                                           ]
                                       )
                               )),

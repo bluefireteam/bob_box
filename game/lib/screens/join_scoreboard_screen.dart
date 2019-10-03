@@ -65,10 +65,7 @@ class _JoinScoreBoardScreenState extends State<JoinScoreBoardScreen> {
 
     if (isPlayerIdAvailable) {
       await GameData.setPlayerId(playerIdTextController.text);
-
-      final currentScore = await GameData.getScore();
-      final score = currentScore ?? 0.0;
-      await ScoreBoard.submit(score.toDouble());
+      await ScoreBoard.submit();
 
       Navigator.pushReplacementNamed(context, "/scoreboard");
     }

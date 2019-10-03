@@ -231,7 +231,7 @@ class GameController extends PositionComponent {
           _lastHighscore = _score;
       }
 
-      ScoreBoard.submit(_score.toDouble());
+      ScoreBoard.submit();
 
       _score = 0;
       resetPowerUp();
