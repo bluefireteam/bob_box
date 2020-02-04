@@ -1,4 +1,4 @@
-# Bounce Box
+# Bob Box
 
 Bob Box is a simple casual game writen in Flutter+Flame
 
